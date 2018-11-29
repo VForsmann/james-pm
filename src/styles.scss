@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import"~bootstrap/scss/bootstrap";
+
+.place-left {
+    margin-left: 10px;
+}
+
+.place-right {
+    margin-right: 10px
+}
+$primary: #fae8ac;
+
+$secondary: #fdf3d1;
+$secondaryDark: #2f2971;
