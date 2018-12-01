@@ -8,12 +8,17 @@ import { environment } from '../environments/environment';
 import { HomeComponent } from './views/home/home.component';
 import { SignInComponent } from './views/components/user/sign-in/sign-in.component';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { CardComponent } from './views/shared/card/card.component';
+import { NavbarComponent } from './views/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SignInComponent
+    SignInComponent,
+    CardComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +28,7 @@ import { FormsModule } from '@angular/forms';
     AngularFireAuthModule,
     FormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

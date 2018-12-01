@@ -1,0 +1,11 @@
+@import '../../../styles.scss';
+
+.navbar {
+    background-color: $primary;
+}
+
+.navbar-title {
+    margin-right: 1rem;
+    color: $secondaryDark;
+    font-weight: bold;
+}

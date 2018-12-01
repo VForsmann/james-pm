@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { auth } from 'firebase/app';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,14 +14,14 @@ export class SignInComponent implements OnInit {
   };
   errorMessage = '';
 
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    this.afAuth.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password)
-    .then()
+    this.authService.login(this.auth.email, this.auth.password)
+    .then(() => console.log('Navigate'))
     .catch(err => this.errorMessage = err.message);
   }
 }
