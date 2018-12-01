@@ -1,0 +1,16 @@
+<div>
+  <div class="status-bar-name">
+    {{ name }}
+  </div>
+  <div id="dragContainer" droppable (onDrop)="onDrop($event)">
+    <div fxLayout="column" fxLayoutAlign="start center">
+      <ng-container *ngFor="let task of tasks">
+        <div *ngIf="task.status === name">
+          <p draggable [dragData]="task">
+            <app-card [title]="task.name" [text]="task.description"> </app-card>
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

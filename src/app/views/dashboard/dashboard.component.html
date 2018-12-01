@@ -1,0 +1,8 @@
+<div class="d-flex justify-content-start">
+  <div *ngFor="let statusBar of statusBars" class="d-inline-flex p-2 bd-highlight">
+    <app-status-bar [name]="statusBar"></app-status-bar>
+  </div>
+</div>
+<div id="dropContainer" droppable (onDrop)="onDropDelete($event)">
+  Drop Drop Drop
+</div>

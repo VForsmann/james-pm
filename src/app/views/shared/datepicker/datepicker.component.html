@@ -1,0 +1,12 @@
+<div class="form-group">
+    <label *ngIf="title" for="datepicker" class="control-label">{{title}}</label>
+    <div class="input-group">
+        <input id="datepicker" type="text" [class]="openOrDone()" class="form-control" readonly [ngModel]="model" (ngModelChange)="myFunc(model=$event)"
+            placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" placement="bottom">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                <i class="fa fa-calendar"></i>
+            </button>
+        </div>
+    </div>
+</div>

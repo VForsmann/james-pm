@@ -1,0 +1,57 @@
+@import '../../../../styles.scss';
+
+#dragContainer {
+    height: 70vh;
+    overflow-y: scroll;
+    width: 18rem;
+    background-color: $secondary;
+    border-radius: 5px;
+}
+
+.status-bar-name {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+
+.drag-border {
+    border: none;
+}
+
+.drag-hint-border {
+    border: none;
+}
+
+.drag-over-border {
+    border: none;
+}
+
+.add-task-button {
+    background-color: $primary;
+    margin-top: 5px;
+    width: 100%;
+    color: $secondaryDark;
+}
+
+/*Scroll bar nav*/
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: auto; 
+    -webkit-border-radius: auto;
+    border-radius: auto;
+    background: auto;    
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230); 
+    -webkit-border-radius:auto;
+    border-radius:auto;
+    background: $primary; 
+    -webkit-box-shadow:auto; 
+}
