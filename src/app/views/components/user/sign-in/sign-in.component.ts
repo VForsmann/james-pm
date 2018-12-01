@@ -21,7 +21,9 @@ export class SignInComponent implements OnInit {
 
   onSubmit() {
     this.authService.login(this.auth.email, this.auth.password)
-    .then(() => console.log('Navigate'))
+    .then(() => {
+      this.router.navigate(['projects']);
+    })
     .catch(err => this.errorMessage = err.message);
   }
 }

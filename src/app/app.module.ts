@@ -11,6 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CardComponent } from './views/shared/card/card.component';
 import { NavbarComponent } from './views/navbar/navbar.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
+import { StatusBarComponent } from './views/components/status-bar/status-bar.component';
+import { ModalComponent } from './views/shared/modal/modal.component';
+import { NgDragDropModule } from 'ng-drag-drop';
+import { ListEntryComponent } from './views/components/project/list-entry/list-entry.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -18,17 +26,24 @@ import { NavbarComponent } from './views/navbar/navbar.component';
     HomeComponent,
     SignInComponent,
     CardComponent,
-    NavbarComponent
+    NavbarComponent,
+    DashboardComponent,
+    StatusBarComponent,
+    ModalComponent,
+    ProjectOverviewComponent,
+    ListEntryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'james-pm'),
-    AngularFireModule,
+    // AngularFireModule,
     AngularFireAuthModule,
-    FormsModule
+    FormsModule,
+    NgbModule,
+    NgDragDropModule.forRoot(),
   ],
-  providers: [AuthService],
+  providers: [AuthService, AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

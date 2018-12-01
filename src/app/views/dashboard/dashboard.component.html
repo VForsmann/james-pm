@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-start">
+  <div *ngFor="let statusBar of statusBars" class="d-inline-flex p-2 bd-highlight">
+    <app-status-bar [name]="statusBar"></app-status-bar>
+  </div>
+  <div class="add-status-bar">
+    <app-modal (modalResult)="onAddBar($event)" [component]="addStatusBarComponent">
+      <button class="btn add-status-bar-button">+</button>
+    </app-modal>
+  </div>
+</div>
