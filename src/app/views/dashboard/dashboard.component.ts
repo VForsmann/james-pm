@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { ProjectService } from 'src/app/services/project.service';
-import { Task } from 'src/app/interfaces/task';
+import { Task } from 'src/app/model/task';
 
 @Component({
   selector: 'app-dashboard',
