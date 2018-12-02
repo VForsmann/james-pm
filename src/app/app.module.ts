@@ -17,8 +17,9 @@ import { StatusBarComponent } from './views/components/status-bar/status-bar.com
 import { ModalComponent } from './views/shared/modal/modal.component';
 import { NgDragDropModule } from 'ng-drag-drop';
 import { ListEntryComponent } from './views/components/project/list-entry/list-entry.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AddProjectComponent } from './views/components/add-project/add-project.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
     StatusBarComponent,
     ModalComponent,
     ProjectOverviewComponent,
-    ListEntryComponent
+    ListEntryComponent,
+    AddProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
     NgbModule,
     NgDragDropModule.forRoot(),
   ],
-  providers: [AuthService, AngularFirestore],
+  providers: [NgbActiveModal, AuthService, AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

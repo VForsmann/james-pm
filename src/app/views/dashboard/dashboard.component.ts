@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { Task } from 'src/app/interfaces/task';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,15 +17,20 @@ export class DashboardComponent implements OnInit {
     'documentation',
     'preprocess'
   ];
-  tasks = [];
-  task;
+  tasks: Task[] = [];
+  task: Task = {
+    id: '',
+    description: '',
+    title: '',
+    status: '',
+  };
   constructor(private taskService: TaskService, private projectService: ProjectService) { }
 
   ngOnInit() {
     this.taskService.getTasks().subscribe(res => {
       res.map(actions => {
-        this.task = actions.payload.doc.data();
-        this.task['id'] = actions.payload.doc.id;
+        this.task = <Task> actions.payload.doc.data();
+        this.task.id = actions.payload.doc.id;
         this.tasks.push(this.task);
       });
     });
