@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Register</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form id="signUpForm" (ngSubmit)="onSubmit()" #signUpForm="ngForm">
+    <div class="form-group">
+      <input type="firstname" class="form-control" id="firstname" name="firstname" placeholder="John" [(ngModel)]="user.firstname"
+        appFirstname required>
+    </div>
+    <div class="form-group">
+      <input type="lastname" class="form-control" id="lastname" name="lastname" placeholder="Doe" [(ngModel)]="user.lastname"
+        appLastname required>
+    </div>
+    <div class="form-group">
+      <input type="email" class="form-control" id="email" name="email" placeholder="E-Mail" [(ngModel)]="user.email"
+        appEmail required>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="user.password"
+        appPassword required>
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button form="signUpForm" [disabled]="!signUpForm.valid" type="submit" class="btn btn-success">Register</button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+</div>

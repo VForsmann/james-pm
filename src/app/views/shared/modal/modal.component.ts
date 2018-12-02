@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
@@ -11,9 +10,6 @@ export class ModalComponent implements OnInit {
   @Input() component: Component;
   @Input() payload: any;
   @Output() modalResult = new EventEmitter<any>();
-
-
-
 
   constructor(private modalService: NgbModal) { }
 

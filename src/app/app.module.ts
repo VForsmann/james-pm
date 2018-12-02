@@ -20,6 +20,7 @@ import { ListEntryComponent } from './views/components/project/list-entry/list-e
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AddProjectComponent } from './views/components/add-project/add-project.component';
+import { SignUpComponent } from './views/components/user/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -33,19 +34,20 @@ import { AddProjectComponent } from './views/components/add-project/add-project.
     ModalComponent,
     ProjectOverviewComponent,
     ListEntryComponent,
-    AddProjectComponent
+    AddProjectComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'james-pm'),
-    // AngularFireModule,
     AngularFireAuthModule,
     FormsModule,
     NgbModule,
     NgDragDropModule.forRoot(),
   ],
-  providers: [NgbActiveModal, AuthService, AngularFirestore],
+  entryComponents: [SignUpComponent],
+  providers: [AuthService, AngularFirestore, NgbActiveModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
