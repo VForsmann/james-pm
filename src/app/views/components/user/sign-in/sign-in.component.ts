@@ -22,11 +22,12 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit() {
-    this.authService.login(this.auth.email, this.auth.password)
-    .then(() => {
+  async onSubmit() {
+    try {
+      await this.authService.login(this.auth.email, this.auth.password);
       this.router.navigate(['projects']);
-    })
-    .catch(err => this.errorMessage = err.message);
+    } catch (err) {
+      this.errorMessage = err.message;
+    }
   }
 }

@@ -9,7 +9,17 @@ export class UserService {
 
   constructor(private db: AngularFirestore) { }
 
-  createUser(user: User) {
-    return this.db.collection('users').add(user);
+  createUser(id: string, user: User) {
+    delete user.password;
+    return this.db.collection('users').doc(id).set(user);
+  }
+
+  deleteUser(id: string) {
+    return this.db.collection('users').doc(id).delete();
+  }
+
+  updateUser(id: string, user: User) {
+    delete user.password;
+    return this.db.collection('users').doc(id).update(user);
   }
 }
