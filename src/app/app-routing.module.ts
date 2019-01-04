@@ -4,7 +4,7 @@ import { HomeComponent } from './views/home/home.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { AuthGuard } from './auth.guard';
-import { AddProjectComponent } from './views/components/add-project/add-project.component';
+import { AddProjectComponent } from './views/project-overview/add-project/add-project.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent }, // canActivate: [AuthGuard] },

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SignInComponent } from '../components/user/sign-in/sign-in.component';
+import { SignInComponent } from '../home/sign-in/sign-in.component';
 
 @Component({
   selector: 'app-navbar',
