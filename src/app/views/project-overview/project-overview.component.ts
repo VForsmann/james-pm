@@ -12,22 +12,14 @@ import { Project } from 'src/app/model/project';
 export class ProjectOverviewComponent implements OnInit {
   constructor(private projectService: ProjectService, private authService: AuthService) { }
   addProjectComponent = AddProjectComponent;
-  projects: Project[] = [];
-  project: Project;
+  projects = [];
+  project;
   ngOnInit() {
     this.projectService.getProjects().subscribe(res => {
       res.map(actions => {
-        this.project = <Project> actions.payload.doc.data();
-        this.project.id = actions.payload.doc.id;
-        if (this.projects.map(pro => pro.id).indexOf(this.project.id) === -1) {
-          this.projects.push(this.project);
-        }
-      });
-    });
-
-    this.projectService.getEditorProjects().subscribe(res => {
-      res.map(actions => {
-        this.project = <Project> actions.payload.doc.data();
+        console.log(actions.payload.doc.data());
+        this.project = this.projectService.getProjectForReference(actions.payload.doc.data()['project'].id);
+        console.log(this.project);
         this.project.id = actions.payload.doc.id;
         if (this.projects.map(pro => pro.id).indexOf(this.project.id) === -1) {
           this.projects.push(this.project);
