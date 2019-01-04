@@ -20,4 +20,8 @@ export class ReferenceService {
   getBacklogReference(backlogId) {
     return this.db.collection('backlogs').doc(backlogId).ref;
   }
+
+  getProjectReference(projectId) {
+    return this.db.collection('projects').doc(projectId).ref;
+  }
 }
