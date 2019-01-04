@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReferenceService {
 
-  constructor(private db: AngularFirestore, private authService: AuthService) { }
+  constructor(private af: AngularFireAuth, private db: AngularFirestore, private authService: AuthService) { }
 
   getCreatorReference() {
-    return this.db.collection('user').doc(this.authService.getLoggedInUser().uid).ref;
+    this.af.authState.subscribe(auth => {
+      return this.db.collection('user').doc(auth.uid).ref;
+    });
   }
 
   getUserReference(userId) {

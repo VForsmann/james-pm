@@ -27,6 +27,7 @@ import { UserstoryComponent } from './views/userstory/userstory.component';
 import { BacklogComponent } from './views/backlog/backlog.component';
 import { PlanningPokerComponent } from './views/planning-poker/planning-poker.component';
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
     NgDragDropModule.forRoot(),
   ],
   entryComponents: [SignUpComponent],
-  providers: [AuthService, AngularFirestore, NgbActiveModal],
+  providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
