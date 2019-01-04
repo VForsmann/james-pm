@@ -27,7 +27,9 @@ export class SignUpComponent implements OnInit {
 
   async onSubmit() {
     await this.authService.signUp(this.user.email, this.user.password);
-    await this.userService.createUser(this.authService.getLoggedInUser().uid , this.user);
+    this.authService.getLoggedInUser().subscribe(res => {
+      this.userService.createUser(res.uid , this.user);
+    });
     this.activeModal.close();
     this.router.navigate(['projects']);
   }

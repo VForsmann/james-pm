@@ -16,15 +16,17 @@ export class ProjectOverviewComponent implements OnInit {
   projects = [];
   project;
   ngOnInit() {
-    this.projectService.getProjects().subscribe(res => {
-      res.map(actions => {
-        console.log(actions.payload.doc.data());
-        this.project = this.projectService.getProjectForReference(actions.payload.doc.data()['project'].id);
-        console.log(this.project);
-        this.project.id = actions.payload.doc.id;
-        if (this.projects.map(pro => pro.id).indexOf(this.project.id) === -1) {
-          this.projects.push(this.project);
-        }
+    this.projectService.getProjects().then(result => {
+      result.subscribe((res) => {
+        res.map(actions => {
+          console.log(actions.payload.doc.data());
+          this.project = this.projectService.getProjectForReference(actions.payload.doc.data()['project'].id);
+          console.log(this.project);
+          this.project.id = actions.payload.doc.id;
+          if (this.projects.map(pro => pro.id).indexOf(this.project.id) === -1) {
+            this.projects.push(this.project);
+          }
+        });
       });
     });
   }

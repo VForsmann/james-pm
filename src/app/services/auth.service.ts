@@ -1,39 +1,36 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: firebase.User;
+  isAuthenticated: boolean;
+  user: Observable<firebase.User>;
 
-  constructor(private af: AngularFireAuth, private router: Router, private cookieService: CookieService) {
+  constructor(private af: AngularFireAuth, private router: Router) {
     af.authState.subscribe(auth => {
-      this.user = auth;
+      this.isAuthenticated = true;
     });
-  }
-
-  isAuthenticated() {
-    return this.user != null;
+    this.user = this.af.authState;
   }
 
   getLoggedInUser() {
-    return this.user;
+    return this.af.authState;
   }
 
   login(email: string, password: string) {
       const result = this.af.auth.signInWithEmailAndPassword(email, password);
-      this.user.getIdToken().then(res => this.cookieService.set( 'james', res));
       return result;
   }
 
   signUp(email: string, password: string) {
     return this.af.auth.createUserWithEmailAndPassword(email, password)
     .then((authState) => {
-        this.user = authState.user;
+        this.user = this.af.authState;
     });
   }
 
