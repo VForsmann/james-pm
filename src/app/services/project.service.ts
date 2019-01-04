@@ -13,19 +13,23 @@ export class ProjectService {
   selectedProject: Project;
   getProjects() {
     const user = this.referenceService.getCreatorReference();
-    return this.db.collection('projects', ref => ref // .where('user', 'array-contains', user)
-      .where('creator', '==', user)).snapshotChanges();
+    return this.db.collection('user_projects', ref => ref.where('edit', '==', user)).snapshotChanges();
   }
 
-  getEditorProjects() {
+  getProjectForReference(ref: string) {
     const user = this.referenceService.getCreatorReference();
-    return this.db.collection('projects', ref => ref
-      .where('editors', 'array-contains', user)).snapshotChanges();
+    return this.db.collection('projects').doc(ref);
   }
 
-  addNewProject(project: Project) {
-    project.creator = this.referenceService.getCreatorReference();
-    return this.db.collection('projects').add(project);
+  addNewProject(project) {
+    return this.db.collection('projects').add(project).then(res => {
+      const userProject = {
+        user: this.referenceService.getCreatorReference(),
+        project: 'test',
+        role: 'test'
+      };
+      this.db.collection('user_projects').add(userProject);
+    });
   }
 
   setSelectedProject(project: Project) {

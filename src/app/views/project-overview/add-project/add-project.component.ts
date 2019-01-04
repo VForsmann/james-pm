@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from 'src/app/services/project.service';
-import { Project } from 'src/app/model/project';
+import { ReferenceService } from 'src/app/services/reference.service';
 
 @Component({
   selector: 'app-add-project',
@@ -9,18 +9,19 @@ import { Project } from 'src/app/model/project';
   styleUrls: ['./add-project.component.scss']
 })
 export class AddProjectComponent implements OnInit {
-  project: Project = {
-    creator: 'gApsvyNMc8zP3KtC6MNr',
-    name: '',
-    description: ''
-  };
-  constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
+  constructor(public activeModal: NgbActiveModal, private projectService: ProjectService,
+    private referenceService: ReferenceService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    this.projectService.addNewProject(this.project);
+    const project = {
+      user: this.referenceService.getCreatorReference(),
+      name: 'Second Project',
+      description: 'Our second Project'
+    };
+    this.projectService.addNewProject(project);
     this.activeModal.close();
   }
 
