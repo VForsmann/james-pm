@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { first } from 'rxjs/operators';
+import { Observable, observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,15 @@ export class ReferenceService {
 
   constructor(private db: AngularFirestore, private authService: AuthService) { }
 
-  async getCreatorReference() {
+  getCreatorReference() {
     let result: firebase.firestore.DocumentReference;
-    await this.authService.getLoggedInUser().pipe(first()).toPromise().then((res) => {
-      result = this.db.collection('user').doc(res.uid).ref;
+    const obsResult = Observable.create(observer => {
+      this.authService.getLoggedInUser().subscribe((res) => {
+        result = this.db.collection('user').doc(res.uid).ref;
+        observer.next(result);
+      });
     });
-    return result;
+    return obsResult;
   }
 
   getUserReference(userId) {

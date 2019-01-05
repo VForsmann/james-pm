@@ -1,29 +1,71 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
-import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Project } from '../model/project';
 import { ReferenceService } from './reference.service';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   selectedProject: Project;
 
-  constructor(private db: AngularFirestore, private router: Router, private referenceService: ReferenceService) { }
+  constructor(
+    private db: AngularFirestore,
+    private referenceService: ReferenceService
+  ) {}
 
-  async getProjects() {
-    let result: Observable<DocumentChangeAction<{}>[]>;
-    await this.referenceService.getCreatorReference().then((user) => {
-      result = this.db.collection('user_projects', ref => ref.where('edit', '==', user)).snapshotChanges();
+
+  // TODO @Tim schau hier bitte mal drüber und bitte refactorn. ASAP ;)
+  getProjects() {
+    // get data from user project
+    let userProjectCol;
+    let obsProjects = [];
+    let result = null;
+    const obsUser = this.referenceService.getCreatorReference();
+    const obsResult = Observable.create(observer => {
+      obsUser.subscribe(user => {
+        userProjectCol = this.db
+          .collection('user_projects', ref => ref.where('user', '==', user))
+          .snapshotChanges();
+
+        // get data from project
+        userProjectCol.subscribe(userProject => {
+          userProject.map(actions => {
+            const projectId = actions.payload.doc.data()['project'].id;
+            // TODO Ach ja, füge die Rolle dem Project hinzu
+            const roleId = actions.payload.doc.data()['role'].id;
+            console.log(roleId);
+            let obsProject = this.getProjectForId(projectId);
+            obsProject = obsProject.pipe(
+              map(project => {
+                project['id'] = projectId;
+                return project;
+              })
+            );
+            obsProjects.push(obsProject);
+            result = zip(...obsProjects);
+            obsProjects = [];
+            observer.next(result);
+          });
+        });
+      });
     });
-    return result;
+    return obsResult;
   }
 
-  getProjetForId(projId: string) {
-    return this.db.collection('projects').doc(projId).valueChanges();
+  getProjectForId(projId: string) {
+    return this.db
+      .collection('projects')
+      .doc(projId)
+      .valueChanges();
+  }
+
+  getRoleForId(roleId: string) {
+    return this.db
+      .collection('roles')
+      .doc(roleId)
+      .valueChanges();
   }
 
   getProjectForReference(ref: string) {
@@ -32,14 +74,17 @@ export class ProjectService {
   }
 
   addNewProject(project) {
-    return this.db.collection('projects').add(project).then(res => {
-      const userProject = {
-        user: this.referenceService.getCreatorReference(),
-        project: 'test',
-        role: 'test'
-      };
-      this.db.collection('user_projects').add(userProject);
-    });
+    return this.db
+      .collection('projects')
+      .add(project)
+      .then(res => {
+        const userProject = {
+          user: this.referenceService.getCreatorReference(),
+          project: 'test',
+          role: 'test'
+        };
+        this.db.collection('user_projects').add(userProject);
+      });
   }
 
   setSelectedProject(project: Project) {
