@@ -13,7 +13,7 @@
 </div> -->
 <!--<div class="d-flex w-100 justify-content-between"> -->
 <a (click)="this.onProjectClicked()">
-  <app-card [title]="this.project.data.name" [text]="this.project.id + ' - ' + this.project.description">
+  <app-card [title]="this.project.name" [text]="this.project.id + ' - ' + this.project.description">
     <app-modal [payload]=this.project>
       <button class="btn btn-secondary">
         Edit

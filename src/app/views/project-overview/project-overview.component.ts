@@ -6,7 +6,9 @@ import { Project } from 'src/app/model/project';
 import { UserProjectService } from 'src/app/services/user-project.service';
 
 import { ReferenceService } from 'src/app/services/reference.service';
-import { Observable } from 'rxjs';
+import { Observable, merge, forkJoin, zip } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-project-overview',
@@ -21,14 +23,26 @@ export class ProjectOverviewComponent implements OnInit {
     private referenceService: ReferenceService
   ) {}
   addProjectComponent = AddProjectComponent;
-  projects: Observable<any>;
-  project: Project;
+  projects;
+  project;
   ngOnInit() {
-    this.userProjektService.getUserProjects().subscribe(r => {
-      r.map(actions => {
-        console.log(actions.payload.doc.data());
+    const obsProjects = [];
+    this.userProjektService.getUserProjects().then(p => {
+      p.subscribe(r => {
+        console.log('hallo');
+        r.map(actions => {
+          const projectId = actions.payload.doc.data()['project'].id;
+          const obsProject = this.projectService.getProjetForId(projectId);
+          obsProjects.push(obsProject);
+        });
+        this.projects = zip(...obsProjects);
+        console.log(this.projects);
+        this.projects.subscribe(project => {
+          console.log(project);
+        });
       });
     });
+
     // this.projectService.getEditorProjects().subscribe(res => {
     //   res.map(actions => {
     //     this.project = <Project> actions.payload.doc.data();
