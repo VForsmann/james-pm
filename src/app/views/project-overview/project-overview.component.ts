@@ -7,7 +7,7 @@ import { UserProjectService } from 'src/app/services/user-project.service';
 
 import { ReferenceService } from 'src/app/services/reference.service';
 import { Observable, merge, forkJoin, zip } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, scan, map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -32,7 +32,11 @@ export class ProjectOverviewComponent implements OnInit {
         console.log('hallo');
         r.map(actions => {
           const projectId = actions.payload.doc.data()['project'].id;
-          const obsProject = this.projectService.getProjetForId(projectId);
+          let obsProject = this.projectService.getProjetForId(projectId);
+          obsProject = obsProject.pipe(map(t => {
+            t['projectId'] = projectId;
+            return t;
+          }));
           obsProjects.push(obsProject);
         });
         this.projects = zip(...obsProjects);
