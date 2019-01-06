@@ -1,6 +1,6 @@
 <a (click)="this.onProjectClicked()">
-  <app-card [title]="this.project.name" [text]="this.project.id + ' - ' + this.project.description">
-    <app-modal [payload]=this.project>
+  <app-card [title]="this.project.name" [text]="this.project.description">
+    <app-modal [component]="editProjectComponent" [payload]="this.project">
       <button class="btn btn-secondary">
         Edit
       </button>

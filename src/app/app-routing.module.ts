@@ -5,11 +5,13 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { AuthGuard } from './auth.guard';
 import { AddProjectComponent } from './views/project-overview/add-project/add-project.component';
+import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
+  { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

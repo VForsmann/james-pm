@@ -101,7 +101,27 @@ export class ProjectService {
           });
         });
       });
+  }
 
+  addMemberToProject(projectId, userEmail, roleName = 'developer') {
+    this.db.collection('users', ref => ref.where('email', '==', userEmail)).snapshotChanges().subscribe(res => {
+      this.getRole(roleName).subscribe(innerRes => {
+        let user;
+        let role;
+        res.map(actions => {
+          user = this.db.collection('user').doc(actions.payload.doc.id).ref;
+        });
+        innerRes.map(actions => {
+          role = actions.payload.doc.ref;
+        });
+        const userProject = {
+          user: user,
+          project: this.referenceService.getProjectReference(projectId),
+          role: role
+        };
+        this.db.collection('user_projects').add(userProject);
+      });
+    });
   }
 
   setSelectedProject(project: Project) {
