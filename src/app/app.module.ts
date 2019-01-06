@@ -28,6 +28,7 @@ import { BacklogComponent } from './views/backlog/backlog.component';
 import { PlanningPokerComponent } from './views/planning-poker/planning-poker.component';
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { CookieService } from 'ngx-cookie-service';
+import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { CookieService } from 'ngx-cookie-service';
     UserstoryComponent,
     BacklogComponent,
     PlanningPokerComponent,
-    ScrumboardComponent
+    ScrumboardComponent,
+    EditProjectComponent
   ],
   imports: [
     BrowserModule,

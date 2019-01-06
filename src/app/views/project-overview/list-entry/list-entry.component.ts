@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
+import { EditProjectComponent } from '../edit-project/edit-project.component';
 
 @Component({
   selector: 'app-list-entry',
@@ -12,6 +13,7 @@ export class ListEntryComponent implements OnInit {
   constructor(private router: Router, private projectService: ProjectService) {
    }
 
+  editProjectComponent = EditProjectComponent;
   ngOnInit() { }
 
   onProjectClicked() {
@@ -20,7 +22,7 @@ export class ListEntryComponent implements OnInit {
   }
 
   onUpdateProjectClicked() {
-    // this.router.navigate(['dashboard']);
+
   }
 
 }
