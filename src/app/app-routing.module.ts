@@ -7,9 +7,9 @@ import { AuthGuard } from './auth.guard';
 import { AddProjectComponent } from './views/project-overview/add-project/add-project.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'projects', component: ProjectOverviewComponent }, // canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent }, // canActivate: [AuthGuard] }
-  { path: 'addProject', component: AddProjectComponent } // canActivate: [AuthGuard] },
+  { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

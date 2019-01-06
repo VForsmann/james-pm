@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SignInComponent } from '../home/sign-in/sign-in.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +11,13 @@ import { SignInComponent } from '../home/sign-in/sign-in.component';
 export class NavbarComponent implements OnInit {
   signInComponent = SignInComponent;
   isNavbarCollapsed = true;
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }
