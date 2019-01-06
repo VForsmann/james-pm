@@ -11,17 +11,15 @@ import { ReferenceService } from 'src/app/services/reference.service';
 export class AddProjectComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService,
     private referenceService: ReferenceService) { }
-
+  project = {
+    name: 'Name',
+    description: 'Beschreibung'
+  };
   ngOnInit() {
   }
 
   onSubmit() {
-    const project = {
-      user: this.referenceService.getCreatorReference(),
-      name: 'Second Project',
-      description: 'Our second Project'
-    };
-    this.projectService.addNewProject(project);
+    this.projectService.addNewProject(this.project);
     this.activeModal.close();
   }
 

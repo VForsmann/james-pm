@@ -22,7 +22,7 @@ export class ProjectService {
     // get data from user project
     const user = this.referenceService.getCreatorReference();
     // returning Observer called when user_project or user project is chaning
-    const result = Observable.create(observer => {
+    return Observable.create(observer => {
       user.subscribe(user_data => {
         let user_project;
         user_project = this.db
@@ -38,31 +38,22 @@ export class ProjectService {
             /* const roleId = actions.payload.doc.data()['role'].id; */
 
             // change project observable
-            let project = this.getProjectForId(projectId);
-            project = project.pipe(
-              map(project_data => {
-                project_data['id'] = projectId;
-                return project_data;
-              })
-            );
-            // add the mapped projects
-            projects_list.push(project);
-          });
-          // zip the project_list to one Observable and observe its data
-          projects_list.forEach((proj) => {
-            proj.subscribe((projc2) => {
-              console.log(projc2);
+            const project = this.getProjectForId(projectId);
+
+            project.subscribe((project_data) => {
+              const update_project = projects_list.map(pro => pro.id);
+              project_data['id'] = projectId;
+              if (update_project.indexOf(projectId) !== -1) {
+                projects_list[update_project.indexOf(projectId)] = project_data;
+              } else {
+                projects_list.push(project_data);
+              }
+              observer.next(projects_list);
             });
-          });
-          const projects = zip(...projects_list);
-          projects.subscribe((projects_data) => {
-            console.log('zipSubscribe');
-            observer.next(projects_data);
           });
         });
       });
     });
-    return result;
   }
 
   getProjectForId(projId: string) {
@@ -79,6 +70,10 @@ export class ProjectService {
       .valueChanges();
   }
 
+  getRole(role_name: String) {
+    return this.db.collection('roles', ref => ref.where('role', '==', role_name)).snapshotChanges();
+  }
+
   getProjectForReference(ref: string) {
     const user = this.referenceService.getCreatorReference();
     return this.db.collection('projects').doc(ref);
@@ -89,13 +84,24 @@ export class ProjectService {
       .collection('projects')
       .add(project)
       .then(res => {
-        const userProject = {
-          user: this.referenceService.getCreatorReference(),
-          project: 'test',
-          role: 'test'
-        };
-        this.db.collection('user_projects').add(userProject);
+        this.referenceService.getCreatorReference().subscribe((user_data) => {
+          this.getRole('scrum master').subscribe((innerRes) => {
+            let role;
+            innerRes.map(actions => {
+              role = actions.payload.doc.ref;
+            });
+            const user_project = {
+              project: res,
+              user: user_data,
+              role: role
+            };
+            this.db.collection('user_projects').add(user_project).then(re => {
+              console.log('Projekt angelegt');
+            });
+          });
+        });
       });
+
   }
 
   setSelectedProject(project: Project) {
