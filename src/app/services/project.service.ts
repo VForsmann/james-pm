@@ -18,7 +18,7 @@ export class ProjectService {
   /**
    * returns Observable with containing project-Observable.
    */
-  getProjects() {
+  getProjects(): Observable<Project[]> {
     // get data from user project
     const user = this.referenceService.getCreatorReference();
     // returning Observer called when user_project or user project is chaning

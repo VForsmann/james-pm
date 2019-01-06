@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { AddProjectComponent } from '../project-overview/add-project/add-project.component';
+import { Observable } from 'rxjs';
+import { Project } from 'src/app/model/project';
 
 @Component({
   selector: 'app-project-overview',
@@ -10,11 +12,11 @@ import { AddProjectComponent } from '../project-overview/add-project/add-project
 export class ProjectOverviewComponent implements OnInit {
   constructor(
     private projectService: ProjectService
-  ) {}
+  ) { }
   addProjectComponent = AddProjectComponent;
-  projects;
+  projects: Observable<Project[]>;
   project;
   ngOnInit() {
-  this.projects = this.projectService.getProjects();
+    this.projects = this.projectService.getProjects();
   }
 }
