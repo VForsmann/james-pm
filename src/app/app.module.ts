@@ -29,6 +29,7 @@ import { PlanningPokerComponent } from './views/planning-poker/planning-poker.co
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { CookieService } from 'ngx-cookie-service';
 import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
+import { DeleteProjectComponent } from './views/project-overview/delete-project/delete-project.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { EditProjectComponent } from './views/project-overview/edit-project/edit
     BacklogComponent,
     PlanningPokerComponent,
     ScrumboardComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    DeleteProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ import { EditProjectComponent } from './views/project-overview/edit-project/edit
     NgbModule,
     NgDragDropModule.forRoot(),
   ],
-  entryComponents: [SignUpComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })

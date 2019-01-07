@@ -122,4 +122,18 @@ export class ProjectService {
       });
     });
   }
+
+  deleteProject(projectId: string){
+    let project = this.referenceService.getProjectReference(projectId);
+    this.db.collection('user_projects', ref => ref.where('project','==', project))
+    .snapshotChanges()
+    .subscribe(res => {
+      res.map(actions => {
+        this.db.collection('user_projects')
+        .doc(actions.payload.doc.id)
+        .delete();
+      });
+    });
+    this.db.collection('projects').doc(projectId).delete();
+  }
 }
