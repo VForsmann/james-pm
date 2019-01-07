@@ -3,16 +3,17 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Project } from '../model/project';
 import { ReferenceService } from './reference.service';
 import { map } from 'rxjs/operators';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
+  subscriptions = [];
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService
-  ) { }
+  ) {}
 
   /**
    * returns Observable with containing project-Observable.
@@ -35,11 +36,9 @@ export class ProjectService {
           user_project_data.map(actions => {
             const projectId = actions.payload.doc.data()['project'].id;
             /* const roleId = actions.payload.doc.data()['role'].id; */
-
             // change project observable
             const project = this.getProjectForId(projectId);
-
-            project.subscribe((project_data) => {
+            const subscription = project.subscribe((project_data) => {
               const update_project = projects_list.map(pro => pro.id);
               project_data['id'] = projectId;
               if (update_project.indexOf(projectId) !== -1) {
@@ -47,6 +46,7 @@ export class ProjectService {
               } else {
                 projects_list.push(project_data);
               }
+              this.subscriptions.push({sub: subscription, id: projectId});
               observer.next(projects_list);
             });
           });
@@ -95,7 +95,7 @@ export class ProjectService {
               role: role
             };
             this.db.collection('user_projects').add(user_project).then(re => {
-              console.log('Projekt angelegt');
+              console.log('created Project');
             });
           });
         });
@@ -123,9 +123,14 @@ export class ProjectService {
     });
   }
 
-  deleteProject(projectId: string){
-    let project = this.referenceService.getProjectReference(projectId);
-    this.db.collection('user_projects', ref => ref.where('project','==', project))
+  deleteProject(projectId: string) {
+    this.subscriptions.forEach((sub) => {
+      if (sub.id === projectId) {
+        sub.sub.unsubscribe();
+      }
+    });
+    const project = this.referenceService.getProjectReference(projectId);
+    this.db.collection('user_projects', ref => ref.where('project', '==', project))
     .snapshotChanges()
     .subscribe(res => {
       res.map(actions => {
@@ -133,7 +138,8 @@ export class ProjectService {
         .doc(actions.payload.doc.id)
         .delete();
       });
+      this.db.collection('projects').doc(projectId).delete();
+      console.log('deleted Project');
     });
-    this.db.collection('projects').doc(projectId).delete();
   }
 }
