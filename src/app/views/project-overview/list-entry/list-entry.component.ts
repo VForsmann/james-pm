@@ -18,7 +18,7 @@ export class ListEntryComponent implements OnInit {
 
   onProjectClicked() {
     this.projectService.setSelectedProject(this.project);
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['dashboard', this.project.id]);
   }
 
   onUpdateProjectClicked() {

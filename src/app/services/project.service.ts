@@ -8,7 +8,6 @@ import { Observable, zip } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectService {
-  selectedProject: Project;
 
   constructor(
     private db: AngularFirestore,
@@ -56,7 +55,7 @@ export class ProjectService {
     });
   }
 
-  getProjectForId(projId: string) {
+  getProjectForId(projId: string): Observable<{}> {
     return this.db
       .collection('projects')
       .doc(projId)
@@ -122,9 +121,5 @@ export class ProjectService {
         this.db.collection('user_projects').add(userProject);
       });
     });
-  }
-
-  setSelectedProject(project: Project) {
-    this.selectedProject = project;
   }
 }

@@ -9,7 +9,7 @@ import { EditProjectComponent } from './views/project-overview/edit-project/edit
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] }
 ];

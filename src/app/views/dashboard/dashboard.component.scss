@@ -1,14 +1,5 @@
 @import '../../../styles.scss';
 
-.add-status-bar-button {
-    background-color: $primary;
-    height: -webkit-fill-available;
-    font-weight: bold;
-    color: $secondaryDark;
-}
-
-.add-status-bar {
-    margin-top: 2.2rem;
-    padding: 10px;
-    height: 70vh;
+app-card {
+    max-width: 18rem;;
 }
