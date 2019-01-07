@@ -9,7 +9,6 @@ import { Observable, zip, Subscription } from 'rxjs';
 })
 export class ProjectService {
 
-  subscriptions = [];
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService
@@ -38,7 +37,8 @@ export class ProjectService {
             /* const roleId = actions.payload.doc.data()['role'].id; */
             // change project observable
             const project = this.getProjectForId(projectId);
-            const subscription = project.subscribe((project_data) => {
+            project.subscribe((project_data) => {
+              if (project_data) {
               const update_project = projects_list.map(pro => pro.id);
               project_data['id'] = projectId;
               if (update_project.indexOf(projectId) !== -1) {
@@ -46,8 +46,8 @@ export class ProjectService {
               } else {
                 projects_list.push(project_data);
               }
-              this.subscriptions.push({sub: subscription, id: projectId});
               observer.next(projects_list);
+            }
             });
           });
         });
@@ -124,11 +124,6 @@ export class ProjectService {
   }
 
   deleteProject(projectId: string) {
-    this.subscriptions.forEach((sub) => {
-      if (sub.id === projectId) {
-        sub.sub.unsubscribe();
-      }
-    });
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('user_projects', ref => ref.where('project', '==', project))
     .snapshotChanges()
