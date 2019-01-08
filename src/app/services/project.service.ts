@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Project } from '../model/project';
 import { ReferenceService } from './reference.service';
-import { map } from 'rxjs/operators';
-import { Observable, zip, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -140,5 +139,13 @@ export class ProjectService {
         this.db.collection('projects').doc(projectId).delete();
         console.log('deleted Project');
       });
+  }
+
+  updateProject(project: Project) {
+    this.db.collection('projects').doc(project.id)
+    .update({
+      name: project.name,
+      description: project.description
+    } as Project);
   }
 }

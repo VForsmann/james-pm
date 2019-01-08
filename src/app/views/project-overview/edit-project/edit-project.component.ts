@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from 'src/app/services/project.service';
+import { Project } from 'src/app/model/project';
 
 @Component({
   selector: 'app-edit-project',
@@ -10,15 +11,21 @@ import { ProjectService } from 'src/app/services/project.service';
 export class EditProjectComponent implements OnInit {
   @Input() modalInput;
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
-  user = {
-    email: ''
+
+  project: Project = {
+    id: '',
+    name: '',
+    description: ''
   };
+
   ngOnInit() {
+    this.project.id = this.modalInput.id;
+    this.project.name = this.modalInput.name;
+    this.project.description = this.modalInput.description;
   }
 
   onSubmit() {
-    alert(this.modalInput['id']);
-    this.projectService.addMemberToProject(this.modalInput['id'], this.user.email);
+    this.projectService.updateProject(this.project);
     this.activeModal.close();
   }
 }
