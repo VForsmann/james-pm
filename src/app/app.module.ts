@@ -10,7 +10,6 @@ import { SignInComponent } from './views/home/sign-in/sign-in.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CardComponent } from './shared/card/card.component';
-import { NavbarComponent } from './views/navbar/navbar.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { StatusBarComponent } from './views/scrumboard/status-bar/status-bar.component';
@@ -31,7 +30,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 import { DeleteProjectComponent } from './views/project-overview/delete-project/delete-project.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { LoadingComponent } from './shared/loading/loading.component';
+import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
+import { NavbarComponent } from './views/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,6 @@ import { LoadingComponent } from './shared/loading/loading.component';
     HomeComponent,
     SignInComponent,
     CardComponent,
-    NavbarComponent,
     DashboardComponent,
     StatusBarComponent,
     ModalComponent,
@@ -55,7 +54,8 @@ import { LoadingComponent } from './shared/loading/loading.component';
     ScrumboardComponent,
     EditProjectComponent,
     DeleteProjectComponent,
-    LoadingComponent
+    AddMemberComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +67,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
     FontAwesomeModule,
     NgDragDropModule.forRoot(),
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
 import { DeleteProjectComponent } from '../delete-project/delete-project.component';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { AddMemberComponent } from '../add-member/add-member.component';
 
 @Component({
   selector: 'app-list-entry',
@@ -15,12 +16,14 @@ export class ListEntryComponent implements OnInit {
 
   faTrash = faTrash;
   faEdit = faEdit;
+  faUserPlus = faUserPlus;
 
   constructor(private router: Router, private projectService: ProjectService) {
    }
 
   editProjectComponent = EditProjectComponent;
   deleteProjectComponent = DeleteProjectComponent;
+  addMemberComponent = AddMemberComponent;
 
   ngOnInit() { }
 
