@@ -31,6 +31,7 @@ import { EditProjectComponent } from './views/project-overview/edit-project/edit
 import { DeleteProjectComponent } from './views/project-overview/delete-project/delete-project.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
+import { NavbarComponent} from './views/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AddMemberComponent } from './views/project-overview/add-member/add-memb
     SignInComponent,
     CardComponent,
     DashboardComponent,
+    NavbarComponent,
     StatusBarComponent,
     ModalComponent,
     ProjectOverviewComponent,

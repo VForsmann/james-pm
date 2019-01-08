@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SignInComponent } from '../home/sign-in/sign-in.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { ProjectService } from 'src/app/services/project.service';
-import { ActivatedRoute } from '@angular/router';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,24 +17,23 @@ export class NavbarComponent implements OnInit {
   isAuthenticated: Observable<boolean>;
   project;
 
-  constructor(private authService: AuthService,
-    private af: AngularFireAuth,
+  constructor(
+    private authService: AuthService,
+    private stateService: StateService,
     private projectService: ProjectService,
-    private route: ActivatedRoute) { }
+    ) { }
 
     ngOnInit() {
     this.isAuthenticated = this.authService.getAuthState();
-    this.route.url.subscribe(url => {
-      console.log(url);
+
+    this.stateService.getProjectId().subscribe(id => {
+      console.log('change', id);
+      if (id) {
+        this.projectService.getProjectForId(id).subscribe(project => {
+          this.project = project;
+        });
+      }
     });
-    let projectId = '';
-    if (this.route.snapshot.paramMap.get('id')) {
-      projectId = this.route.snapshot.paramMap.get('id');
-      console.log(projectId);
-      this.projectService.getProjectForId(projectId).subscribe(project => {
-        console.log(project);
-      });
-    }
   }
 
   logout() {
