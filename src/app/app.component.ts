@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { StateService } from './services/state.service';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,7 @@ import { StateService } from './services/state.service';
 })
 export class AppComponent {
   title = 'james-pm';
+  loading: boolean;
   constructor(private stateService: StateService) {
-    stateService.getLoading().subscribe(loading => {
-      console.log(loading);
-    });
-    stateService.setLoading(true);
   }
 }

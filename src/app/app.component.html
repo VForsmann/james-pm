@@ -1,4 +1,4 @@
-<!-- <app-loading class="loading" *ngIf="this.model.loading"></app-loading> -->
+<app-loading class="loading" [hidden]="!this.stateService.loading"></app-loading>
 <app-navbar class="header"></app-navbar>
 <div class="innerContainer">
   <div class="main">
