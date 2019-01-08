@@ -9,8 +9,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
   project: Observable<{}>;
+
+  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
+
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.project = this.projectService.getProjectForId(projectId);
