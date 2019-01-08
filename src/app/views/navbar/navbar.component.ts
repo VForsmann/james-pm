@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
   signInComponent = SignInComponent;
   isNavbarCollapsed = true;
   isAuthenticated: Observable<boolean>;
-  project;
+  project = null;
 
   constructor(
     private authService: AuthService,
@@ -27,11 +27,12 @@ export class NavbarComponent implements OnInit {
     this.isAuthenticated = this.authService.getAuthState();
 
     this.stateService.getProjectId().subscribe(id => {
-      console.log('change', id);
-      if (id) {
+      if (id && id !== '') {
         this.projectService.getProjectForId(id).subscribe(project => {
           this.project = project;
         });
+      } else {
+        this.project = null;
       }
     });
   }

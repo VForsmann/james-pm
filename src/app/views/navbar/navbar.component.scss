@@ -1,15 +1,13 @@
 @import '../../../styles.scss';
 
 .navbar {
-    background-color: $primary;
+    background-color: $secondary;
 }
 
 .navbar-title {
-    margin-right: 1rem;
-    color: $secondaryDark;
     font-weight: bold;
 }
 
-li > button {
-    margin-right: 10px;
+.nav-link {
+    font-weight: bold;
 }
