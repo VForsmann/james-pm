@@ -38,7 +38,6 @@ export class ProjectService {
             // change project observable
             const project = this.getProjectForId(projectId);
             const subs = project.subscribe((project_data) => {
-              /* debugger; */
               const update_project = projects_list.map(pro => pro.id);
               if (project_data) {
                 project_data['id'] = projectId;
