@@ -29,6 +29,8 @@ import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { CookieService } from 'ngx-cookie-service';
 import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 import { DeleteProjectComponent } from './views/project-overview/delete-project/delete-project.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     PlanningPokerComponent,
     ScrumboardComponent,
     EditProjectComponent,
-    DeleteProjectComponent
+    DeleteProjectComponent,
+    AddMemberComponent
   ],
   imports: [
     BrowserModule,
@@ -59,9 +62,10 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     AngularFireAuthModule,
     FormsModule,
     NgbModule,
+    FontAwesomeModule,
     NgDragDropModule.forRoot(),
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })
