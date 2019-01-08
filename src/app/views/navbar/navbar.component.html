@@ -5,18 +5,23 @@
       James
     </span>
   </a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="isAuthenticated | async">
     <ul class="navbar-nav mr-auto">
+      <div *ngIf="project != null">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">Dashboard</a>
+        </li>
       <li class="nav-item">
-        <button type="button" class="btn btn-outline-secondary" routerLink="/projects">Sprint</button>
+        <a class="nav-link" routerLink="/projects">Sprint</a>
       </li>
       <li class="nav-item">
-        <button type="button" class="btn btn-outline-secondary" routerLink="/projects">User-Storys</button>
+        <a class="nav-link" routerLink="/projects">User-Storys</a>
       </li>
       <li class="nav-item">
-        <button type="button" class="btn btn-outline-secondary" routerLink="/projects">Backlogs</button>
+        <a class="nav-link" routerLink="/projects">Backlogs</a>
       </li>
+    </div>
     </ul>
-    <button class="btn btn-outline-warning my-2 my-lg-0" (click)="logout()">Logout</button>
+    <a class="nav-item" (click)="logout()">Logout</a>
   </div>
-</nav>
+</nav> 

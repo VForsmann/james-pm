@@ -15,7 +15,6 @@ export class ProjectOverviewComponent implements OnInit {
   ) { }
   addProjectComponent = AddProjectComponent;
   projects: Observable<Project[]>;
-  project;
   ngOnInit() {
     this.projects = this.projectService.getProjects();
   }

@@ -10,7 +10,6 @@ import { SignInComponent } from './views/home/sign-in/sign-in.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CardComponent } from './shared/card/card.component';
-import { NavbarComponent } from './views/navbar/navbar.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { StatusBarComponent } from './views/scrumboard/status-bar/status-bar.component';
@@ -37,7 +36,6 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     HomeComponent,
     SignInComponent,
     CardComponent,
-    NavbarComponent,
     DashboardComponent,
     StatusBarComponent,
     ModalComponent,
