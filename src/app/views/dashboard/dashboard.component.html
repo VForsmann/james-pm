@@ -1,6 +1,7 @@
-<p>Project-Name: {{(this.project | async)?.name}}</p>
-<p>Project-Description: {{(this.project | async)?.description}}</p>
-
+<div class="container-fluid">
+    <h1>Project-Name: {{(this.project | async)?.name}}</h1>
+    <h5 class="text-muted">Project-Description: {{(this.project | async)?.description}}</h5>
+</div>    
 <div class="d-flex align-content-lg-center flex-wrap justify-content-center">
     <app-card (click)='navigateBacklogs()' [title]="'Backlogs'" [text]="'Verwalten Sie alle Backlogs!'"></app-card>
     <app-card (click)='navigateSprints()' [title]="'Sprints'" [text]="'Managen Sie die Sprint-Phasen mit verschiedenen Mitarbeitern'"></app-card>

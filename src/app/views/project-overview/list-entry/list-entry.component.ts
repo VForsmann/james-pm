@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { EditProjectComponent } from '../edit-project/edit-project.component';
 import { DeleteProjectComponent } from '../delete-project/delete-project.component';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-list-entry',
@@ -11,6 +12,10 @@ import { DeleteProjectComponent } from '../delete-project/delete-project.compone
 })
 export class ListEntryComponent implements OnInit {
   @Input() project;
+
+  faTrash = faTrash;
+  faEdit = faEdit;
+
   constructor(private router: Router, private projectService: ProjectService) {
    }
 
