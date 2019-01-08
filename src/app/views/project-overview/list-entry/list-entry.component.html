@@ -1,5 +1,5 @@
-<a (click)="this.onProjectClicked()">
-  <app-card [title]="this.project.name" [text]="this.project.description">
+<a>
+  <app-card (click)="this.onProjectClicked()" [title]="this.project.name" [text]="this.project.description">
     <app-modal [component]="deleteProjectComponent" [payload]="this.project">
         <button class="btn btn-danger">Delete</button>
     </app-modal>

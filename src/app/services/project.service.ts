@@ -12,7 +12,7 @@ export class ProjectService {
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService
-  ) {}
+  ) { }
 
   /**
    * returns Observable with containing project-Observable.
@@ -37,17 +37,21 @@ export class ProjectService {
             /* const roleId = actions.payload.doc.data()['role'].id; */
             // change project observable
             const project = this.getProjectForId(projectId);
-            project.subscribe((project_data) => {
-              if (project_data) {
+            const subs = project.subscribe((project_data) => {
+              /* debugger; */
               const update_project = projects_list.map(pro => pro.id);
-              project_data['id'] = projectId;
-              if (update_project.indexOf(projectId) !== -1) {
-                projects_list[update_project.indexOf(projectId)] = project_data;
+              if (project_data) {
+                project_data['id'] = projectId;
+                if (update_project.indexOf(projectId) !== -1) {
+                  projects_list[update_project.indexOf(projectId)] = project_data;
+                } else {
+                  projects_list.push(project_data);
+                }
               } else {
-                projects_list.push(project_data);
+                projects_list.splice(update_project.indexOf(projectId), 1);
+                subs.unsubscribe();
               }
               observer.next(projects_list);
-            }
             });
           });
         });
@@ -126,15 +130,15 @@ export class ProjectService {
   deleteProject(projectId: string) {
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('user_projects', ref => ref.where('project', '==', project))
-    .snapshotChanges()
-    .subscribe(res => {
-      res.map(actions => {
-        this.db.collection('user_projects')
-        .doc(actions.payload.doc.id)
-        .delete();
+      .snapshotChanges()
+      .subscribe(res => {
+        res.map(actions => {
+          this.db.collection('user_projects')
+            .doc(actions.payload.doc.id)
+            .delete();
+        });
+        this.db.collection('projects').doc(projectId).delete();
+        console.log('deleted Project');
       });
-      this.db.collection('projects').doc(projectId).delete();
-      console.log('deleted Project');
-    });
   }
 }

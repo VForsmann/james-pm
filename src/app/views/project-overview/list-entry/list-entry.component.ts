@@ -19,10 +19,9 @@ export class ListEntryComponent implements OnInit {
 
   ngOnInit() { }
 
-  onProjectClicked() {
+  onProjectClicked(event) {
     this.router.navigate(['dashboard', this.project.id]);
   }
 
   onUpdateProjectClicked() {}
-
 }

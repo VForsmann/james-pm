@@ -16,7 +16,9 @@ export class ModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  async open() {
+  async open(event) {
+    event.preventDefault();
+    event.stopPropagation();
     try {
       const modalRef = await this.modalService.open(this.component);
       if (this.payload) { modalRef.componentInstance.modalInput = this.payload; }
@@ -24,6 +26,6 @@ export class ModalComponent implements OnInit {
       this.modalResult.emit(result);
     } catch (err) {
       console.warn(err);
-     }
+    }
   }
 }

@@ -11,15 +11,14 @@ export class DeleteProjectComponent implements OnInit {
 
   @Input() modalInput;
 
-  projectName: string = '';
+  projectName = '';
 
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
 
   ngOnInit() {
-    console.log(this.modalInput)
   }
 
-  onSubmit(){
+  onSubmit() {
     this.projectService.deleteProject(this.modalInput.id);
     this.activeModal.close();
   }
