@@ -2,7 +2,8 @@
 <p>Project-Description: {{(this.project | async)?.description}}</p>
 
 <div class="d-flex align-content-lg-center flex-wrap justify-content-center">
-    <app-card (click)='navigateBacklogs()' [image]="'./assets/images/haende.jpg'" [title]="'Backlogs'" [text]="'Verwalten Sie alle Backlogs!'"></app-card>
-    <app-card (click)='navigateSprints()' [image]="'./assets/images/komplex.jpg'" [title]="'Sprints'" [text]="'Managen Sie die Sprint-Phasen mit verschiedenen Mitarbeitern'"></app-card>
-    <app-card (click)='navigateUserStorys()' [image]="'./assets/images/zeit.jpg'" [title]="'User-Storys'" [text]="'Erfassen Sie Kundenwünsche'"></app-card>
+    <app-card (click)='navigateBacklogs()' [title]="'Backlogs'" [text]="'Verwalten Sie alle Backlogs!'"></app-card>
+    <app-card (click)='navigateSprints()' [title]="'Sprints'" [text]="'Managen Sie die Sprint-Phasen mit verschiedenen Mitarbeitern'"></app-card>
+    <app-card (click)='navigateUserStorys()' [title]="'User-Storys'" [text]="'Erfassen Sie Kundenwünsche'"></app-card>
+    <app-card (click)='navigateUserStorys()' [title]="'User-Storys'" [text]="'Erfassen Sie Kundenwünsche'"></app-card>
 </div>
