@@ -26,15 +26,15 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateBacklogs() {
-    this.router.navigate(['backlog'], {relativeTo: this.route});
+    this.router.navigate(['backlogs']);
   }
 
   navigateSprints() {
-    this.router.navigate(['sprint'], {relativeTo: this.route});
+    this.router.navigate(['sprints'], {relativeTo: this.route});
   }
 
   navigateUserStorys() {
-    this.router.navigate(['userstory'], {relativeTo: this.route});
+    this.router.navigate(['userstorys'], {relativeTo: this.route});
   }
 
   navigateScrumBoard() {

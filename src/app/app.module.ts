@@ -68,7 +68,7 @@ import { HeaderComponent } from './shared/header/header.component';
     FormsModule,
     NgbModule,
     FontAwesomeModule,
-    NgDragDropModule.forRoot(),
+    NgDragDropModule.forRoot()
   ],
   entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],

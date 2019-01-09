@@ -13,11 +13,15 @@ import { UserstoryComponent } from './views/userstory/userstory.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/backlog', component: BacklogComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/userstory', component: UserstoryComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/sprint', component: SprintComponent, canActivate: [AuthGuard] },
+  {
+    path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard], children: [
+      { path: 'backlogs', component: BacklogComponent, canActivate: [AuthGuard] },
+      { path: 'backlog/:bid', component: BacklogComponent, canActivate: [AuthGuard] },
+      { path: 'userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
+      { path: 'scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
+      { path: 'sprints', component: SprintComponent, canActivate: [AuthGuard] },
+    ]
+  },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
 ];

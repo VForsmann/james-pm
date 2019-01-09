@@ -1,3 +1,12 @@
-<p>
-  backlog works!
-</p>
+<div class="list-group">
+  <app-list-item
+    *ngFor="let backlog of (backlogs | async)"
+    [click]="this.navigate"
+    [payload]="backlog"
+    [title]="backlog.name"
+    [description]="backlog.description"
+  ></app-list-item>
+  <div class="add-new-project">
+    <app-modal [component]="addProjectComponent"> + </app-modal>
+  </div>
+</div>
