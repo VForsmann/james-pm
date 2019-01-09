@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
   isNavbarCollapsed = true;
   isAuthenticated: Observable<boolean>;
   project = null;
+  projectId: string;
 
   constructor(
     private authService: AuthService,
@@ -30,6 +31,7 @@ export class NavbarComponent implements OnInit {
     this.isAuthenticated = this.authService.getAuthState();
 
     this.stateService.getProjectId().subscribe(id => {
+      this.projectId = id;
       if (id && id !== '') {
         this.projectService.getProjectForId(id).subscribe(project => {
           this.project = project;
@@ -45,23 +47,23 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateDashboard() {
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['/dashboard', this.projectId]);
   }
 
   navigateBacklogs() {
-    this.router.navigate(['backlog']);
+    this.router.navigate(['/dashboard', this.projectId, 'backlog']);
   }
 
   navigateSprints() {
-    this.router.navigate(['sprint']);
+    this.router.navigate(['/dashboard', this.projectId, 'sprint']);
   }
 
   navigateUserStorys() {
-    this.router.navigate(['userstory']);
+    this.router.navigate(['/dashboard', this.projectId, 'userstory']);
   }
 
   navigateScrumBoard() {
-    this.router.navigate(['scrum']);
+    this.router.navigate(['/dashboard', this.projectId, 'scrum']);
   }
 
 }
