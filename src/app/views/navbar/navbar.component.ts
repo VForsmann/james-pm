@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
 import { ProjectService } from 'src/app/services/project.service';
 import { StateService } from 'src/app/services/state.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -21,6 +22,8 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private stateService: StateService,
     private projectService: ProjectService,
+    private router: Router,
+    private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
@@ -39,6 +42,26 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  navigateDashboard() {
+    this.router.navigate(['dashboard']);
+  }
+
+  navigateBacklogs() {
+    this.router.navigate(['backlog']);
+  }
+
+  navigateSprints() {
+    this.router.navigate(['sprint']);
+  }
+
+  navigateUserStorys() {
+    this.router.navigate(['userstory']);
+  }
+
+  navigateScrumBoard() {
+    this.router.navigate(['scrum']);
   }
 
 }
