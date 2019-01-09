@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BacklogService } from 'src/app/services/backlog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AddBacklogComponent } from './add-backlog/add-backlog.component';
 
 @Component({
   selector: 'app-backlog',
@@ -10,18 +11,20 @@ import { Observable } from 'rxjs';
 })
 export class BacklogComponent implements OnInit {
   backlogs: Observable<{}>;
+  addBacklogComponent = AddBacklogComponent;
+  projectId: string;
   constructor(
     private backlogService: BacklogService,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
-    const projectId = this.route.snapshot.paramMap.get('id');
-    this.backlogs = this.backlogService.getBacklogs(projectId);
+    this.projectId = this.route.snapshot.paramMap.get('id');
+    this.backlogs = this.backlogService.getBacklogs(this.projectId);
   }
 
   navigate = (backlog) => {
-    this.router.navigate([backlog.id], {relativeTo: this.route});
+    this.router.navigate(['/dashboard', this.projectId, 'backlog', backlog.id]);
   }
 
 }

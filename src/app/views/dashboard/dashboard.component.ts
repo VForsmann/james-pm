@@ -11,6 +11,7 @@ import { StateService } from 'src/app/services/state.service';
 })
 export class DashboardComponent implements OnInit {
   project: Observable<{}>;
+  projectId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,24 +21,24 @@ export class DashboardComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    const projectId = this.route.snapshot.paramMap.get('id');
-    this.project = this.projectService.getProjectForId(projectId);
-    this.stateService.setProjectId(projectId);
+    this.projectId = this.route.snapshot.paramMap.get('id');
+    this.project = this.projectService.getProjectForId(this.projectId);
+    this.stateService.setProjectId(this.projectId);
   }
 
   navigateBacklogs() {
-    this.router.navigate(['backlogs']);
+    this.router.navigate(['/dashboard', this.projectId, 'backlogs']);
   }
 
   navigateSprints() {
-    this.router.navigate(['sprints'], {relativeTo: this.route});
+    this.router.navigate(['/dashboard', this.projectId, 'sprints']);
   }
 
   navigateUserStorys() {
-    this.router.navigate(['userstorys'], {relativeTo: this.route});
+    this.router.navigate(['/dashboard', this.projectId, 'userstorys']);
   }
 
   navigateScrumBoard() {
-    this.router.navigate(['scrum'], {relativeTo: this.route});
+    this.router.navigate(['/dashboard', this.projectId, 'scrum']);
   }
 }

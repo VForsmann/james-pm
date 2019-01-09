@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-start" id="scrumboard">
   <div *ngFor="let statusBar of statusBars$ | async" class="d-inline-flex p-2 bd-highlight">
-    <app-status-bar [name]="statusBar.status"></app-status-bar>
+    <app-status-bar [name]="statusBar.payload.doc.data().status" [id]="statusBar.payload.doc.id"></app-status-bar>
   </div>
 </div>

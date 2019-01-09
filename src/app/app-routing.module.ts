@@ -10,20 +10,19 @@ import { BacklogComponent } from './views/backlog/backlog.component';
 import { SprintComponent } from './views/sprint/sprint.component';
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { UserstoryComponent } from './views/userstory/userstory.component';
+import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
-  {
-    path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard], children: [
-      { path: 'backlogs', component: BacklogComponent, canActivate: [AuthGuard] },
-      { path: 'backlog/:bid', component: BacklogComponent, canActivate: [AuthGuard] },
-      { path: 'userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
-      { path: 'scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
-      { path: 'sprints', component: SprintComponent, canActivate: [AuthGuard] },
-    ]
-  },
+  { path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/backlogs', component: BacklogComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/backlog/:bid', component: BacklogComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
+  { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

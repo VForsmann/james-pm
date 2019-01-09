@@ -14,3 +14,26 @@ $primaryDark: #bcbcbc;
 $secondary: #424242;
 $secondaryDark: #1b1b1b;
 $secondaryLight: #6d6d6d;
+
+
+/*Scroll bar nav*/
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: auto; 
+    -webkit-border-radius: auto;
+    border-radius: auto;
+    background: auto;    
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230); 
+    -webkit-border-radius:auto;
+    border-radius:auto;
+    background: $primary; 
+    -webkit-box-shadow:auto; 
+}

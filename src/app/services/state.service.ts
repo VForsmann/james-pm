@@ -14,7 +14,6 @@ export class StateService {
 
   // call this method only in the dashboard component and project-overview component
   setProjectId(id: string) {
-    console.log('set', id);
     this.projectId.next(id);
   }
 

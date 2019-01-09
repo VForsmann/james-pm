@@ -7,16 +7,19 @@
     <div class="navbar-nav mr-auto">
       <ul class="navbar-nav mr-auto" *ngIf="project != null">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/projects">Dashboard</a>
+          <a class="nav-link" (click)="navigateDashboard()">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/projects">Sprint</a>
+          <a class="nav-link" (click)="navigateSprints()">Sprint</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/projects">User-Storys</a>
+          <a class="nav-link" (click)="navigateUserStorys()">User-Storys</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/projects">Backlogs</a>
+          <a class="nav-link" (click)="navigateBacklogs()">Backlogs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigateScrumBoard()">Scrumboard</a>
         </li>
       </ul>
     </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserstoryService } from 'src/app/services/userstory.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-userstory',
@@ -13,7 +14,8 @@ export class UserstoryComponent implements OnInit {
 
   constructor(
     private userStoryService: UserstoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private stateService: StateService
     ) { }
 
   ngOnInit() {

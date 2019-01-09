@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TaskService } from 'src/app/services/task.service';
-import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: 'app-status-bar',
@@ -9,16 +7,17 @@ import { ProjectService } from 'src/app/services/project.service';
 })
 export class StatusBarComponent implements OnInit {
 
-  @Input() name = '';
-  @Input() tasks;
+  @Input() name;
+  @Input() id;
 
+  title: string;
   constructor() { }
-  ngOnInit() { }
 
+  ngOnInit() {}
 
   onDrop(e: any) {
     // Nur zum testen, nicht aufregen (Ändert den Status von dem Task) name => Status bzw. name vom Balken
     // e => Task den man bewegt
-    e.dragData.status = this.name;
+    // e.dragData.status = this.name;
   }
 }

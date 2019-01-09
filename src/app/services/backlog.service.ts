@@ -48,4 +48,13 @@ export class BacklogService {
       .valueChanges();
     return result;
   }
+
+  addNewBacklog(backlog) {
+    return this.db
+      .collection('backlogs')
+      .add(backlog)
+      .then(res => {
+        console.log('created Backlog');
+      });
+  }
 }

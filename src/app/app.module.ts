@@ -33,6 +33,7 @@ import { AddMemberComponent } from './views/project-overview/add-member/add-memb
 import { NavbarComponent } from './views/navbar/navbar.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { HeaderComponent } from './shared/header/header.component';
     AddMemberComponent,
     NavbarComponent,
     ListItemComponent,
-    HeaderComponent
+    HeaderComponent,
+    AddBacklogComponent
   ],
   imports: [
     BrowserModule,
