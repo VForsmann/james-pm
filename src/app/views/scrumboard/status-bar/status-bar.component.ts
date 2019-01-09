@@ -8,8 +8,10 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./status-bar.component.scss']
 })
 export class StatusBarComponent implements OnInit {
+
   @Input() name = '';
   @Input() tasks;
+
   constructor() { }
   ngOnInit() { }
 

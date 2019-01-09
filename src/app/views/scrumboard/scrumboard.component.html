@@ -1,3 +1,5 @@
-<p>
-  scrumboard works!
-</p>
+<div class="d-flex justify-content-start" id="scrumboard">
+  <div *ngFor="let statusBar of statusBars$ | async" class="d-inline-flex p-2 bd-highlight">
+    <app-status-bar [name]="statusBar.status"></app-status-bar>
+  </div>
+</div>

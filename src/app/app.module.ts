@@ -32,6 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
 import { NavbarComponent } from './views/navbar/navbar.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ListItemComponent } from './shared/list-item/list-item.component';
     DeleteProjectComponent,
     AddMemberComponent,
     NavbarComponent,
-    ListItemComponent
+    ListItemComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { StateService } from 'src/app/services/state.service';
 
@@ -15,7 +15,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private stateService: StateService
+    private stateService: StateService,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -25,14 +26,18 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateBacklogs() {
-    console.log('test');
+    this.router.navigate(['backlog'], {relativeTo: this.route});
   }
 
   navigateSprints() {
-
+    this.router.navigate(['sprint'], {relativeTo: this.route});
   }
 
   navigateUserStorys() {
+    this.router.navigate(['userstory'], {relativeTo: this.route});
+  }
 
+  navigateScrumBoard() {
+    this.router.navigate(['scrum'], {relativeTo: this.route});
   }
 }

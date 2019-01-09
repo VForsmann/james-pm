@@ -1,5 +1,5 @@
 <div class="list-group container">
-  <app-list-item *ngFor="let project of projects | async" [click]="this.navigate(project)" [title]="project.name" [description]="this.project.description" [add]="this.addMemberComponent"></app-list-item>
+  <app-list-item *ngFor="let project of projects | async" [click]="this.navigate(project)" [title]="project.name" [description]="this.project.description" [add]="this.addMemberComponent" [edit]="this.editProjectComponent" [delete]="deleteProjectComponent"></app-list-item>
   <div class="add-new-project">
     <app-modal [component]="addProjectComponent">
       +

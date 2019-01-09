@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TaskStatusesService } from 'src/app/services/task-statuses.service';
+import { Observable } from 'rxjs';
+import { TaskStatus } from 'src/app/model/taskStatus';
 
 @Component({
   selector: 'app-scrumboard',
@@ -7,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScrumboardComponent implements OnInit {
 
-  constructor() { }
+  statusBars$: Observable<TaskStatus[]>;
+
+  constructor(private taskStatusesService: TaskStatusesService) { }
 
   ngOnInit() {
+    this.statusBars$ = this.taskStatusesService.getTaskStatuses();
   }
-
 }
