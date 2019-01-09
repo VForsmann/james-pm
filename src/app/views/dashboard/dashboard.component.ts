@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private router: Router) { }
   project: Observable<{}>;
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateBacklogs() {
-    console.log('test');
+    this.router.navigate(['backlog']);
   }
 
   navigateSprints() {
