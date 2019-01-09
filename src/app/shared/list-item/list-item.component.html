@@ -1,10 +1,29 @@
-<a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-  <div class="d-flex w-100 justify-content-between">
-    <h5 class="mb-1">{{this.title}}</h5>
-    <small></small>
+<a (click)="this.click()" class="list-group-item list-group-item-action d-flex flex-row">
+  <div class="d-flex flex-column w80">
+    <div class="d-flex justify-content-between">
+      <h5 class="mb-1">{{this.title}}</h5>
+      <small></small>
+    </div>
+    <p class="mb-1">{{this.description}}</p>
+    <small>{{this.expanditure}}</small>
+    <small>{{this.epic}}</small>
+    <small>{{this.sprint}}</small>
   </div>
-  <p class="mb-1">{{this.description}}</p>
-  <small>{{this.expanditure}}</small>
-  <small>{{this.epic}}</small>
-  <small>{{this.sprint}}</small>
+  <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">
+    <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.project">
+      <button class="btn btn-secondary">
+        <fa-icon [icon]="faUserPlus"></fa-icon>
+      </button>
+    </app-modal>
+    <app-modal *ngIf="this.edit" [component]="this.edit" [payload]="this.project">
+      <button class="btn btn-secondary">
+        <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+    </app-modal>
+    <app-modal *ngIf="this.delete" [component]="this.delete" [payload]="this.project">
+      <button class="btn btn-danger">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </app-modal>
+  </div>
 </a>

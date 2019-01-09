@@ -15,7 +15,6 @@ import { ProjectOverviewComponent } from './views/project-overview/project-overv
 import { StatusBarComponent } from './views/scrumboard/status-bar/status-bar.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { NgDragDropModule } from 'ng-drag-drop';
-import { ListEntryComponent } from './views/project-overview/list-entry/list-entry.component';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AddProjectComponent } from './views/project-overview/add-project/add-project.component';
@@ -32,7 +31,6 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
 import { NavbarComponent } from './views/navbar/navbar.component';
-import { LoadingComponent } from './shared/loading/loading.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
 
 @NgModule({
@@ -46,7 +44,6 @@ import { ListItemComponent } from './shared/list-item/list-item.component';
     StatusBarComponent,
     ModalComponent,
     ProjectOverviewComponent,
-    ListEntryComponent,
     AddProjectComponent,
     SignUpComponent,
     MilestoneComponent,
@@ -59,7 +56,6 @@ import { ListItemComponent } from './shared/list-item/list-item.component';
     DeleteProjectComponent,
     AddMemberComponent,
     NavbarComponent,
-    LoadingComponent,
     ListItemComponent
   ],
   imports: [

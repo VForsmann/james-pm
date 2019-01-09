@@ -1,8 +1,8 @@
-<div class="" *ngFor="let project of projects | async">
-  <app-list-item [title]="project.name"></app-list-item>
-</div>
-<div class="add-new-project">
+<div class="list-group container">
+  <app-list-item *ngFor="let project of projects | async" [click]="this.navigate(project)" [title]="project.name" [description]="this.project.description" [add]="this.addMemberComponent"></app-list-item>
+  <div class="add-new-project">
     <app-modal [component]="addProjectComponent">
       +
     </app-modal>
+  </div>
 </div>
