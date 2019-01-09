@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add member</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <form id="myForm" (ngSubmit)="onSubmit()" #editProjectForm="ngForm">
+      <div class="form-group">
+        <label for="email" class="control-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required #email="ngModel">
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button form="myForm" [disabled]="!editProjectForm.valid" type="submit" class="btn btn-success">Add</button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+</div>

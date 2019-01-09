@@ -3,15 +3,17 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
-  selector: 'app-delete-project',
-  templateUrl: './delete-project.component.html',
-  styleUrls: ['./delete-project.component.scss']
+  selector: 'app-add-member',
+  templateUrl: './add-member.component.html',
+  styleUrls: ['./add-member.component.scss']
 })
-export class DeleteProjectComponent implements OnInit {
+export class AddMemberComponent implements OnInit {
 
   @Input() modalInput;
 
-  projectName = '';
+  user = {
+    email: ''
+  };
 
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
 
@@ -19,7 +21,7 @@ export class DeleteProjectComponent implements OnInit {
   }
 
   onSubmit() {
-    this.projectService.deleteProject(this.modalInput.id);
+    this.projectService.addMemberToProject(this.modalInput['id'], this.user.email);
     this.activeModal.close();
   }
 }

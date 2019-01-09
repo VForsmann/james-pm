@@ -15,8 +15,10 @@ export class ReferenceService {
     let result: firebase.firestore.DocumentReference;
     const obsResult = Observable.create(observer => {
       this.authService.getLoggedInUser().subscribe((res) => {
-        result = this.db.collection('user').doc(res.uid).ref;
-        observer.next(result);
+        if (res && res.uid) {
+          result = this.db.collection('user').doc(res.uid).ref;
+          observer.next(result);
+        }
       });
     });
     return obsResult;

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Project } from '../model/project';
 import { ReferenceService } from './reference.service';
-import { map } from 'rxjs/operators';
-import { Observable, zip, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { StateService } from './state.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,13 +11,15 @@ export class ProjectService {
 
   constructor(
     private db: AngularFirestore,
-    private referenceService: ReferenceService
-  ) {}
+    private referenceService: ReferenceService,
+    private stateService: StateService
+  ) { }
 
   /**
    * returns Observable with containing project-Observable.
    */
   getProjects(): Observable<Project[]> {
+    this.stateService.setLoading(true);
     // get data from user project
     const user = this.referenceService.getCreatorReference();
     // returning Observer called when user_project or user project is chaning
@@ -37,17 +39,21 @@ export class ProjectService {
             /* const roleId = actions.payload.doc.data()['role'].id; */
             // change project observable
             const project = this.getProjectForId(projectId);
-            project.subscribe((project_data) => {
-              if (project_data) {
+            const subs = project.subscribe((project_data) => {
               const update_project = projects_list.map(pro => pro.id);
-              project_data['id'] = projectId;
-              if (update_project.indexOf(projectId) !== -1) {
-                projects_list[update_project.indexOf(projectId)] = project_data;
+              if (project_data) {
+                project_data['id'] = projectId;
+                if (update_project.indexOf(projectId) !== -1) {
+                  projects_list[update_project.indexOf(projectId)] = project_data;
+                } else {
+                  projects_list.push(project_data);
+                  this.stateService.setLoading(false);
+                }
               } else {
-                projects_list.push(project_data);
+                projects_list.splice(update_project.indexOf(projectId), 1);
+                subs.unsubscribe();
               }
               observer.next(projects_list);
-            }
             });
           });
         });
@@ -56,10 +62,13 @@ export class ProjectService {
   }
 
   getProjectForId(projId: string): Observable<{}> {
-    return this.db
+    this.stateService.setLoading(true);
+    const result = this.db
       .collection('projects')
       .doc(projId)
       .valueChanges();
+    result.subscribe(() => this.stateService.setLoading(false));
+    return result;
   }
 
   getRoleForId(roleId: string) {
@@ -126,15 +135,23 @@ export class ProjectService {
   deleteProject(projectId: string) {
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('user_projects', ref => ref.where('project', '==', project))
-    .snapshotChanges()
-    .subscribe(res => {
-      res.map(actions => {
-        this.db.collection('user_projects')
-        .doc(actions.payload.doc.id)
-        .delete();
+      .snapshotChanges()
+      .subscribe(res => {
+        res.map(actions => {
+          this.db.collection('user_projects')
+            .doc(actions.payload.doc.id)
+            .delete();
+        });
+        this.db.collection('projects').doc(projectId).delete();
+        console.log('deleted Project');
       });
-      this.db.collection('projects').doc(projectId).delete();
-      console.log('deleted Project');
-    });
+  }
+
+  updateProject(project: Project) {
+    this.db.collection('projects').doc(project.id)
+    .update({
+      name: project.name,
+      description: project.description
+    } as Project);
   }
 }

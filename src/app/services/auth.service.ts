@@ -7,19 +7,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-
-  isAuthenticated: boolean;
   user: Observable<firebase.User>;
 
   constructor(private af: AngularFireAuth, private router: Router) {
-    af.authState.subscribe(auth => {
-      this.isAuthenticated = true;
-    });
     this.user = this.af.authState;
   }
 
   getLoggedInUser() {
     return this.af.authState;
+  }
+
+  getAuthState(): Observable<boolean> {
+    return Observable.create(observer => {
+      this.af.authState.subscribe(auth => {
+        if (auth && auth.uid) {
+          observer.next(true);
+        } else {
+          observer.next(false);
+        }
+      });
+    });
   }
 
   login(email: string, password: string) {

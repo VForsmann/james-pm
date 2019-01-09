@@ -8,13 +8,17 @@
   <div class="container">
     <form id="myForm" (ngSubmit)="onSubmit()" #editProjectForm="ngForm">
       <div class="form-group">
-        <label for="email" class="control-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required #email="ngModel">
+        <label for="name" class="control-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="this.project.name" required #email="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="description" class="control-label">Description</label>
+        <input type="text" class="form-control" id="description" name="description" [(ngModel)]="this.project.description" required #email="ngModel">
       </div>
     </form>
   </div>
 </div>
 <div class="modal-footer">
-  <button form="myForm" [disabled]="!editProjectForm.valid" type="submit" class="btn btn-success">Add</button>
+  <button form="myForm" [disabled]="!editProjectForm.valid" type="submit" class="btn btn-success">Save</button>
   <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
 </div>

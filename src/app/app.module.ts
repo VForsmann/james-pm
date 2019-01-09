@@ -10,7 +10,6 @@ import { SignInComponent } from './views/home/sign-in/sign-in.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { CardComponent } from './shared/card/card.component';
-import { NavbarComponent } from './views/navbar/navbar.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { StatusBarComponent } from './views/scrumboard/status-bar/status-bar.component';
@@ -30,6 +29,10 @@ import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { CookieService } from 'ngx-cookie-service';
 import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 import { DeleteProjectComponent } from './views/project-overview/delete-project/delete-project.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AddMemberComponent } from './views/project-overview/add-member/add-member.component';
+import { NavbarComponent } from './views/navbar/navbar.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -37,8 +40,8 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     HomeComponent,
     SignInComponent,
     CardComponent,
-    NavbarComponent,
     DashboardComponent,
+    NavbarComponent,
     StatusBarComponent,
     ModalComponent,
     ProjectOverviewComponent,
@@ -52,7 +55,10 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     PlanningPokerComponent,
     ScrumboardComponent,
     EditProjectComponent,
-    DeleteProjectComponent
+    DeleteProjectComponent,
+    AddMemberComponent,
+    NavbarComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +67,10 @@ import { DeleteProjectComponent } from './views/project-overview/delete-project/
     AngularFireAuthModule,
     FormsModule,
     NgbModule,
+    FontAwesomeModule,
     NgDragDropModule.forRoot(),
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })
