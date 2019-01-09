@@ -62,10 +62,13 @@ export class ProjectService {
   }
 
   getProjectForId(projId: string): Observable<{}> {
-    return this.db
+    this.stateService.setLoading(true);
+    const result = this.db
       .collection('projects')
       .doc(projId)
       .valueChanges();
+    result.subscribe(() => this.stateService.setLoading(false));
+    return result;
   }
 
   getRoleForId(roleId: string) {

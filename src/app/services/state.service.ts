@@ -29,7 +29,7 @@ export class StateService {
     if (this.loading && (new Date().getTime()) - this.loadingTimestamp < 400) {
       setTimeout(() => {
         this.loading = loading;
-      }, 700);
+      }, 1000);
     } else {
       this.loadingTimestamp = new Date().getTime();
       this.loading = loading;
