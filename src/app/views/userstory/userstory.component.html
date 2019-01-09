@@ -1,3 +1,4 @@
-<p>
-  userstory works!
-</p>
+<app-header [title]="'User-Storys'"></app-header>
+<div class="list" *ngFor="let userStory of userStorys | async">
+  <app-list-item [title]="userStory.name" [description]="userStory.description" [epic]="userStory.epic"></app-list-item>
+</div>
