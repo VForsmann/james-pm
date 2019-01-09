@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskStatusesService } from 'src/app/services/task-statuses.service';
 import { Observable } from 'rxjs';
-import { TaskStatus } from 'src/app/model/taskStatus';
+import { DocumentChangeAction } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-scrumboard',
@@ -10,7 +10,7 @@ import { TaskStatus } from 'src/app/model/taskStatus';
 })
 export class ScrumboardComponent implements OnInit {
 
-  statusBars$: Observable<TaskStatus[]>;
+  statusBars$: Observable<DocumentChangeAction<{}>[]>;
 
   constructor(private taskStatusesService: TaskStatusesService) { }
 
