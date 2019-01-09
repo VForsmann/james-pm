@@ -32,8 +32,7 @@ export class ProjectOverviewComponent implements OnInit {
     this.stateService.setProjectId('');
   }
 
-  navigate(projectClo) {
-    const project = projectClo;
-    return () => this.router.navigate(['dashboard', project.id]);
+  navigate = (project) => {
+    this.router.navigate(['dashboard', project.id]);
   }
 }

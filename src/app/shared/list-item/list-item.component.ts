@@ -22,6 +22,7 @@ export class ListItemComponent implements OnInit {
   @Input() add: Component;
   @Input() edit: Comment;
   @Input() click: Function;
+  @Input() payload;
 
   faTrash = faTrash;
   faEdit = faEdit;

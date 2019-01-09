@@ -1,7 +1,7 @@
 @import '../../../../styles.scss';
 
 #dragContainer {
-    height: 70vh;
+    height: 86vh;
     overflow-y: scroll;
     width: 18rem;
     background-color: $primary;
@@ -32,26 +32,4 @@
     margin-top: 5px;
     width: 100%;
     color: $secondaryDark;
-}
-
-/*Scroll bar nav*/
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: auto; 
-    -webkit-border-radius: auto;
-    border-radius: auto;
-    background: auto;    
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: rgb(230, 230, 230); 
-    -webkit-border-radius:auto;
-    border-radius:auto;
-    background: $primary; 
-    -webkit-box-shadow:auto; 
 }
