@@ -1,5 +1,5 @@
 <div class="" *ngFor="let project of projects | async">
-  <app-list-entry [project]="project"></app-list-entry>
+  <app-list-item [title]="project.name"></app-list-item>
 </div>
 <div class="add-new-project">
     <app-modal [component]="addProjectComponent">

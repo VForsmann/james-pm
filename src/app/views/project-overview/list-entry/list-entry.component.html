@@ -1,19 +1,17 @@
-<a>
-  <app-card (click)="this.onProjectClicked()" [title]="this.project.name" [text]="this.project.description">
-    <app-modal [component]="deleteProjectComponent" [payload]="this.project">
-        <button class="btn btn-danger">
-          <fa-icon [icon]="faTrash"></fa-icon>
-        </button>
-    </app-modal>
-    <app-modal [component]="addMemberComponent" [payload]="this.project">
-      <button class="btn btn-secondary">
-        <fa-icon [icon]="faUserPlus"></fa-icon>
-      </button>
-    </app-modal>
-    <app-modal [component]="editProjectComponent" [payload]="this.project">
-      <button class="btn btn-secondary">
-        <fa-icon [icon]="faEdit"></fa-icon>
-      </button>
-    </app-modal>
-  </app-card>
-</a>
+<app-card (click)="this.onProjectClicked()" [title]="this.project.name" [text]="this.project.description">
+  <app-modal [component]="deleteProjectComponent" [payload]="this.project">
+    <button class="btn btn-danger">
+      <fa-icon [icon]="faTrash"></fa-icon>
+    </button>
+  </app-modal>
+  <app-modal [component]="addMemberComponent" [payload]="this.project">
+    <button class="btn btn-secondary">
+      <fa-icon [icon]="faUserPlus"></fa-icon>
+    </button>
+  </app-modal>
+  <app-modal [component]="editProjectComponent" [payload]="this.project">
+    <button class="btn btn-secondary">
+      <fa-icon [icon]="faEdit"></fa-icon>
+    </button>
+  </app-modal>
+</app-card>

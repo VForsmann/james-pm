@@ -19,7 +19,6 @@ export class ProjectService {
    * returns Observable with containing project-Observable.
    */
   getProjects(): Observable<Project[]> {
-    this.stateService.setLoading(true);
     // get data from user project
     const user = this.referenceService.getCreatorReference();
     // returning Observer called when user_project or user project is chaning
@@ -47,7 +46,6 @@ export class ProjectService {
                   projects_list[update_project.indexOf(projectId)] = project_data;
                 } else {
                   projects_list.push(project_data);
-                  this.stateService.setLoading(false);
                 }
               } else {
                 projects_list.splice(update_project.indexOf(projectId), 1);
