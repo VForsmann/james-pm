@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BacklogService } from 'src/app/services/backlog.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-backlog',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BacklogComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private backlogService: BacklogService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    const projectId = this.route.snapshot.paramMap.get('id');
+    this.backlogService.getBacklogs(projectId);
   }
 
 }
