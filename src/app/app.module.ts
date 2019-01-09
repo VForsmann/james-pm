@@ -34,6 +34,7 @@ import { AddMemberComponent } from './views/project-overview/add-member/add-memb
 import { NavbarComponent } from './views/navbar/navbar.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ListItemComponent } from './shared/list-item/list-item.component';
     AddMemberComponent,
     NavbarComponent,
     LoadingComponent,
-    ListItemComponent
+    ListItemComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
