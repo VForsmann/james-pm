@@ -15,8 +15,7 @@ export class AddBacklogComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private backlogService: BacklogService,
-    private referenceService: ReferenceService,
-    private stateService: StateService
+    private referenceService: ReferenceService
     ) { }
   backlog = {
     name: '',

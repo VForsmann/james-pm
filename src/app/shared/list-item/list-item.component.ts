@@ -24,7 +24,7 @@ export class ListItemComponent implements OnInit {
   @Input() click: Function;
   @Input() payload;
   @Input() backlog: string;
-  @Input() draggable: boolean; // wird noch nicht benutzt (muss irgendwie mit ngIf eingebaut werden)
+  @Input() backlogUser: string;
 
   faTrash = faTrash;
   faEdit = faEdit;

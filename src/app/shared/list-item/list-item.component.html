@@ -9,7 +9,7 @@
     </div>
     <p class="mb-1">{{ this.description }}</p>
     <small>{{ this.expanditure }}</small> <small>{{ this.epic }}</small>
-    <small>{{ this.sprint }}</small>
+    <small>{{ this.sprint }}</small> <small>{{ backlogUser }}</small>
     <small *ngIf="this.hasBacklog">Ist einem Backlog zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">

@@ -1,3 +1,54 @@
-<p>
-  edit-backlog works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title">Edit Backlog</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <form id="myForm" (ngSubmit)="onSubmit()" #editBacklogForm="ngForm">
+      <div class="form-group">
+        <label for="name" class="control-label">Name</label>
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="backlog.name"
+          required
+          #name="ngModel"
+        />
+      </div>
+      <div class="form-group">
+        Weisen Sie einen Developer zu, der diesen Backlog bearbeiten soll <br />
+        <select name="setUser" [(ngModel)]="selectedUserId">
+          <option *ngFor="let user of (users | async)" [value]="user.id">
+            {{ user.firstname }} {{ user.lastname }}</option
+          >
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    form="myForm"
+    [disabled]="!editBacklogForm.valid"
+    type="submit"
+    class="btn btn-success"
+  >
+    Edit
+  </button>
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="activeModal.dismiss()"
+  >
+    Cancel
+  </button>
+</div>
