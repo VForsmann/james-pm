@@ -3,6 +3,7 @@ import { BacklogService } from 'src/app/services/backlog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AddBacklogComponent } from './add-backlog/add-backlog.component';
+import { EditBacklogComponent } from './edit-backlog/edit-backlog.component';
 
 @Component({
   selector: 'app-backlog',
@@ -12,6 +13,7 @@ import { AddBacklogComponent } from './add-backlog/add-backlog.component';
 export class BacklogComponent implements OnInit {
   backlogs: Observable<{}>;
   addBacklogComponent = AddBacklogComponent;
+  editBacklogComponent = EditBacklogComponent;
   projectId: string;
   constructor(
     private backlogService: BacklogService,
@@ -25,6 +27,8 @@ export class BacklogComponent implements OnInit {
 
   navigate = (backlog) => {
     this.router.navigate(['/dashboard', this.projectId, 'backlog', backlog.id]);
+    const backlogId = this.route.snapshot.paramMap.get('bid');
+    console.log(backlogId);
   }
 
 }

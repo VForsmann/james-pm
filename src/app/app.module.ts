@@ -34,6 +34,8 @@ import { NavbarComponent } from './views/navbar/navbar.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
+import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
+import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.com
     NavbarComponent,
     ListItemComponent,
     HeaderComponent,
-    AddBacklogComponent
+    AddBacklogComponent,
+    EditBacklogComponent,
+    BacklogTasksComponent
   ],
   imports: [
     BrowserModule,

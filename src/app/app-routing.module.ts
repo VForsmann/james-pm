@@ -11,18 +11,22 @@ import { SprintComponent } from './views/sprint/sprint.component';
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { UserstoryComponent } from './views/userstory/userstory.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
+import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
+import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectOverviewComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/backlogs', component: BacklogComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/backlog/:bid', component: BacklogComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/backlog/:bid', component: BacklogTasksComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
-  { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] }
+  { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] },
+  { path: 'editBacklog', component: EditBacklogComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

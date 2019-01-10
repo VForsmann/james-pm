@@ -1,0 +1,9 @@
+<app-header [title]="'Tasks für Backlog'"></app-header>
+<div class="list-group">
+  <app-list-item
+    *ngFor="let task of (tasks | async)"
+    [payload]="task"
+    [title]="task.name"
+    [description]="task.description"
+  ></app-list-item>
+</div>
