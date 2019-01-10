@@ -27,8 +27,6 @@ export class BacklogComponent implements OnInit {
 
   navigate = (backlog) => {
     this.router.navigate(['/dashboard', this.projectId, 'backlog', backlog.id]);
-    const backlogId = this.route.snapshot.paramMap.get('bid');
-    console.log(backlogId);
   }
 
 }
