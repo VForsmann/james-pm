@@ -1,0 +1,19 @@
+<app-header [title]="'Tasks für Backlog'"></app-header>
+<div class="d-flex align-content-lg-center flex-wrap justify-content-center">
+  <div droppable (onDrop)="onDropAdd($event)" class="list-group">
+    <app-list-item
+      *ngFor="let task of (tasks | async)"
+      [payload]="task"
+      [title]="task.name"
+      [description]="task.description"
+    ></app-list-item>
+  </div>
+  <div droppable (onDrop)="onDropRemove($event)" class="list-group">
+    <app-list-item
+      *ngFor="let task of (allTasks | async)"
+      [payload]="task"
+      [title]="task.name"
+      [description]="task.description"
+    ></app-list-item>
+  </div>
+</div>

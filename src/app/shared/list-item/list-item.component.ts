@@ -23,6 +23,7 @@ export class ListItemComponent implements OnInit {
   @Input() edit: Comment;
   @Input() click: Function;
   @Input() payload;
+  @Input() draggable: boolean; // wird noch nicht benutzt (muss irgendwie mit ngIf eingebaut werden)
 
   faTrash = faTrash;
   faEdit = faEdit;

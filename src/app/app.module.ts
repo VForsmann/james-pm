@@ -33,6 +33,9 @@ import { AddMemberComponent } from './views/project-overview/add-member/add-memb
 import { NavbarComponent } from './views/navbar/navbar.component';
 import { ListItemComponent } from './shared/list-item/list-item.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
+import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
+import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { HeaderComponent } from './shared/header/header.component';
     AddMemberComponent,
     NavbarComponent,
     ListItemComponent,
-    HeaderComponent
+    HeaderComponent,
+    AddBacklogComponent,
+    EditBacklogComponent,
+    BacklogTasksComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +74,7 @@ import { HeaderComponent } from './shared/header/header.component';
     FormsModule,
     NgbModule,
     FontAwesomeModule,
-    NgDragDropModule.forRoot(),
+    NgDragDropModule.forRoot()
   ],
   entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],

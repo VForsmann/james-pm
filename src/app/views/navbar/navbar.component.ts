@@ -51,15 +51,15 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateBacklogs() {
-    this.router.navigate(['/dashboard', this.projectId, 'backlog']);
+    this.router.navigate(['/dashboard', this.projectId, 'backlogs']);
   }
 
   navigateSprints() {
-    this.router.navigate(['/dashboard', this.projectId, 'sprint']);
+    this.router.navigate(['/dashboard', this.projectId, 'sprints']);
   }
 
   navigateUserStorys() {
-    this.router.navigate(['/dashboard', this.projectId, 'userstory']);
+    this.router.navigate(['/dashboard', this.projectId, 'userstorys']);
   }
 
   navigateScrumBoard() {
