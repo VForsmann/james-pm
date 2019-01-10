@@ -41,4 +41,8 @@ export class DashboardComponent implements OnInit {
   navigateScrumBoard() {
     this.router.navigate(['/dashboard', this.projectId, 'scrum']);
   }
+
+  navigateRoadmap() {
+    this.router.navigate(['/dashboard', this.projectId, 'roadmap']);
+  }
 }

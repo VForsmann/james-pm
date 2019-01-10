@@ -36,6 +36,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
+import { VerticalTimelineModule } from 'angular-vertical-timeline';
+import { RoadmapComponent } from './views/roadmap/roadmap.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tas
     HeaderComponent,
     AddBacklogComponent,
     EditBacklogComponent,
-    BacklogTasksComponent
+    BacklogTasksComponent,
+    RoadmapComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tas
     FormsModule,
     NgbModule,
     FontAwesomeModule,
+    VerticalTimelineModule,
     NgDragDropModule.forRoot()
   ],
   entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
