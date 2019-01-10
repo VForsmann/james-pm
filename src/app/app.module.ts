@@ -38,6 +38,8 @@ import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
 import { VerticalTimelineModule } from 'angular-vertical-timeline';
 import { RoadmapComponent } from './views/roadmap/roadmap.component';
+import { AddTaskComponent } from './views/task/add-task/add-task.component';
+import { TaskComponent } from './views/task/task.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { RoadmapComponent } from './views/roadmap/roadmap.component';
     AddBacklogComponent,
     EditBacklogComponent,
     BacklogTasksComponent,
-    RoadmapComponent
+    RoadmapComponent,
+    TaskComponent,
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,

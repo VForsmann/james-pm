@@ -11,12 +11,11 @@ import { StateService } from 'src/app/services/state.service';
   styleUrls: ['./add-backlog.component.scss']
 })
 export class AddBacklogComponent implements OnInit {
-
+  modalInput;
   constructor(
     public activeModal: NgbActiveModal,
     private backlogService: BacklogService,
     private referenceService: ReferenceService,
-    private route: ActivatedRoute,
     private stateService: StateService
     ) { }
   backlog = {
@@ -24,9 +23,7 @@ export class AddBacklogComponent implements OnInit {
     project: undefined
   };
   ngOnInit() {
-    this.stateService.getProjectId().subscribe(id => {
-      this.backlog.project = this.referenceService.getProjectReference(id);
-    });
+    this.backlog.project = this.referenceService.getProjectReference(this.modalInput);
   }
 
   onSubmit() {
