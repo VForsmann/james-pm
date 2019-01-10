@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserstoryService } from 'src/app/services/userstory.service';
 import { StateService } from 'src/app/services/state.service';
 import { ReferenceService } from 'src/app/services/reference.service';
+import { Userstory } from 'src/app/model/userstory';
 
 @Component({
   selector: 'app-edit-userstory',
@@ -10,43 +11,38 @@ import { ReferenceService } from 'src/app/services/reference.service';
   styleUrls: ['./edit-userstory.component.scss']
 })
 export class EditUserstoryComponent implements OnInit {
+  modalInput;
   userstorys;
   selectedUserstorys = [];
-  userstory = {
-    name: '',
-    description: '',
-    epic: false,
-    userstorys: [],
-    project: null
-  };
+  userstory: Userstory;
 
   constructor(
     private activeModal: NgbActiveModal,
     private userstoryService: UserstoryService,
-    private referenceService: ReferenceService,
-    private stateService: StateService
+    private referenceService: ReferenceService
   ) {}
 
   ngOnInit() {
-    this.stateService.getProjectId().subscribe(id => {
-      this.userstory.project = this.referenceService.getProjectReference(id);
-      this.userstorys = this.userstoryService.getUserstorysFromProjectId(id);
-    });
+    this.userstory = this.modalInput;
+    console.log('user input:', this.userstory);
+    if (this.userstory.epic) {
+      this.userstorys = this.userstoryService.getUserstorysFromProject(this.userstory.project);
+    }
   }
 
   onSubmit() {
-    if (this.selectedUserstorys.length > 0) {
-      this.selectedUserstorys.forEach(selectedUserstory => {
-        const usersotryRef = this.referenceService.getUserstoryReference(
-          selectedUserstory.id
-        );
-        this.userstory.userstorys.push(usersotryRef);
-      });
-    } else if (this.userstory.epic) {
-      this.userstory.epic = false;
-    }
-    this.userstoryService.addNewUSerstory(this.userstory);
-    this.activeModal.close();
+    this.userstoryService.updateUserstory(this.userstory).then(userstory => {
+      if (this.selectedUserstorys.length > 0 && this.userstory.epic) {
+        const userstoryRef = this.referenceService.getUserstoryReference(this.userstory.id);
+        console.log('try to update userepics!', userstoryRef);
+        this.selectedUserstorys.forEach(selectedUserstory => {
+          selectedUserstory.epicUserstory = userstoryRef;
+          this.userstoryService.updateUserstory(selectedUserstory);
+        });
+      }
+      this.activeModal.close();
+      }
+    );
   }
 
   toggleUserstory(userstory) {
@@ -56,12 +52,6 @@ export class EditUserstoryComponent implements OnInit {
     } else {
       this.selectedUserstorys.push(userstory);
     }
-  }
-
-  toggleEpic() {
-    console.log('toggle!', this.selectedUserstorys.length);
-    this.userstory.epic = !this.userstory.epic;
-    this.selectedUserstorys = [];
   }
 
 }

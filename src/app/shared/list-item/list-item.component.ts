@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { faTrash, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Userstory } from 'src/app/model/userstory';
 
 @Component({
   selector: 'app-list-item',
@@ -15,14 +16,17 @@ export class ListItemComponent implements OnInit {
   @Input() endDate: Date;
   @Input() expenditure: number;
   @Input() user: User;
-  @Input() userstory;
+  @Input() userstory: Userstory;
   @Input() epic: boolean;
   @Input() sprint: boolean;
   @Input() delete: Component;
   @Input() add: Component;
   @Input() edit: Comment;
   @Input() click: Function;
-  @Input() payload;
+  @Input() addPayload;
+  @Input() editPayload;
+  @Input() deletePayload;
+  @Input() clickPayload;
   @Input() backlog: string;
   @Input() backlogUser: string;
 

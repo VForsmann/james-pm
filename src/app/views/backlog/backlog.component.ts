@@ -15,6 +15,7 @@ export class BacklogComponent implements OnInit {
   addBacklogComponent = AddBacklogComponent;
   editBacklogComponent = EditBacklogComponent;
   projectId: string;
+  
   constructor(
     private backlogService: BacklogService,
     private route: ActivatedRoute,

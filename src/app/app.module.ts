@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule} from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './views/home/home.component';
 import { SignInComponent } from './views/home/sign-in/sign-in.component';
@@ -42,6 +42,7 @@ import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { AddUserstoryComponent } from './views/userstory/add-userstory/add-userstory.component';
 import { TaskComponent } from './views/task/task.component';
 import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-userstory.component';
+import { DeleteUserstoryComponent } from './views/userstory/delete-userstory/delete-userstory.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-us
     TaskComponent,
     AddTaskComponent,
     AddUserstoryComponent,
-    EditUserstoryComponent
+    EditUserstoryComponent,
+    DeleteUserstoryComponent
   ],
   imports: [
     BrowserModule,
@@ -88,8 +90,15 @@ import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-us
     VerticalTimelineModule,
     NgDragDropModule.forRoot()
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent, AddUserstoryComponent],
+  entryComponents: [
+    SignUpComponent,
+    DeleteProjectComponent,
+    AddMemberComponent,
+    AddUserstoryComponent,
+    EditUserstoryComponent,
+    DeleteUserstoryComponent
+  ],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

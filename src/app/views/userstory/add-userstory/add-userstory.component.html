@@ -48,7 +48,7 @@
           <label for="userstorysList">Choose user storys</label>
           <ul name="userstorysList" class="list-group list-group-flush">
             <div *ngFor="let userstory of (userstorys | async)">
-              <div *ngIf="!userstory.epic">
+              <div *ngIf="(!userstory.epic) && (userstory.epicUserstory == undefined)">
                 <li class="list-group-item">
                   <div class="custom-control custom-checkbox">
                     <input

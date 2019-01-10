@@ -132,7 +132,7 @@ export class ProjectService {
 
   deleteProject(projectId: string) {
     const project = this.referenceService.getProjectReference(projectId);
-    this.db.collection('user_projects', ref => ref.where('project', '==', project))
+    return this.db.collection('user_projects', ref => ref.where('project', '==', project))
       .snapshotChanges()
       .subscribe(res => {
         res.map(actions => {
@@ -140,13 +140,12 @@ export class ProjectService {
             .doc(actions.payload.doc.id)
             .delete();
         });
-        this.db.collection('projects').doc(projectId).delete();
-        console.log('deleted Project');
+        return this.db.collection('projects').doc(projectId).delete();
       });
   }
 
   updateProject(project: Project) {
-    this.db.collection('projects').doc(project.id)
+    return this.db.collection('projects').doc(project.id)
     .update({
       name: project.name,
       description: project.description

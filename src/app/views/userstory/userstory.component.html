@@ -1,10 +1,18 @@
-<app-header [title]="'User-Storys'" [add]="this.addUserstoryComponent"></app-header>
-<div class="list" *ngFor="let userStory of (userStorys | async)">
+<app-header
+  [title]="'User-Storys'"
+  [add]="this.addUserstoryComponent"
+  [payload]="this.projectId"
+></app-header>
+<div class="list" *ngFor="let userstory of (userstorys | async)">
   <app-list-item
-    [title]="userStory.name"
-    [description]="userStory.description"
-    [epic]="userStory.epic"
+    [title]="userstory.name"
+    [description]="userstory.description"
+    [epic]="userstory.epic"
     [add]="this.addBacklogComponent"
-    [payload]="this.projectId"
+    [edit]="this.editUserstoryComponent"
+    [delete]="this.deleteUserstoryComponent"
+    [addPayload]="this.projectId"
+    [editPayload]="userstory"
+    [deletePayload]="userstory"
   ></app-list-item>
 </div>

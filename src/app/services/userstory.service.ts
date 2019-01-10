@@ -29,7 +29,9 @@ export class UserstoryService {
               if (userstoryData) {
                 userstoryData['id'] = userstoryId;
                 if (updateUserstory.indexOf(userstoryId) !== -1) {
-                  userstoryList[userstoryList.indexOf(userstoryId)] = userstoryData;
+                  userstoryList[
+                    userstoryList.indexOf(userstoryId)
+                  ] = userstoryData;
                 } else {
                   userstoryList.push(userstoryData);
                 }
@@ -39,14 +41,16 @@ export class UserstoryService {
               observer.next(userstoryList);
               updateUserstory = [];
             });
-
           });
         });
     });
   }
 
-  getUserstoryWithId(userstoryId) {
-    const userstory = this.db.collection('userstorys').doc(userstoryId).valueChanges();
+  getUserstoryWithId(userstoryId): Observable<any> {
+    const userstory = this.db
+      .collection('userstorys')
+      .doc(userstoryId)
+      .valueChanges();
     return userstory;
   }
 
@@ -60,12 +64,40 @@ export class UserstoryService {
   }
 
   updateUserstory(userstory: Userstory) {
-    this.db.collection('userstorys').doc(userstory.id).update({
-      name: userstory.name,
-      description: userstory.description,
-      epic: userstory.epic,
-      project: userstory.project,
-      userstorys: userstory.userstorys
-    } as Userstory);
+    return this.db
+      .collection('userstorys')
+      .doc(userstory.id)
+      .update({
+        name: userstory.name,
+        description: userstory.description,
+        epic: userstory.epic,
+        project: userstory.project,
+        epicUserstory: userstory.epicUserstory
+      } as Partial<Userstory>);
+  }
+
+  deleteUserstory(userstoryId: string) {
+    const userstoryRef = this.referenceService.getUserstoryReference(userstoryId);
+    return this.db
+      .collection('userstorys', ref =>
+        ref.where('epicUserstory', '==', userstoryRef)
+      )
+      .snapshotChanges()
+      .subscribe(us => {
+        us.map(actions => {
+          const usId = actions.payload.doc.id;
+          this.db
+            .collection('userstorys')
+            .doc(usId)
+            .update({ epicUserstory: null } as Partial<Userstory>);
+        });
+        this.db.collection('backlogs', ref => ref.where('userstory', '==', userstoryRef)).snapshotChanges().subscribe(bl => {
+          bl.map(actions => {
+            const blId = actions.payload.doc.id;
+            this.db.collection('backlogs').doc(blId).delete();
+          });
+        });
+        return this.db.collection('userstorys').doc(userstoryId).delete();
+      });
   }
 }
