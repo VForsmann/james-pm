@@ -23,7 +23,7 @@ export class TaskService {
   }
 
   updateTask(task) {
-    const taskDoc = this.db.collection('tasks').doc(task);
+    this.db.collection('tasks').doc(task).update(task);
     // Aktuell noch hardcoded, bis das irgendwie mit dem authuser eventuell funktioniert.
     // const user = this.db.collection('').doc('gApsvyNMc8zP3KtC6MNr').ref;
   }
