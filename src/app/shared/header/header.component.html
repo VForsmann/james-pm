@@ -1,1 +1,10 @@
-<h1>{{this.title}}</h1>
+<div class="header-container">
+  <h1>{{ this.title }}</h1>
+  <span *ngIf="this.hasButton()" class="buttons">
+    <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.payload">
+      <button class="btn btn-secondary">
+        <fa-icon [icon]="plus"></fa-icon>
+      </button>
+    </app-modal>
+  </span>
+</div>

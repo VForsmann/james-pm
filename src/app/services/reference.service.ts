@@ -35,4 +35,8 @@ export class ReferenceService {
   getProjectReference(projectId) {
     return this.db.collection('projects').doc(projectId).ref;
   }
+
+  getUserstoryReference(userstoryId) {
+    return this.db.collection('userstorys').doc(userstoryId).ref;
+  }
 }

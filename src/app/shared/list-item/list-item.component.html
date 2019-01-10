@@ -4,18 +4,18 @@
 >
   <div class="d-flex flex-column w80">
     <div class="d-flex justify-content-between">
-      <h5 class="mb-1">{{ this.title }}</h5>
+      <h5 class="mb-1">{{ this.title }}<span *ngIf="this.epic"> - Epic</span></h5>
       <small></small>
     </div>
     <p class="mb-1">{{ this.description }}</p>
-    <small>{{ this.expanditure }}</small> <small>{{ this.epic }}</small>
+    <small>{{ this.expanditure }}</small>
     <small>{{ this.sprint }}</small>
     <small *ngIf="this.hasBacklog">Ist einem Backlog zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">
     <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.payload">
       <button class="btn btn-secondary">
-        <fa-icon [icon]="faUserPlus"></fa-icon>
+        <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </app-modal>
     <app-modal

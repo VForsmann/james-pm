@@ -38,6 +38,7 @@ import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
 import { TaskComponent } from './views/task/task.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
+import { AddUserstoryComponent } from './views/userstory/add-userstory/add-userstory.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { AddTaskComponent } from './views/task/add-task/add-task.component';
     EditBacklogComponent,
     BacklogTasksComponent,
     TaskComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    AddUserstoryComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +82,7 @@ import { AddTaskComponent } from './views/task/add-task/add-task.component';
     FontAwesomeModule,
     NgDragDropModule.forRoot()
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent, AddUserstoryComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })

@@ -19,7 +19,6 @@ export class AddTaskComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private activeModal: NgbActiveModal,
-    private stateService: StateService,
     private referenceService: ReferenceService
     ) { }
 
@@ -28,7 +27,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.task);
     this.taskService.addNewTask(this.task);
     this.activeModal.close();
   }
