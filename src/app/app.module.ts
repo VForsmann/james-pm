@@ -41,6 +41,7 @@ import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { AddUserstoryComponent } from './views/userstory/add-userstory/add-userstory.component';
 import { TaskComponent } from './views/task/task.component';
+import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-userstory.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { TaskComponent } from './views/task/task.component';
     RoadmapComponent,
     TaskComponent,
     AddTaskComponent,
-    AddUserstoryComponent
+    AddUserstoryComponent,
+    EditUserstoryComponent
   ],
   imports: [
     BrowserModule,

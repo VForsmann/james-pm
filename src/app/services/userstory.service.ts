@@ -58,4 +58,14 @@ export class UserstoryService {
   addNewUSerstory(userstory) {
     return this.db.collection('userstorys').add(userstory);
   }
+
+  updateUserstory(userstory: Userstory) {
+    this.db.collection('userstorys').doc(userstory.id).update({
+      name: userstory.name,
+      description: userstory.description,
+      epic: userstory.epic,
+      project: userstory.project,
+      userstorys: userstory.userstorys
+    } as Userstory);
+  }
 }
