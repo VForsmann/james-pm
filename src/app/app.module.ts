@@ -36,9 +36,11 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
-import { TaskComponent } from './views/task/task.component';
+import { VerticalTimelineModule } from 'angular-vertical-timeline';
+import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { AddUserstoryComponent } from './views/userstory/add-userstory/add-userstory.component';
+import { TaskComponent } from './views/task/task.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { AddUserstoryComponent } from './views/userstory/add-userstory/add-users
     AddBacklogComponent,
     EditBacklogComponent,
     BacklogTasksComponent,
+    RoadmapComponent,
     TaskComponent,
     AddTaskComponent,
     AddUserstoryComponent
@@ -80,6 +83,7 @@ import { AddUserstoryComponent } from './views/userstory/add-userstory/add-users
     FormsModule,
     NgbModule,
     FontAwesomeModule,
+    VerticalTimelineModule,
     NgDragDropModule.forRoot()
   ],
   entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent, AddUserstoryComponent],
