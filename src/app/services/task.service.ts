@@ -8,11 +8,13 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TaskService {
+  selectedTasks;
+
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService
-  ) {}
-  selectedTasks;
+   ) {}
+
   getTasks() {
     // Man muss zuerst die Documentreference holen um nach der Referenz zu selektieren
     const backlogRef = this.referenceService.getBacklogReference(

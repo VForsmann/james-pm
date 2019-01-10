@@ -41,4 +41,8 @@ export class DashboardComponent implements OnInit {
   navigateTasks() {
     this.router.navigate(['/dashboard', this.projectId, 'tasks']);
   }
+
+  navigateRoadmap() {
+    this.router.navigate(['/dashboard', this.projectId, 'roadmap']);
+  }
 }
