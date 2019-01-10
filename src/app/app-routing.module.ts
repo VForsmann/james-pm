@@ -13,6 +13,8 @@ import { UserstoryComponent } from './views/userstory/userstory.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
+import { TaskComponent } from './views/task/task.component';
+import { AddTaskComponent } from './views/task/add-task/add-task.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,7 +25,9 @@ const routes: Routes = [
   { path: 'dashboard/:id/userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
+  { path: 'addTask', component: AddTaskComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
   { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] },
   { path: 'editBacklog', component: EditBacklogComponent, canActivate: [AuthGuard] }

@@ -36,6 +36,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
 import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
+import { TaskComponent } from './views/task/task.component';
+import { AddTaskComponent } from './views/task/add-task/add-task.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tas
     HeaderComponent,
     AddBacklogComponent,
     EditBacklogComponent,
-    BacklogTasksComponent
+    BacklogTasksComponent,
+    TaskComponent,
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,

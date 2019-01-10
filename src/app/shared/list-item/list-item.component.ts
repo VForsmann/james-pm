@@ -23,15 +23,20 @@ export class ListItemComponent implements OnInit {
   @Input() edit: Comment;
   @Input() click: Function;
   @Input() payload;
+  @Input() backlog: string;
   @Input() draggable: boolean; // wird noch nicht benutzt (muss irgendwie mit ngIf eingebaut werden)
 
   faTrash = faTrash;
   faEdit = faEdit;
   faUserPlus = faUserPlus;
+  hasBacklog = false;
 
   constructor() { }
 
   ngOnInit() {
+    if (this.backlog) {
+      this.hasBacklog = true;
+    }
   }
 
   hasButton(): boolean {

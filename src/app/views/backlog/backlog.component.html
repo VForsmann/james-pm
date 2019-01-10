@@ -1,14 +1,17 @@
 <app-header [title]="'Backlogs'"></app-header>
 <div class="list-group">
-  <app-list-item
-    *ngFor="let backlog of (backlogs | async)"
-    [click]="this.navigate"
-    [payload]="backlog"
-    [title]="backlog.name"
-    [edit]="this.editBacklogComponent"
-    [description]="backlog.description"
-  ></app-list-item>
-  <div class="add-new-project">
-    <app-modal [component]="addBacklogComponent"> + </app-modal>
+  <div *ngFor="let backlog of (backlogs | async)">
+      <app-list-item
+        [click]="this.navigate"
+        [payload]="backlog"
+        [title]="backlog.name"
+        [edit]="this.editBacklogComponent"
+        [description]="backlog.description"
+      ></app-list-item>
+  </div>
+  <div class="add-new-backlog">
+    <app-modal [component]="addBacklogComponent" [payload]="projectId">
+      +
+    </app-modal>
   </div>
 </div>
