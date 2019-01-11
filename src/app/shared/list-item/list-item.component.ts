@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/model/user';
-import { faTrash, faEdit, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-list-item',
@@ -23,15 +23,20 @@ export class ListItemComponent implements OnInit {
   @Input() edit: Comment;
   @Input() click: Function;
   @Input() payload;
-  @Input() draggable: boolean; // wird noch nicht benutzt (muss irgendwie mit ngIf eingebaut werden)
+  @Input() backlog: string;
+  @Input() backlogUser: string;
 
   faTrash = faTrash;
   faEdit = faEdit;
-  faUserPlus = faUserPlus;
+  faPlus = faPlus;
+  hasBacklog = false;
 
   constructor() { }
 
   ngOnInit() {
+    if (this.backlog) {
+      this.hasBacklog = true;
+    }
   }
 
   hasButton(): boolean {

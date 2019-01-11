@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { BacklogService } from 'src/app/services/backlog.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'src/app/services/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit-backlog',
@@ -6,10 +10,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-backlog.component.scss']
 })
 export class EditBacklogComponent implements OnInit {
-
-  constructor() { }
-
+  modalInput;
+  backlogId;
+  selectedUserId = '';
+  users: Observable<{}>;
+  constructor(
+    private backlogService: BacklogService,
+    private activeModal: NgbActiveModal,
+    private userService: UserService
+  ) { }
+  backlog = {
+    name: '',
+    project: undefined
+  };
   ngOnInit() {
+    this.backlogId = this.modalInput['id'];
+    this.users = this.userService.getUserWithProject(this.modalInput['project']);
+  }
+
+  onSubmit() {
+    this.backlogService.addUserToBacklog(this.selectedUserId, this.backlogId).then(res => {
+      this.activeModal.close();
+    });
   }
 
 }

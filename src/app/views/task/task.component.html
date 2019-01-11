@@ -1,0 +1,13 @@
+<app-header [title]="'Tasks'"></app-header>
+<div class="list" *ngFor="let task of (tasks | async)">
+  <app-list-item
+    [title]="task.name"
+    [description]="task.description"
+    [backlog]="task.backlog"
+    [click]="this.navigate"
+    [payload]="this.task"
+  ></app-list-item>
+</div>
+<div class="add-new-task">
+  <app-modal [component]="addTaskComponent" [payload]="projectId"> + </app-modal>
+</div>

@@ -1,0 +1,89 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add User Story</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <form id="myForm" (ngSubmit)="onSubmit()" #addUserstoryForm="ngForm">
+      <div class="form-group">
+        <label for="name" class="control-label">Name</label>
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="userstory.name"
+          required
+          #name="ngModel"
+        />
+        <br />
+        <label for="description" class="control-label">Description</label>
+        <input
+          type="name"
+          class="form-control"
+          id="description"
+          name="description"
+          [(ngModel)]="userstory.description"
+          #description="ngModel"
+        />
+        <br />
+        <div class="custom-control custom-checkbox">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="epic"
+            (click)="toggleEpic()"
+          />
+          <label for="epic" class="custom-control-label">Epic</label>
+        </div>
+        <br />
+        <div *ngIf="userstory.epic">
+          <label for="userstorysList">Choose user storys</label>
+          <ul name="userstorysList" class="list-group list-group-flush">
+            <div *ngFor="let userstory of (userstorys | async)">
+              <div *ngIf="!userstory.epic">
+                <li class="list-group-item">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="{{userstory.id}}"
+                  (click)="toggleUserstory(userstory)"
+                  />
+                  <label for="{{userstory.id}}" class="custom-control-label">{{
+                  userstory.name
+                }}</label>
+              </div>
+            </li>
+          </div>
+        </div>
+        </ul>
+      </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    form="myForm"
+    [disabled]="!addUserstoryForm.valid"
+    type="submit"
+    class="btn btn-success"
+  >
+    Add
+  </button>
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="activeModal.dismiss()"
+  >
+    Cancel
+  </button>
+</div>

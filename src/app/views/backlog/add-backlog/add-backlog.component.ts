@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BacklogService } from 'src/app/services/backlog.service';
 import { ReferenceService } from 'src/app/services/reference.service';
-import { ActivatedRoute } from '@angular/router';
-import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-add-backlog',
@@ -11,22 +9,20 @@ import { StateService } from 'src/app/services/state.service';
   styleUrls: ['./add-backlog.component.scss']
 })
 export class AddBacklogComponent implements OnInit {
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private backlogService: BacklogService,
-    private referenceService: ReferenceService,
-    private route: ActivatedRoute,
-    private stateService: StateService
-    ) { }
+  modalInput;
   backlog = {
     name: '',
     project: undefined
   };
+
+  constructor(
+    public activeModal: NgbActiveModal,
+    private backlogService: BacklogService,
+    private referenceService: ReferenceService
+    ) { }
+
   ngOnInit() {
-    this.stateService.getProjectId().subscribe(id => {
-      this.backlog.project = this.referenceService.getProjectReference(id);
-    });
+    this.backlog.project = this.referenceService.getProjectReference(this.modalInput);
   }
 
   onSubmit() {

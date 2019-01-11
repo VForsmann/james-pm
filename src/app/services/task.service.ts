@@ -3,15 +3,18 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { firestore } from 'firebase';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+  selectedTasks;
+
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService
-  ) {}
-  selectedTasks;
+   ) {}
+
   getTasks() {
     // Man muss zuerst die Documentreference holen um nach der Referenz zu selektieren
     const backlogRef = this.referenceService.getBacklogReference(
@@ -23,7 +26,7 @@ export class TaskService {
   }
 
   updateTask(task) {
-    const taskDoc = this.db.collection('tasks').doc(task);
+    this.db.collection('tasks').doc(task).update(task);
     // Aktuell noch hardcoded, bis das irgendwie mit dem authuser eventuell funktioniert.
     // const user = this.db.collection('').doc('gApsvyNMc8zP3KtC6MNr').ref;
   }
@@ -40,19 +43,48 @@ export class TaskService {
             const taskId = actions.payload.doc.id;
             const subs = this.getTaskWithId(taskId).subscribe(task_data => {
               let update_task = tasks_list.map(t => t.id);
-                console.log('wtf');
-                if (tasks_data) {
-                  task_data['id'] = taskId;
-                  if (update_task.indexOf(taskId) !== -1) {
-                    tasks_list[tasks_list.indexOf(taskId)] = task_data;
-                  } else if (task_data['backlog'] === undefined) {
-                    tasks_list.push(task_data);
-                  }
+              if (tasks_data) {
+                task_data['id'] = taskId;
+                if (update_task.indexOf(taskId) !== -1) {
+                  tasks_list[tasks_list.indexOf(taskId)] = task_data;
                 } else {
-                  tasks_list.splice(update_task.indexOf(taskId), 1);
+                  tasks_list.push(task_data);
                 }
-                observer.next(tasks_list);
-                update_task = [];
+              } else {
+                tasks_list.splice(update_task.indexOf(taskId), 1);
+              }
+              observer.next(tasks_list);
+              update_task = [];
+            });
+          });
+        });
+    });
+  }
+
+  getAllTasksWithoutBacklog(projectId) {
+    const projectRef = this.referenceService.getProjectReference(projectId);
+    return Observable.create(observer => {
+      this.db
+        .collection('tasks', ref => ref.where('project', '==', projectRef))
+        .snapshotChanges()
+        .subscribe(tasks_data => {
+          const tasks_list = [];
+          tasks_data.map(actions => {
+            const taskId = actions.payload.doc.id;
+            const subs = this.getTaskWithId(taskId).subscribe(task_data => {
+              let update_task = tasks_list.map(t => t.id);
+              if (tasks_data) {
+                task_data['id'] = taskId;
+                if (update_task.indexOf(taskId) !== -1) {
+                  tasks_list[tasks_list.indexOf(taskId)] = task_data;
+                } else if (task_data['backlog'] === undefined) {
+                  tasks_list.push(task_data);
+                }
+              } else {
+                tasks_list.splice(update_task.indexOf(taskId), 1);
+              }
+              observer.next(tasks_list);
+              update_task = [];
             });
           });
         });
@@ -70,7 +102,7 @@ export class TaskService {
           tasks_data.map(actions => {
             const taskId = actions.payload.doc.id;
             const task = this.getTaskWithId(taskId).subscribe(task_data => {
-              const update_task = tasks_list.map(t => t.id);
+              let update_task = tasks_list.map(t => t.id);
               if (tasks_data) {
                 task_data['id'] = taskId;
                 if (update_task.indexOf(taskId) !== -1) {
@@ -78,9 +110,11 @@ export class TaskService {
                 } else {
                   tasks_list.push(task_data);
                 }
-                task.unsubscribe();
-                observer.next(tasks_list);
+              } else {
+                tasks_list.splice(update_task.indexOf(taskId), 1);
               }
+              observer.next(tasks_list);
+              update_task = [];
             });
           });
         });
@@ -97,11 +131,25 @@ export class TaskService {
 
   addTaskToBacklog(task, backlogId) {
     task['backlog'] = this.referenceService.getBacklogReference(backlogId);
-    console.log(task);
+    const taskId = task['id'];
+    delete task['id'];
     return this.db
       .collection('tasks')
-      .doc(task['id'])
+      .doc(taskId)
       .update(task);
+  }
+
+  addNewTask(task) {
+    this.db
+      .collection('task_statuses', ref => ref.where('order', '==', 1))
+      .snapshotChanges()
+      .subscribe(status_data => {
+        status_data.map(actions => {
+          task['status'] = this.db.collection('task_statuses').doc(actions.payload.doc.id).ref;
+        });
+        console.log(task);
+        return this.db.collection('tasks').add(task);
+      });
   }
 
   removeTaskFromBacklog(task, backlogId) {

@@ -3,8 +3,8 @@
 #dragContainer {
     height: 86vh;
     overflow-y: scroll;
-    width: 18rem;
-    background-color: $primary;
+    width: 20rem;
+    background-color: $light;
     border-radius: 5px;
 }
 
@@ -13,7 +13,6 @@
     font-size: 1.2rem;
     font-weight: bolder;
 }
-
 
 .drag-border {
     border: none;
@@ -25,11 +24,4 @@
 
 .drag-over-border {
     border: none;
-}
-
-.add-task-button {
-    background-color: $primary;
-    margin-top: 5px;
-    width: 100%;
-    color: $secondaryDark;
 }
