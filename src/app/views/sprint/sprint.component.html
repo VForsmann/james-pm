@@ -1,3 +1,10 @@
-<p>
-  sprint works!
-</p>
+<div class="list-group">
+    <app-list-item
+      *ngFor="let sprint of (sprints | async)"
+      [title]="sprint.name"
+      [description]="this.sprint.description"
+    ></app-list-item>
+    <div class="add-new-sprint">
+      <app-modal [component]="addSprintComponent"> + </app-modal>
+    </div>
+  </div>

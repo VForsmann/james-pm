@@ -12,7 +12,8 @@ export class AddMemberComponent implements OnInit {
   @Input() modalInput;
 
   user = {
-    email: ''
+    email: '',
+    working_units: 0
   };
 
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
@@ -21,7 +22,7 @@ export class AddMemberComponent implements OnInit {
   }
 
   onSubmit() {
-    this.projectService.addMemberToProject(this.modalInput['id'], this.user.email);
+    this.projectService.addMemberToProject(this.modalInput['id'], this.user.email, this.user.working_units);
     this.activeModal.close();
   }
 }
