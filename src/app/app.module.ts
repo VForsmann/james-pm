@@ -44,6 +44,7 @@ import { TaskComponent } from './views/task/task.component';
 import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-userstory.component';
 import { SortPipe } from './shared/pipes/sort.pipe';
 import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.component';
+import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.compone
     AddUserstoryComponent,
     EditUserstoryComponent,
     SortPipe,
-    AddSprintComponent
+    AddSprintComponent,
+    AddMilestoneComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,7 @@ import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.compone
     VerticalTimelineModule,
     NgDragDropModule.forRoot()
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent, AddUserstoryComponent, AddSprintComponent],
+  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent, AddUserstoryComponent, AddSprintComponent, AddMilestoneComponent],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })

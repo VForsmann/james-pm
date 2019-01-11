@@ -4,7 +4,6 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ReferenceService } from 'src/app/services/reference.service';
 import { TimeService } from 'src/app/services/time.service';
 import { Observable } from 'rxjs';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-add-project',

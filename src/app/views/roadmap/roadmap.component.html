@@ -1,5 +1,6 @@
 <div class="container">
-  <vertical-timeline *ngIf="this.milestones">
+  <app-header [title]="'Roadmap'" [add]="this.addMilestoneComponent"></app-header>
+  <vertical-timeline>
     <vertical-timeline-card *ngFor="let milestone of this.milestones | async" [dateValue]="milestone.done.toDate()" [color]="'#F2F2F2'">
      <h4>{{milestone.description}}</h4>
     </vertical-timeline-card>
