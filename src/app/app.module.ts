@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule} from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './views/home/home.component';
 import { SignInComponent } from './views/home/sign-in/sign-in.component';
@@ -42,6 +42,7 @@ import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { AddUserstoryComponent } from './views/userstory/add-userstory/add-userstory.component';
 import { TaskComponent } from './views/task/task.component';
 import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-userstory.component';
+import { DeleteUserstoryComponent } from './views/userstory/delete-userstory/delete-userstory.component';
 import { SortPipe } from './shared/pipes/sort.pipe';
 import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.component';
 import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
@@ -81,6 +82,7 @@ import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-ta
     AddTaskComponent,
     AddUserstoryComponent,
     EditUserstoryComponent,
+    DeleteUserstoryComponent,
     SortPipe,
     AddSprintComponent,
     AddMilestoneComponent,
@@ -98,9 +100,17 @@ import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-ta
     VerticalTimelineModule,
     NgDragDropModule.forRoot()
   ],
-  entryComponents: [SignUpComponent, DeleteProjectComponent, AddMemberComponent,
-    AddUserstoryComponent, AddSprintComponent, AddMilestoneComponent],
+  entryComponents: [
+    SignUpComponent,
+    DeleteProjectComponent,
+    AddMemberComponent,
+    AddUserstoryComponent,
+    EditUserstoryComponent,
+    AddSprintComponent,
+    AddMilestoneComponent,
+    DeleteUserstoryComponent
+  ],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

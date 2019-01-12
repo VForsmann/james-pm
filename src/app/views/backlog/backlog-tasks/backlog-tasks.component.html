@@ -7,7 +7,7 @@
     <div *ngFor="let task of (tasks | async)">
       <div draggable [dragData]="task">
         <app-list-item
-          [payload]="task"
+          [clickPayload]="task"
           [title]="task.name"
           [description]="task.description"
         ></app-list-item>
@@ -18,7 +18,7 @@
     <div *ngFor="let task of (allTasks | async)">
       <div draggable [dragData]="task">
         <app-list-item
-          [payload]="task"
+          [clickPayload]="task"
           [title]="task.name"
           [description]="task.description"
         ></app-list-item>

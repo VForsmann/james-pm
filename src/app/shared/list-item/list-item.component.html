@@ -1,10 +1,10 @@
 <a
-  (click)="this.click(this.payload)"
+  (click)="this.click(this.clickPayload)"
   class="list-group-item list-group-item-action d-flex flex-row"
 >
   <div class="d-flex flex-column w80">
     <div class="d-flex justify-content-between">
-      <h5 class="mb-1">{{ this.title }}<span *ngIf="this.epic"> - Epic</span></h5>
+      <h5 class="mb-1">{{ this.title }}<span *ngIf="this.epic" class="badge badge-info">Epic</span></h5>
       <small></small>
     </div>
     <p class="mb-1">{{ this.description }}</p>
@@ -13,7 +13,7 @@
     <small *ngIf="this.hasSprint">Ist einem Sprint zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">
-    <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.payload">
+    <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.addPayload">
       <button class="btn btn-secondary">
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
@@ -21,7 +21,7 @@
     <app-modal
       *ngIf="this.edit"
       [component]="this.edit"
-      [payload]="this.payload"
+      [payload]="this.editPayload"
     >
       <button class="btn btn-secondary">
         <fa-icon [icon]="faEdit"></fa-icon>
@@ -30,7 +30,7 @@
     <app-modal
       *ngIf="this.delete"
       [component]="this.delete"
-      [payload]="this.payload"
+      [payload]="this.deletePayload"
     >
       <button class="btn btn-danger">
         <fa-icon [icon]="faTrash"></fa-icon>

@@ -2,7 +2,10 @@
   <app-list-item
     *ngFor="let project of (projects | async)"
     [click]="this.navigate"
-    [payload]="project"
+    [clickPayload]="project"
+    [addPayload]="project"
+    [editPayload]="project"
+    [deletePayload]="project"
     [title]="project.name"
     [description]="this.project.description"
     [add]="this.addMemberComponent"

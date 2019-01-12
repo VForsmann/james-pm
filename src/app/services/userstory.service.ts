@@ -11,7 +11,6 @@ import { Userstory } from '../model/userstory';
 export class UserstoryService {
   constructor(
     private db: AngularFirestore,
-    private router: Router,
     private referenceService: ReferenceService
   ) {}
 
@@ -29,7 +28,9 @@ export class UserstoryService {
               if (userstoryData) {
                 userstoryData['id'] = userstoryId;
                 if (updateUserstory.indexOf(userstoryId) !== -1) {
-                  userstoryList[userstoryList.indexOf(userstoryId)] = userstoryData;
+                  userstoryList[
+                    userstoryList.indexOf(userstoryId)
+                  ] = userstoryData;
                 } else {
                   userstoryList.push(userstoryData);
                 }
@@ -39,14 +40,16 @@ export class UserstoryService {
               observer.next(userstoryList);
               updateUserstory = [];
             });
-
           });
         });
     });
   }
 
-  getUserstoryWithId(userstoryId) {
-    const userstory = this.db.collection('userstorys').doc(userstoryId).valueChanges();
+  getUserstoryWithId(userstoryId): Observable<any> {
+    const userstory = this.db
+      .collection('userstorys')
+      .doc(userstoryId)
+      .valueChanges();
     return userstory;
   }
 
@@ -60,12 +63,54 @@ export class UserstoryService {
   }
 
   updateUserstory(userstory: Userstory) {
-    this.db.collection('userstorys').doc(userstory.id).update({
-      name: userstory.name,
-      description: userstory.description,
-      epic: userstory.epic,
-      project: userstory.project,
-      userstorys: userstory.userstorys
-    } as Userstory);
+    return this.db
+      .collection('userstorys')
+      .doc(userstory.id)
+      .update({
+        name: userstory.name,
+        description: userstory.description,
+        epic: userstory.epic,
+        project: userstory.project,
+        epicUserstory: userstory.epicUserstory
+      } as Partial<Userstory>);
+  }
+
+  deleteUserstory(userstory: Userstory) {
+    const userstoryRef = this.referenceService.getUserstoryReference(
+      userstory.id
+    );
+    return this.db
+      .doc(userstory.backlog)
+      .snapshotChanges()
+      .subscribe(bl => {
+        const blId = bl.payload.id;
+        this.db
+          .collection('backlogs')
+          .doc(blId)
+          .delete()
+          .then(() => {
+            this.db
+              .collection('userstorys', ref =>
+                ref.where('epicUserstory', '==', userstoryRef)
+              )
+              .snapshotChanges()
+              .subscribe(us => {
+                let usData;
+                us.map(actions => {
+                  const usId = actions.payload.doc.id;
+                  usData = actions.payload.doc.data() as Userstory;
+                  console.log('usData:', usData);
+                  this.db
+                    .collection('userstorys')
+                    .doc(usId)
+                    .update({ epicUserstory: null } as Partial<Userstory>);
+                });
+              });
+            return this.db
+              .collection('userstorys')
+              .doc(userstory.id)
+              .delete();
+          });
+      });
   }
 }
