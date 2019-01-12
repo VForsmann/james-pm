@@ -45,6 +45,7 @@ import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-us
 import { SortPipe } from './shared/pipes/sort.pipe';
 import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.component';
 import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
+import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { AddMilestoneComponent } from './views/milestone/add-milestone/add-miles
     EditUserstoryComponent,
     SortPipe,
     AddSprintComponent,
-    AddMilestoneComponent
+    AddMilestoneComponent,
+    DatepickerComponent
   ],
   imports: [
     BrowserModule,
