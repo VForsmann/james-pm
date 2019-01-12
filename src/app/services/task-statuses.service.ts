@@ -5,11 +5,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
   providedIn: 'root'
 })
 export class TaskStatusesService {
-
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore) {}
 
   getTaskStatuses() {
-    return this.db.collection('task_statuses', ref => ref.orderBy('order'))
-    .snapshotChanges();
+    return this.db
+      .collection('task_statuses', ref => ref.orderBy('order'))
+      .snapshotChanges();
   }
 }
