@@ -1,11 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
-  <span class="navbar-brand">
-    <img height="40px" alt="Angular Logo" src="./assets/images/logo/flaticon.svg" />
+  <span (click)="this.navigateProjects()" class="navbar-brand">
+    <img
+      height="40px"
+      alt="Angular Logo"
+      src="./assets/images/logo/flaticon.svg"
+    />
     <span class="navbar-title"> James </span>
   </span>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent" *ngIf="(isAuthenticated | async)">
+  <div
+    class="collapse navbar-collapse"
+    id="navbarSupportedContent"
+    *ngIf="(isAuthenticated | async)"
+  >
     <div class="navbar-nav mr-auto">
       <ul class="navbar-nav mr-auto" *ngIf="project != null">
+        <li class="nav-item">
+          <a class="nav-link" (click)="this.navigateProjects()">Project-Overview</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" (click)="navigateDashboard()">Dashboard</a>
         </li>
@@ -24,12 +35,14 @@
       </ul>
     </div>
     <div class="spinner" [hidden]="!this.stateService.loading">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
-    <button type="button" class="btn btn-secondary btn-sm" (click)="logout()">Logout</button>
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="logout()">
+      Logout
+    </button>
   </div>
 </nav>
