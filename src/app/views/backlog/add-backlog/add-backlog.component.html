@@ -55,9 +55,9 @@
           name="priority"
           [(ngModel)]="backlog.priority"
         >
-          <option [value]="1">Hoch</option>
-          <option [value]="2">Mittel</option>
-          <option [value]="3">Niedrig</option>
+          <option [value]="Hoch">Hoch</option>
+          <option [value]="Mittel">Mittel</option>
+          <option [value]="Niedrig">Niedrig</option>
         </select>
       </div>
       <div *ngIf="backlog.type === 'Feature'">

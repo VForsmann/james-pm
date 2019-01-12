@@ -24,7 +24,8 @@ export class ListItemComponent implements OnInit {
   @Input() click: Function;
   @Input() payload;
   @Input() backlog: string;
-  @Input() backlogUser: string;
+  @Input() backlogType: string;
+  @Input() priority: string;
 
   faTrash = faTrash;
   faEdit = faEdit;

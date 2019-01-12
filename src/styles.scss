@@ -38,3 +38,10 @@ $secondaryLight: #6d6d6d;
     background: $primary; 
     -webkit-box-shadow:auto; 
 }
+
+.add-new-item {
+    background-color: $primary;
+    text-align: center;
+    font-weight: bolder;
+    border-radius: 5px;
+}

@@ -16,8 +16,7 @@ export class EditBacklogComponent implements OnInit {
   users: Observable<{}>;
   constructor(
     private backlogService: BacklogService,
-    private activeModal: NgbActiveModal,
-    private userService: UserService
+    private activeModal: NgbActiveModal
   ) { }
   backlog = {
     name: '',
@@ -25,13 +24,9 @@ export class EditBacklogComponent implements OnInit {
   };
   ngOnInit() {
     this.backlogId = this.modalInput['id'];
-    this.users = this.userService.getUserWithProject(this.modalInput['project']);
   }
 
   onSubmit() {
-    this.backlogService.addUserToBacklog(this.selectedUserId, this.backlogId).then(res => {
-      this.activeModal.close();
-    });
+    this.activeModal.close();
   }
-
 }
