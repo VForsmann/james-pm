@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { StateService } from './state.service';
 import { ReferenceService } from './reference.service';
-import { MilestoneFirebase } from '../model/milestone-firebase';
+import { MilestoneFirebase } from '../model/milestone';
 import { Observable } from 'rxjs';
-import { MilestoneAngular } from '../model/milestone-angular';
 
 @Injectable({
   providedIn: 'root'

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MilestoneAngular } from 'src/app/model/milestone-angular';
+import { MilestoneAngular } from 'src/app/model/milestone';
 import { MilestoneService } from 'src/app/services/milestone.service';
-import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-add-milestone',
