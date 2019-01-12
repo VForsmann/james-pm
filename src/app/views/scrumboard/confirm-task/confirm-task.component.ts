@@ -19,6 +19,7 @@ export class ConfirmTaskComponent implements OnInit {
   onConfirm() {
     const task = this.modalInput;
     if (!task['user']) {
+      task['status'] = 'To Do';
       this.taskService.addUserToTask(task).then(res => {
         console.log('Developer wurde dem Projekt hinzugefügt');
       });

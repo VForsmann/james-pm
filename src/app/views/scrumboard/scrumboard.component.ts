@@ -13,15 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 export class ScrumboardComponent implements OnInit {
   projectId;
   statusBars$: Observable<DocumentChangeAction<{}>[]>;
-  tasks: Observable<{}>;
   constructor(
     private taskStatusesService: TaskStatusesService,
-    private taskService: TaskService,
     private route: ActivatedRoute ) { }
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.statusBars$ = this.taskStatusesService.getTaskStatuses();
-    this.tasks = this.taskService.getAllTasks(this.projectId);
   }
 }

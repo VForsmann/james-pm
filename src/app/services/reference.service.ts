@@ -42,4 +42,8 @@ export class ReferenceService {
   taskStatusReference(taskStatusId) {
     return this.db.collection('task_statuses').doc(taskStatusId).ref;
   }
+
+  taskReference(taskId) {
+    return this.db.collection('task').doc(taskId).ref;
+  }
 }
