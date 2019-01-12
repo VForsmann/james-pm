@@ -4,6 +4,8 @@ import { Project } from '../model/project';
 import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { StateService } from './state.service';
+import * as ms from 'ms';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -85,7 +87,8 @@ export class ProjectService {
     return this.db.collection('projects').doc(ref);
   }
 
-  addNewProject(project) {
+  addNewProject(project, working_units) {
+    project.default_sprint_time_ms = ms(project.default_sprint_time);
     return this.db
       .collection('projects')
       .add(project)
@@ -99,7 +102,8 @@ export class ProjectService {
             const user_project = {
               project: res,
               user: user_data,
-              role: role
+              role: role,
+              working_units: working_units
             };
             this.db.collection('user_projects').add(user_project).then(re => {
               console.log('created Project');
@@ -109,7 +113,7 @@ export class ProjectService {
       });
   }
 
-  addMemberToProject(projectId, userEmail, roleName = 'developer') {
+  addMemberToProject(projectId, userEmail, working_units, roleName = 'developer') {
     this.db.collection('users', ref => ref.where('email', '==', userEmail)).snapshotChanges().subscribe(res => {
       this.getRole(roleName).subscribe(innerRes => {
         let user;
@@ -123,7 +127,8 @@ export class ProjectService {
         const userProject = {
           user: user,
           project: this.referenceService.getProjectReference(projectId),
-          role: role
+          role: role,
+          working_units: working_units
         };
         this.db.collection('user_projects').add(userProject);
       });

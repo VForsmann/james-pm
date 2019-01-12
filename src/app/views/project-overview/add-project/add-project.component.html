@@ -1,24 +1,81 @@
 <div class="modal-header">
-    <h4 class="modal-title">Add Project</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <h4 class="modal-title">Add Project</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container">
+    <form id="myForm" (ngSubmit)="onSubmit()" #addProjectForm="ngForm">
+      <div class="form-group">
+        <label for="name" class="control-label">Name</label>
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="project.name"
+          required
+          #name="ngModel"
+        />
+        <br />
+        <label for="name" class="control-label">Description</label>
+        <input
+          type="name"
+          class="form-control"
+          id="description"
+          name="description"
+          [(ngModel)]="project.description"
+          #description="ngModel"
+        />
+        <br />
+        <label for="name" class="control-label">Default Sprint-Duration</label>
+        <select
+          class="form-control"
+          id="default_sprint_time"
+          name="default_sprint_time"
+          [(ngModel)]="project.default_sprint_time"
+          #default_sprint_time="ngModel"
+        >
+          <option
+            *ngFor="let st of (this.default_times | async | sort: 'order')"
+            >{{ st.default_time }}</option
+          >
+        </select>
+        <br />
+        <label for="working_units" class="control-label">Your own working Units</label>
+        <input
+          type="working_units"
+          class="form-control"
+          id="working_units"
+          name="working_units"
+          [(ngModel)]="user.working_units"
+          required
+          #working_units="ngModel"
+        />
+      </div>
+    </form>
   </div>
-  <div class="modal-body">
-    <div class="container">
-      <form id="myForm" (ngSubmit)="onSubmit()" #addProjectForm="ngForm">
-        <div class="form-group">
-          <label for="name" class="control-label">Name</label>
-          <input type="name" class="form-control" id="name" name="name" [(ngModel)]="project.name" required #name="ngModel">
-          <br>
-          <label for="name" class="control-label">Description</label>
-          <input type="name" class="form-control" id="description" name="description" [(ngModel)]="project.description"
-            #description="ngModel">
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button form="myForm" [disabled]="!addProjectForm.valid" type="submit" class="btn btn-success">Add</button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
-  </div>
+</div>
+<div class="modal-footer">
+  <button
+    form="myForm"
+    [disabled]="!addProjectForm.valid"
+    type="submit"
+    class="btn btn-success"
+  >
+    Add
+  </button>
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="activeModal.dismiss()"
+  >
+    Cancel
+  </button>
+</div>

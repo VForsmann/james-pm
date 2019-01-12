@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title">Add milestone</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form id="myForm" (ngSubmit)="onSubmit()" #addMilestoneForm="ngForm">
+        <div class="form-group">
+          <label for="milestoneName" class="control-label">Name</label>
+          <input type="text" class="form-control" id="milestoneName" name="milestoneName" [(ngModel)]="milestone.name" required #milestoneName="ngModel">
+        </div>
+        <div class="form-group">
+          <label for="milestoneDescription" class="control-label">Description</label>
+          <input type="text" class="form-control" id="milestoneDescription" name="milestoneDescription" [(ngModel)]="milestone.description" required #milestoneDescription="ngModel">
+        </div>
+        <div class="form-group">
+          <app-datepicker #Datepicker [title]="'Milestone date'" (save)="datepicked($event)"></app-datepicker>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button form="myForm" [disabled]="!addMilestoneForm.valid" type="submit" class="btn btn-success">Add</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+ </div>

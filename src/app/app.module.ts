@@ -43,6 +43,10 @@ import { AddUserstoryComponent } from './views/userstory/add-userstory/add-users
 import { TaskComponent } from './views/task/task.component';
 import { EditUserstoryComponent } from './views/userstory/edit-userstory/edit-userstory.component';
 import { DeleteUserstoryComponent } from './views/userstory/delete-userstory/delete-userstory.component';
+import { SortPipe } from './shared/pipes/sort.pipe';
+import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.component';
+import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
+import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +82,10 @@ import { DeleteUserstoryComponent } from './views/userstory/delete-userstory/del
     AddUserstoryComponent,
     EditUserstoryComponent,
     DeleteUserstoryComponent
+    SortPipe,
+    AddSprintComponent,
+    AddMilestoneComponent,
+    DatepickerComponent
   ],
   imports: [
     BrowserModule,
@@ -95,8 +103,8 @@ import { DeleteUserstoryComponent } from './views/userstory/delete-userstory/del
     DeleteProjectComponent,
     AddMemberComponent,
     AddUserstoryComponent,
-    EditUserstoryComponent,
-    DeleteUserstoryComponent
+    AddSprintComponent,
+    AddMilestoneComponent
   ],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]

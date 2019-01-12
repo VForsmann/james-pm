@@ -1,7 +1,14 @@
 import { firestore } from 'firebase';
 
-export interface Milestone {
-    description: string;
-    done: firestore.Timestamp;
+interface Milestone {
     name: string;
+    description: string;
+}
+
+export interface MilestoneFirebase extends Milestone{
+    done: firestore.Timestamp;
+}
+
+export interface MilestoneAngular extends Milestone{
+    done: Date;
 }

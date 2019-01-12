@@ -1,7 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { MilestoneService } from 'src/app/services/milestone.service';
-import { Subscription, Observable } from 'rxjs';
-import { Milestone } from 'src/app/model/milestone';
+import { Observable } from 'rxjs';
+import { MilestoneFirebase } from 'src/app/model/milestone';
+import { AddMilestoneComponent } from '../milestone/add-milestone/add-milestone.component';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-roadmap',
@@ -10,9 +12,11 @@ import { Milestone } from 'src/app/model/milestone';
 })
 export class RoadmapComponent implements OnInit{
 
-  tomorrow = new Date(2017, 9, 20, 14, 34);
-  subscription: Subscription;
-  milestones: Observable<Milestone[]>;
+  milestones: Observable<MilestoneFirebase[]>;
+  addMilestoneComponent = AddMilestoneComponent;
+
+  faEdit = faEdit;
+  faTrash = faTrash;
 
   constructor(private milestoneService: MilestoneService) {}
 

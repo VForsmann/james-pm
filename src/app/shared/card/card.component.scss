@@ -10,3 +10,7 @@
     flex-flow: row-reverse;
     display: flex;
 }
+
+.cardhover:hover{
+    background-color: $light;
+}

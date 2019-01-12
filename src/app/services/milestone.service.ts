@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { StateService } from './state.service';
 import { ReferenceService } from './reference.service';
-import { Milestone } from '../model/milestone';
+import { MilestoneFirebase } from '../model/milestone';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,11 +16,17 @@ export class MilestoneService {
     private stateService: StateService,
     private referenceService: ReferenceService) { }
 
-  getMilestones(): Observable <Milestone[]> {
+  getMilestones(): Observable <MilestoneFirebase[]> {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
 
     return this.db.collection('milestones', ref => ref.where('project', '==', project)
-    .orderBy('done')).valueChanges() as Observable <Milestone[]>;
+    .orderBy('done')).valueChanges() as Observable <MilestoneFirebase[]>;
+  }
+
+  addMilestone(milestone: MilestoneFirebase){
+    const projectId = this.stateService.getProjectId().value;
+    const project = this.referenceService.getProjectReference(projectId);
+    this.db.collection('milestones').add({...milestone, project: project});
   }
 }

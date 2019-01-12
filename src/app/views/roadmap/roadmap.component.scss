@@ -1,0 +1,10 @@
+.myButton{
+    margin: 2px;
+    display: none;
+}
+
+.myTimelineCard:hover{
+    .myButton{
+        display:inline;
+    }
+}
