@@ -4,7 +4,7 @@
   </div>
   <div id="dragContainer" droppable (onDrop)="onDrop($event)">
     <div fxLayout="column" fxLayoutAlign="start center">
-      <ng-container *ngFor="let task of this.tasks">
+      <ng-container *ngFor="let task of (this.tasks | async)">
         <div *ngIf="task.status === name">
           <p draggable [dragData]="task">
             <app-card draggable [title]="task.name" [text]="task.description"></app-card>

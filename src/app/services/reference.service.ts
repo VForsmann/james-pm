@@ -39,4 +39,7 @@ export class ReferenceService {
   getUserstoryReference(userstoryId) {
     return this.db.collection('userstorys').doc(userstoryId).ref;
   }
+  taskStatusReference(taskStatusId) {
+    return this.db.collection('task_statuses').doc(taskStatusId).ref;
+  }
 }
