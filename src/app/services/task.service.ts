@@ -4,6 +4,7 @@ import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { firestore } from 'firebase';
 import { map } from 'rxjs/operators';
+import { TaskStatusesService } from './task-statuses.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,8 @@ export class TaskService {
 
   constructor(
     private db: AngularFirestore,
-    private referenceService: ReferenceService
+    private referenceService: ReferenceService,
+    private taskStatusService: TaskStatusesService
   ) {}
 
   getTasks() {
@@ -25,18 +27,22 @@ export class TaskService {
       .snapshotChanges();
   }
 
-  updateTask(task) {
-    this.db.collection('task_statuses').snapshotChanges().subscribe(res => {
-      res.map(obj => {
-        if (task.status === obj.payload.doc.data()['status']) {
-          task.status = obj.payload.doc.ref;
-        }
+  updateTask(task, status) {
+    task.status = status;
+    this.db
+      .collection('task_statuses')
+      .snapshotChanges()
+      .subscribe(res => {
+        res.map(obj => {
+          if (task.status === obj.payload.doc.data()['status']) {
+            task.status = obj.payload.doc.ref;
+          }
+        });
+        this.db
+          .collection('tasks')
+          .doc(task['id'])
+          .update(task);
       });
-      this.db
-      .collection('tasks')
-      .doc(task['id'])
-      .update(task);
-    });
   }
 
   getAllTasks(projectId) {
@@ -55,19 +61,47 @@ export class TaskService {
                 .get()
                 .then(status => {
                   let update_task = tasks_list.map(t => t.id);
-                  if (tasks_data) {
-                    task_data['id'] = taskId;
-                    task_data['status'] = status.data().status;
-                    if (update_task.indexOf(taskId) !== -1) {
-                      tasks_list[tasks_list.indexOf(taskId)] = task_data;
-                    } else {
-                      tasks_list.push(task_data);
-                    }
+                  // Prüft ob ein User existiert, falls ja muss dieser erstmal geholt werden
+                  if (task_data['user']) {
+                  this.referenceService
+                    .getUserReference(task_data['user'].id)
+                    .get()
+                    .then(user_data => {
+                      const username =
+                        user_data.data().firstname +
+                        ' ' +
+                        user_data.data().lastname;
+                      if (tasks_data) {
+                        task_data['id'] = taskId;
+                        task_data['username'] = username;
+                        task_data['status'] = status.data().status;
+                        if (update_task.indexOf(taskId) !== -1) {
+                          tasks_list[tasks_list.indexOf(taskId)] = task_data;
+                        } else {
+                          tasks_list.push(task_data);
+                        }
+                      } else {
+                        tasks_list.splice(update_task.indexOf(taskId), 1);
+                      }
+                      update_task = [];
+                      observer.next(tasks_list);
+                    });
+                    // wenn kein User da ist, wird es somit unterbunden das exceptions fliegen
                   } else {
-                    tasks_list.splice(update_task.indexOf(taskId), 1);
+                    if (tasks_data) {
+                      task_data['id'] = taskId;
+                      task_data['status'] = status.data().status;
+                      if (update_task.indexOf(taskId) !== -1) {
+                        tasks_list[tasks_list.indexOf(taskId)] = task_data;
+                      } else {
+                        tasks_list.push(task_data);
+                      }
+                    } else {
+                      tasks_list.splice(update_task.indexOf(taskId), 1);
+                    }
+                    update_task = [];
+                    observer.next(tasks_list);
                   }
-                  update_task = [];
-                  observer.next(tasks_list);
                 });
             });
           });
@@ -143,7 +177,6 @@ export class TaskService {
     return result;
   }
 
-
   addTaskToBacklog(task, backlogId) {
     task['backlog'] = this.referenceService.getBacklogReference(backlogId);
     const taskId = task['id'];
@@ -152,6 +185,32 @@ export class TaskService {
       .collection('tasks')
       .doc(taskId)
       .update(task);
+  }
+
+  addUserToTask(task) {
+    return new Promise((resolve, reject) => {
+      this.referenceService.getCreatorReference().subscribe(res => {
+        this.db
+          .collection('task_statuses', ref => ref.where('order', '==', 2))
+          .snapshotChanges()
+          .subscribe(status_data => {
+            status_data.map(actions => {
+              task['status'] = this.db
+                .collection('task_statuses')
+                .doc(actions.payload.doc.id).ref;
+            });
+            const taskId = task['id'];
+            delete task['id'];
+            this.db
+              .collection('tasks')
+              .doc(taskId)
+              .update({ user: res, status: task['status'] })
+              .then(re => {
+                resolve(true);
+              });
+          });
+      });
+    });
   }
 
   // War noch von allgmeinen task erstellen

@@ -16,6 +16,7 @@ import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tas
 import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { TaskComponent } from './views/task/task.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
+import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'addTask', component: AddTaskComponent, canActivate: [AuthGuard] },
   { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
   { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] },
-  { path: 'editBacklog', component: EditBacklogComponent, canActivate: [AuthGuard] }
+  { path: 'editBacklog', component: EditBacklogComponent, canActivate: [AuthGuard] },
+  { path: 'confirm', component: ConfirmTaskComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

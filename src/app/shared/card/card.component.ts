@@ -12,6 +12,7 @@ export class CardComponent implements OnInit {
   @Input() start: string;
   @Input() end: string;
   @Input() amount: string;
+  @Input() developer: string;
   @Input() color = 'bg-warning';
   @Input() component: Component;
 
