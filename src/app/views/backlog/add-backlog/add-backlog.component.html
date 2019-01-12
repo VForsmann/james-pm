@@ -1,6 +1,11 @@
 <div class="modal-header">
-  <h4 class="modal-title">Add new backlog</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+  <h4 class="modal-title">Add new PBI</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -9,12 +14,132 @@
     <form id="myForm" (ngSubmit)="onSubmit()" #addBacklogForm="ngForm">
       <div class="form-group">
         <label for="name" class="control-label">Name</label>
-        <input type="name" class="form-control" id="name" name="name" [(ngModel)]="backlog.name" required #name="ngModel">
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          name="name"
+          [(ngModel)]="backlog.name"
+          required
+          #name="ngModel"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description" class="control-label">Description</label>
+        <input
+          type="name"
+          class="form-control"
+          id="description"
+          name="descritption"
+          [(ngModel)]="backlog.description"
+          required
+          #description="ngModel"
+        />
+      </div>
+      <div class="form-group">
+        <select
+          class="form-control"
+          required
+          name="type"
+          [(ngModel)]="backlog.type"
+        >
+          <option [value]="type.name" *ngFor="let type of (types | async)">{{
+            type.name
+          }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select
+          class="form-control"
+          required
+          name="priority"
+          [(ngModel)]="backlog.priority"
+        >
+          <option [value]="1">Hoch</option>
+          <option [value]="2">Mittel</option>
+          <option [value]="3">Niedrig</option>
+        </select>
+      </div>
+      <div *ngIf="backlog.type === 'Feature'">
+        <h4 class="modal-title">User-Story Information</h4>
+        <div class="form-group">
+          <label for="userstoryName" class="control-label">Name</label>
+          <input
+            type="name"
+            class="form-control"
+            id="userstoryName"
+            name="userstoryName"
+            [(ngModel)]="userstory.name"
+            required
+            #userstoryName="ngModel"
+          />
+          <br />
+          <label for="userstoryDescription" class="control-label"
+            >Description</label
+          >
+          <input
+            type="name"
+            class="form-control"
+            id="userstoryDescription"
+            name="userstoryDescription"
+            [(ngModel)]="userstory.description"
+            #userstoryDescription="ngModel"
+            required
+          />
+          <br />
+          <div class="custom-control custom-checkbox">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="epic"
+              (click)="toggleEpic()"
+            />
+            <label for="epic" class="custom-control-label">Epic</label>
+          </div>
+          <br />
+          <div *ngIf="userstory.epic">
+            <label for="userstorysList">Choose user storys</label>
+            <ul name="userstorysList" class="list-group list-group-flush">
+              <div *ngFor="let userstory of (userstorys | async)">
+                <div *ngIf="!userstory.epic">
+                  <li class="list-group-item">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="{{ userstory.id }}"
+                        (click)="toggleUserstory(userstory)"
+                      />
+                      <label
+                        for="{{ userstory.id }}"
+                        class="custom-control-label"
+                        >{{ userstory.name }}</label
+                      >
+                    </div>
+                  </li>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
       </div>
     </form>
   </div>
 </div>
 <div class="modal-footer">
-  <button form="myForm" [disabled]="!addBacklogForm.valid" type="submit" class="btn btn-success">Add</button>
-  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+  <button
+    form="myForm"
+    [disabled]="!addBacklogForm.valid"
+    type="submit"
+    class="btn btn-success"
+  >
+    Add
+  </button>
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="activeModal.dismiss()"
+  >
+    Cancel
+  </button>
 </div>

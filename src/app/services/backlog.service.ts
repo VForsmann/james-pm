@@ -60,10 +60,7 @@ export class BacklogService {
   addNewBacklog(backlog) {
     return this.db
       .collection('backlogs')
-      .add(backlog)
-      .then(res => {
-        console.log('created Backlog');
-      });
+      .add(backlog);
   }
 
   addUserToBacklog(userId, backlogId) {
@@ -80,5 +77,9 @@ export class BacklogService {
           resolve();
         });
     });
+  }
+
+  getTypes() {
+    return this.db.collection('types').valueChanges();
   }
 }

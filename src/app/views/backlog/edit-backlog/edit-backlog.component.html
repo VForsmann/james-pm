@@ -14,7 +14,7 @@
     <form id="myForm" (ngSubmit)="onSubmit()" #editBacklogForm="ngForm">
       <div class="form-group">
         Weisen Sie einen Developer zu, der diesen Backlog bearbeiten soll <br />
-        <select name="setUser" [(ngModel)]="selectedUserId">
+        <select class="form-control" name="setUser" [(ngModel)]="selectedUserId">
           <option *ngFor="let user of (users | async)" [value]="user.id">
             {{ user.firstname }} {{ user.lastname }}</option
           >
