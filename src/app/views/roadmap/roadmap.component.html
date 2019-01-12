@@ -1,8 +1,15 @@
 <div class="container">
   <app-header [title]="'Roadmap'" [add]="this.addMilestoneComponent"></app-header>
   <vertical-timeline>
-    <vertical-timeline-card *ngFor="let milestone of this.milestones | async" [dateValue]="milestone.done.toDate()" [color]="'#F2F2F2'">
+    <vertical-timeline-card *ngFor="let milestone of this.milestones | async" [dateValue]="milestone.done.toDate()" [color]="'#F2F2F2'" class="myTimelineCard">
      <h4>{{milestone.description}}</h4>
+     <br>
+      <button type="button" class="btn btn-secondary btn-sm myButton">
+        <fa-icon [icon]="faEdit"></fa-icon>
+      </button>
+      <button type="button" class="btn btn-danger btn-sm myButton">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
     </vertical-timeline-card>
   </vertical-timeline>
 </div>
