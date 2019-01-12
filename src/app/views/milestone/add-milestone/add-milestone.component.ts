@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MilestoneAngular } from 'src/app/model/milestone-angular';
+import { MilestoneService } from 'src/app/services/milestone.service';
+import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-add-milestone',
@@ -8,9 +11,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddMilestoneComponent implements OnInit {
 
-  name: string;
+  milestone: MilestoneAngular = {
+    name: '',
+    description: '',
+    done: new Date()
+  }
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal, private milestoneService: MilestoneService) { }
 
   ngOnInit() {
   }

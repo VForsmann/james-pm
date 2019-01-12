@@ -9,8 +9,13 @@
       <form id="myForm" (ngSubmit)="onSubmit()" #addMilestoneForm="ngForm">
         <div class="form-group">
           <label for="milestoneName" class="control-label">Name</label>
-          <input type="text" class="form-control" id="milestoneName" name="milestoneName" [(ngModel)]="name" required #milestoneName="ngModel">
+          <input type="text" class="form-control" id="milestoneName" name="milestoneName" [(ngModel)]="milestone.name" required #milestoneName="ngModel">
         </div>
+        <div class="form-group">
+          <label for="milestoneDescription" class="control-label">Description</label>
+          <input type="text" class="form-control" id="milestoneDescription" name="milestoneDescription" [(ngModel)]="milestone.description" required #milestoneDescription="ngModel">
+        </div>
+        <!-- Date & Timepicker missing -->
       </form>
     </div>
   </div>
