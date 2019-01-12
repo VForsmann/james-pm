@@ -19,7 +19,7 @@ export class DeleteUserstoryComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userstoryService.deleteUserstory(this.userstory.id);
+    this.userstoryService.deleteUserstory(this.userstory);
     this.activeModal.close();
   }
 

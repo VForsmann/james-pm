@@ -11,7 +11,6 @@ import { Userstory } from '../model/userstory';
 export class UserstoryService {
   constructor(
     private db: AngularFirestore,
-    private router: Router,
     private referenceService: ReferenceService
   ) {}
 
@@ -76,28 +75,42 @@ export class UserstoryService {
       } as Partial<Userstory>);
   }
 
-  deleteUserstory(userstoryId: string) {
-    const userstoryRef = this.referenceService.getUserstoryReference(userstoryId);
+  deleteUserstory(userstory: Userstory) {
+    const userstoryRef = this.referenceService.getUserstoryReference(
+      userstory.id
+    );
     return this.db
-      .collection('userstorys', ref =>
-        ref.where('epicUserstory', '==', userstoryRef)
-      )
+      .doc(userstory.backlog)
       .snapshotChanges()
-      .subscribe(us => {
-        us.map(actions => {
-          const usId = actions.payload.doc.id;
-          this.db
-            .collection('userstorys')
-            .doc(usId)
-            .update({ epicUserstory: null } as Partial<Userstory>);
-        });
-        this.db.collection('backlogs', ref => ref.where('userstory', '==', userstoryRef)).snapshotChanges().subscribe(bl => {
-          bl.map(actions => {
-            const blId = actions.payload.doc.id;
-            this.db.collection('backlogs').doc(blId).delete();
+      .subscribe(bl => {
+        const blId = bl.payload.id;
+        this.db
+          .collection('backlogs')
+          .doc(blId)
+          .delete()
+          .then(() => {
+            this.db
+              .collection('userstorys', ref =>
+                ref.where('epicUserstory', '==', userstoryRef)
+              )
+              .snapshotChanges()
+              .subscribe(us => {
+                let usData;
+                us.map(actions => {
+                  const usId = actions.payload.doc.id;
+                  usData = actions.payload.doc.data() as Userstory;
+                  console.log('usData:', usData);
+                  this.db
+                    .collection('userstorys')
+                    .doc(usId)
+                    .update({ epicUserstory: null } as Partial<Userstory>);
+                });
+              });
+            return this.db
+              .collection('userstorys')
+              .doc(userstory.id)
+              .delete();
           });
-        });
-        return this.db.collection('userstorys').doc(userstoryId).delete();
       });
   }
 }

@@ -4,5 +4,6 @@ export interface Userstory {
     description: string;
     epic: boolean;
     project: any;
+    backlog: any;
     epicUserstory?: any;
 }

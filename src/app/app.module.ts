@@ -81,7 +81,7 @@ import { DatepickerComponent } from './shared/datepicker/datepicker.component';
     AddTaskComponent,
     AddUserstoryComponent,
     EditUserstoryComponent,
-    DeleteUserstoryComponent
+    DeleteUserstoryComponent,
     SortPipe,
     AddSprintComponent,
     AddMilestoneComponent,
@@ -103,8 +103,10 @@ import { DatepickerComponent } from './shared/datepicker/datepicker.component';
     DeleteProjectComponent,
     AddMemberComponent,
     AddUserstoryComponent,
+    EditUserstoryComponent,
     AddSprintComponent,
-    AddMilestoneComponent
+    AddMilestoneComponent,
+    DeleteUserstoryComponent
   ],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]
