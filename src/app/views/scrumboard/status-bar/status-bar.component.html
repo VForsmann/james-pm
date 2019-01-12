@@ -1,14 +1,29 @@
 <div>
-  <div class="status-bar-name">
-    {{ count }} | {{ name }}
-  </div>
+  <div class="status-bar-name">{{ count }} | {{ name }}</div>
   <div id="dragContainer" droppable (onDrop)="onDrop($event)">
     <div fxLayout="column" fxLayoutAlign="start center">
       <ng-container *ngFor="let task of (this.tasks | async)">
         <div *ngIf="task.status === name">
-          <p draggable [dragData]="task">
-            <app-card draggable [title]="task.name" [text]="task.description"></app-card>
-          </p>
+          <app-modal [component]="confirmTaskComponent" [payload]="this.task">
+            <div *ngIf="task.user" draggable [dragData]="task">
+              <p>
+                <app-card
+                  [title]="task.name"
+                  [developer]="task.username"
+                  [text]="task.description"
+                ></app-card>
+              </p>
+            </div>
+            <div *ngIf="!task.user">
+              <p>
+                <app-card
+                  [title]="task.name"
+                  [developer]="task.username"
+                  [text]="task.description"
+                ></app-card>
+              </p>
+            </div>
+          </app-modal>
         </div>
       </ng-container>
     </div>

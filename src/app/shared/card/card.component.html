@@ -5,6 +5,9 @@
     <div class="card-body cardhover">
       <h5 class="card-title">{{title}}</h5>
       <p class="card-text">{{text}}</p>
+      <div *ngIf="developer">
+        <small>Developer: {{developer}}</small>
+      </div>
       <div *ngIf="start">
         <h6 class="card-text">Start: {{start}}</h6>
         <h6 class="card-text">End: {{end}}</h6>

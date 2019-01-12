@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmTaskComponent } from '../confirm-task/confirm-task.component';
 
 @Component({
   selector: 'app-status-bar',
@@ -9,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./status-bar.component.scss']
 })
 export class StatusBarComponent implements OnInit {
+  confirmTaskComponent = ConfirmTaskComponent;
   @Input() name;
   @Input() id;
   projectId;
@@ -32,7 +34,9 @@ export class StatusBarComponent implements OnInit {
   onDrop(e: any) {
     // Nur zum testen, nicht aufregen (Ändert den Status von dem Task) name => Status bzw. name vom Balken
     // e => Task den man bewegt
-    e.dragData.status = this.name;
-    this.taskService.updateTask(e.dragData);
+    if (e.dragData.status !== this.name) {
+      // e.dragData.status = this.name;
+      this.taskService.updateTask(e.dragData, this.name);
+    }
   }
 }

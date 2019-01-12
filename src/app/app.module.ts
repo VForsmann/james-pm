@@ -47,6 +47,7 @@ import { SortPipe } from './shared/pipes/sort.pipe';
 import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.component';
 import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
+import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { DatepickerComponent } from './shared/datepicker/datepicker.component';
     SortPipe,
     AddSprintComponent,
     AddMilestoneComponent,
-    DatepickerComponent
+    DatepickerComponent,
+    ConfirmTaskComponent
   ],
   imports: [
     BrowserModule,

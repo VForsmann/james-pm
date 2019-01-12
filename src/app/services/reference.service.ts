@@ -25,7 +25,7 @@ export class ReferenceService {
   }
 
   getUserReference(userId) {
-    return this.db.collection('user').doc(userId).ref;
+    return this.db.collection('users').doc(userId).ref;
   }
 
   getBacklogReference(backlogId) {
