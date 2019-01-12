@@ -12,9 +12,11 @@ import { Userstory } from 'src/app/model/userstory';
 })
 export class EditUserstoryComponent implements OnInit {
   modalInput;
+  // zeige aktuell beinhaltete Userstorys an, um diese zu entfernen
   userstorys;
   selectedUserstorys = [];
   userstory: Userstory;
+  oldUserstory: Userstory;
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -23,8 +25,9 @@ export class EditUserstoryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // nicht direkt auf dem Objekt arbeiten, es wird auch geupdated, wenn man gar nicht submitet
+    this.oldUserstory = this.modalInput;
     this.userstory = this.modalInput;
-    console.log('user input:', this.userstory);
     if (this.userstory.epic) {
       this.userstorys = this.userstoryService.getUserstorysFromProject(this.userstory.project);
     }

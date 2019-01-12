@@ -7,6 +7,7 @@ import { AddUserstoryComponent } from './add-userstory/add-userstory.component';
 import { AddBacklogComponent } from '../backlog/add-backlog/add-backlog.component';
 import { EditUserstoryComponent } from './edit-userstory/edit-userstory.component';
 import { DeleteUserstoryComponent } from './delete-userstory/delete-userstory.component';
+import { ReferenceService } from 'src/app/services/reference.service';
 
 @Component({
   selector: 'app-userstory',
@@ -14,7 +15,7 @@ import { DeleteUserstoryComponent } from './delete-userstory/delete-userstory.co
   styleUrls: ['./userstory.component.scss']
 })
 export class UserstoryComponent implements OnInit {
-  userstorys: Observable<any>;
+  userstorys;
   projectId: string;
   addUserstoryComponent = AddUserstoryComponent;
   editUserstoryComponent = EditUserstoryComponent;
@@ -24,13 +25,14 @@ export class UserstoryComponent implements OnInit {
   constructor(
     private userstoryService: UserstoryService,
     private stateService: StateService,
-    private route: ActivatedRoute,
-    ) { }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(this.projectId);
-    this.userstorys = this.userstoryService.getUserstorysFromProjectId(this.projectId);
+    this.userstorys = this.userstoryService.getUserstorysFromProjectId(
+      this.projectId
+    );
   }
-
 }
