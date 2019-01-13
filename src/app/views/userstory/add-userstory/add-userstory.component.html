@@ -5,7 +5,7 @@
     class="close"
     aria-label="Close"
     (click)="activeModal.dismiss()"
-    *ngIf="backlogmode"
+    *ngIf="!backlogmode"
   >
     <span aria-hidden="true">&times;</span>
   </button>
@@ -14,7 +14,7 @@
   <div class="container">
     <form id="myForm" (ngSubmit)="onSubmit()" #addUserstoryForm="ngForm">
       <div class="form-group">
-        <div *ngIf="backlogmode">
+        <div *ngIf="!backlogmode">
           <label for="name" class="control-label">Name</label>
           <input
           type="name"
@@ -73,7 +73,7 @@
     </form>
   </div>
 </div>
-<div class="modal-footer" *ngIf="backlogmode">
+<div class="modal-footer" *ngIf="!backlogmode">
   <button
     form="myForm"
     [disabled]="!addUserstoryForm.valid"
