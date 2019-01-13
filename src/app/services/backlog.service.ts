@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { firestore } from 'firebase';
+import { Backlog } from '../model/backlog';
 
 @Injectable({
   providedIn: 'root'
@@ -55,17 +56,10 @@ export class BacklogService {
     });
   }
 
-  getBacklogWithIdValue(backlogId) {
-    const result = this.db
+  getBacklogWithIdValue(backlogId): Observable<Partial<Backlog>> {
+    const result: Observable<Partial<Backlog>> = this.db
       .collection('backlogs')
       .doc(backlogId)
-      .valueChanges();
-    return result;
-  }
-
-  getBacklog(backlogRef) {
-    const result = this.db
-      .doc(backlogRef)
       .valueChanges();
     return result;
   }

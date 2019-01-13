@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserstoryService } from 'src/app/services/userstory.service';
 import { ReferenceService } from 'src/app/services/reference.service';
 import { Userstory } from 'src/app/model/userstory';
+import { Backlog } from 'src/app/model/backlog';
 import { BacklogService } from 'src/app/services/backlog.service';
 
 @Component({
@@ -84,9 +85,10 @@ export class EditUserstoryComponent implements OnInit {
           }
         });
       }
-      this.backlogService.getBacklog(this.userstory.backlog).subscribe(backlog => {
-        // backlog.name = this.userstory.name;
-        // backlog.description = this.userstory.description;
+      this.backlogService.getBacklogWithIdValue(this.userstory.backlog.id).subscribe(backlog => {
+        backlog.id = this.userstory.backlog.id;
+        backlog.name = this.userstory.name;
+        backlog.description = this.userstory.description;
         this.backlogService.updateBacklog(backlog);
       });
       this.activeModal.close();
