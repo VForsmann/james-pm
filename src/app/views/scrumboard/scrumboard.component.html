@@ -1,5 +1,17 @@
 <div class="d-flex justify-content-start" id="scrumboard">
-  <div *ngFor="let statusBar of statusBars$ | async" class="d-inline-flex p-2 bd-highlight">
-    <app-status-bar [name]="statusBar.payload.doc.data().status" [id]="statusBar.payload.doc.id"></app-status-bar>
+  <div
+    *ngFor="let statusBar of (statusBars$ | async)"
+    class="d-inline-flex p-2 bd-highlight"
+  >
+    <app-status-bar
+      [tasks]="tasks"
+      [name]="statusBar.payload.doc.data().status"
+      [id]="statusBar.payload.doc.id"
+    ></app-status-bar>
+    <div *ngIf="statusBar.payload.doc.data().status === 'To Do'" class="add-new-item">
+        <app-modal [component]="addTaskComponent" [payload]="projectId">
+          +
+        </app-modal>
+      </div>
   </div>
 </div>

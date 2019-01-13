@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DocumentChangeAction } from '@angular/fire/firestore';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute } from '@angular/router';
+import { AddTaskComponent } from '../task/add-task/add-task.component';
 
 @Component({
   selector: 'app-scrumboard',
@@ -11,14 +12,48 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./scrumboard.component.scss']
 })
 export class ScrumboardComponent implements OnInit {
+  addTaskComponent = AddTaskComponent;
   projectId;
+  tasks = [];
   statusBars$: Observable<DocumentChangeAction<{}>[]>;
   constructor(
     private taskStatusesService: TaskStatusesService,
-    private route: ActivatedRoute ) { }
+    private taskService: TaskService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    let not_exist = true;
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.statusBars$ = this.taskStatusesService.getTaskStatuses();
+    this.taskService.testGetTasks(this.projectId).subscribe(res => {
+      res.map(task_from_obs => {
+        this.tasks.map(task => {
+          if (task['id'] === task_from_obs['id']) {
+            not_exist = false;
+            if (!task['user']) {
+              if (task_from_obs['user']) {
+                this.tasks.splice(this.tasks.indexOf(task), 1);
+                this.tasks.push(task_from_obs);
+              }
+            } else if (!task_from_obs['user']) {
+              this.tasks.splice(this.tasks.indexOf(task), 1);
+              this.tasks.push(task_from_obs);
+            } else if (
+              task !== undefined &&
+              task['id'] === task_from_obs['id'] &&
+              task['user'].id !== task_from_obs['user'].id
+            ) {
+              this.tasks.splice(this.tasks.indexOf(task), 1);
+              this.tasks.push(task_from_obs);
+            }
+          }
+        });
+        if (not_exist) {
+          this.tasks.push(task_from_obs);
+        }
+        not_exist = true;
+      });
+    });
   }
 }
