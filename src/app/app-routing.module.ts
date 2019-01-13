@@ -18,6 +18,7 @@ import { TaskComponent } from './views/task/task.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
 import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
+import { PlanningPokerComponent } from './views/planning-poker/planning-poker.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprint-planning', component: SprintPlanningComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/sprint-planning/planning-poker', component: PlanningPokerComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/roadmap', component: RoadmapComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },

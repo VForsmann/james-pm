@@ -3,6 +3,7 @@ import { ReferenceService } from './reference.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,15 @@ export class BacklogService {
               const update_backlog = backlog_list.map(back => back.id);
               if (backlog_data) {
                 if (backlog_data['user']) {
-                  this.db.collection('users').doc(backlog_data['user'].id).valueChanges().subscribe(res => {
-                    backlog_data['userName'] = res['firstname'] + ' ' + res['lastname'];
-                });
-              }
+                  this.db
+                    .collection('users')
+                    .doc(backlog_data['user'].id)
+                    .valueChanges()
+                    .subscribe(res => {
+                      backlog_data['userName'] =
+                        res['firstname'] + ' ' + res['lastname'];
+                    });
+                }
                 backlog_data['id'] = backlogId;
                 if (update_backlog.indexOf(backlogId) !== -1) {
                   backlog_list[backlog_list.indexOf(projectId)] = backlog_data;
@@ -58,9 +64,7 @@ export class BacklogService {
   }
 
   addNewBacklog(backlog) {
-    return this.db
-      .collection('backlogs')
-      .add(backlog);
+    return this.db.collection('backlogs').add(backlog);
   }
 
   addUserToBacklog(userId, backlogId) {
@@ -81,5 +85,16 @@ export class BacklogService {
 
   getTypes() {
     return this.db.collection('types').valueChanges();
+  }
+
+  updateBacklog(backlog) {
+    return this.db
+      .collection('backlogs')
+      .doc(backlog.id)
+      .update({
+        name: backlog.name,
+        description: backlog.description,
+        selected: backlog.selected ? backlog.selected : firestore.FieldValue.delete()
+      });
   }
 }

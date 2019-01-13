@@ -5,6 +5,7 @@ import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { StateService } from './state.service';
 import * as ms from 'ms';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -109,7 +110,6 @@ export class ProjectService {
               const id = actions.payload.doc.data()['role'].id;
               this.getRoleForId(id).subscribe(role => observer.next(role['role']));
             });
-
           });
       });
     });
@@ -122,7 +122,7 @@ export class ProjectService {
       .add(project)
       .then(res => {
         this.referenceService.getCreatorReference().subscribe(user_data => {
-          this.getRole('scrum master').subscribe(innerRes => {
+          this.getRole('product owner').subscribe(innerRes => {
             let role;
             innerRes.map(actions => {
               role = actions.payload.doc.ref;
@@ -193,13 +193,15 @@ export class ProjectService {
       });
   }
 
-  updateProject(project: Project) {
+  updateProject(project) {
+    console.log(project);
     return this.db
       .collection('projects')
       .doc(project.id)
       .update({
         name: project.name,
-        description: project.description
+        description: project.description,
+        pokering: project.pokering ? project.pokering : firestore.FieldValue.delete()
       } as Project);
   }
 }
