@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
 import { StateService } from './state.service';
 import { ReferenceService } from './reference.service';
 import { MilestoneFirebase } from '../model/milestone';
@@ -16,12 +16,12 @@ export class MilestoneService {
     private stateService: StateService,
     private referenceService: ReferenceService) { }
 
-  getMilestones(): Observable <MilestoneFirebase[]> {
+  getMilestones(): Observable<DocumentChangeAction<MilestoneFirebase>[]> {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
 
     return this.db.collection('milestones', ref => ref.where('project', '==', project)
-    .orderBy('done')).valueChanges() as Observable <MilestoneFirebase[]>;
+    .orderBy('done')).snapshotChanges() as Observable<DocumentChangeAction<MilestoneFirebase>[]>;
   }
 
   addMilestone(milestone: MilestoneFirebase) {
