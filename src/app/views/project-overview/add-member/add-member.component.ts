@@ -26,6 +26,11 @@ export class AddMemberComponent implements OnInit {
   ngOnInit() {
     this.projectService.getRoleForProjectId(this.modalInput['id']).subscribe(role => {
       this.role = role;
+      if (role === 'product owner') {
+        this.selectedRole = 'scrum master';
+      } else if (role === 'scrum master') {
+        this.selectedRole = 'developer';
+      }
     });
 
     this.roles = this.projectService.getRoles();
