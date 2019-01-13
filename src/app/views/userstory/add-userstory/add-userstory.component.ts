@@ -39,6 +39,9 @@ export class AddUserstoryComponent implements OnInit {
   }
 
   public onSubmit(backlogRef ?) {
+    if (!backlogRef) {
+      console.warn('Create User Story without backlog!');
+    }
     this.userstory.backlog = backlogRef;
     this.userstoryService.addNewUSerstory(this.userstory).then(userstory => {
       const userstoryRef = this.referenceService.getUserstoryReference(userstory.id);
