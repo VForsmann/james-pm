@@ -4,6 +4,7 @@ import { StateService } from './state.service';
 import { ReferenceService } from './reference.service';
 import { MilestoneFirebase } from '../model/milestone';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,20 @@ export class MilestoneService {
     private stateService: StateService,
     private referenceService: ReferenceService) { }
 
-  getMilestones(): Observable<DocumentChangeAction<MilestoneFirebase>[]> {
+  getMilestones() {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
 
     return this.db.collection('milestones', ref => ref.where('project', '==', project)
-    .orderBy('done')).snapshotChanges() as Observable<DocumentChangeAction<MilestoneFirebase>[]>;
+    .orderBy('done')).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as MilestoneFirebase;
+          const id = a.payload.doc.id;
+          return {id, ...data} as MilestoneFirebase
+        })
+      })
+    );
   }
 
   addMilestone(milestone: MilestoneFirebase) {

@@ -15,7 +15,7 @@ import { DocumentChangeAction } from '@angular/fire/firestore';
   styleUrls: ['./roadmap.component.scss']
 })
 export class RoadmapComponent implements OnInit {
-  milestones: Observable<DocumentChangeAction<MilestoneFirebase>[]>;
+  milestones: Observable<MilestoneFirebase[]>;
   addMilestoneComponent = AddMilestoneComponent;
 
   faEdit = faEdit;
