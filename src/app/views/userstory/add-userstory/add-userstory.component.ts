@@ -22,7 +22,7 @@ export class AddUserstoryComponent implements OnInit {
     project: null,
     backlog: null
   };
-  @Input() showButtons: boolean;
+  @Input() backlogmode: boolean;
 
   constructor(
     private activeModal: NgbActiveModal,
