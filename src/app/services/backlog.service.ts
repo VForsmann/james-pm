@@ -97,4 +97,44 @@ export class BacklogService {
         selected: backlog.selected ? backlog.selected : firestore.FieldValue.delete()
       });
   }
+
+  getSelectedBacklogs(projectId) {
+    const projRef = this.referenceServices.getProjectReference(projectId);
+    return Observable.create(observer => {
+      const backlogs = this.db
+        .collection('backlogs', ref => ref.where('project', '==', projRef).where('selected', '==', true))
+        .snapshotChanges();
+      backlogs.subscribe(backlogs_data => {
+        const backlog_list = [];
+        // Map the backlogs
+        backlogs_data.map(actions => {
+          const backlogId = actions.payload.doc.id; // ['backlog'].id;
+          const backlog = this.getBacklogWithIdValue(backlogId).subscribe(
+            backlog_data => {
+              const update_backlog = backlog_list.map(back => back.id);
+              if (backlog_data) {
+                if (backlog_data['user']) {
+                  this.db
+                    .collection('users')
+                    .doc(backlog_data['user'].id)
+                    .valueChanges()
+                    .subscribe(res => {
+                      backlog_data['userName'] =
+                        res['firstname'] + ' ' + res['lastname'];
+                    });
+                }
+                backlog_data['id'] = backlogId;
+                if (update_backlog.indexOf(backlogId) !== -1) {
+                  backlog_list[backlog_list.indexOf(projectId)] = backlog_data;
+                } else {
+                  backlog_list.push(backlog_data);
+                }
+              }
+              observer.next(backlog_list);
+            }
+          );
+        });
+      });
+    });
+  }
 }
