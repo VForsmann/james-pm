@@ -1,3 +1,4 @@
+<app-header [title]="'Scrumboard'" [add]="addTaskComponent" [payload]="projectId"></app-header>
 <div class="d-flex justify-content-start" id="scrumboard">
   <div *ngFor="let statusBar of statusBars$ | async" class="d-inline-flex p-2 bd-highlight">
     <app-status-bar [name]="statusBar.payload.doc.data().status" [id]="statusBar.payload.doc.id"></app-status-bar>

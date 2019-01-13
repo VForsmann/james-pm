@@ -99,7 +99,6 @@ export class UserstoryService {
                 us.map(actions => {
                   const usId = actions.payload.doc.id;
                   usData = actions.payload.doc.data() as Userstory;
-                  console.log('usData:', usData);
                   this.db
                     .collection('userstorys')
                     .doc(usId)

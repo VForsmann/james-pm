@@ -5,6 +5,7 @@ import { DocumentChangeAction } from '@angular/fire/firestore';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { StateService } from 'src/app/services/state.service';
+import { AddTaskComponent } from '../task/add-task/add-task.component';
 
 @Component({
   selector: 'app-scrumboard',
@@ -14,6 +15,7 @@ import { StateService } from 'src/app/services/state.service';
 export class ScrumboardComponent implements OnInit {
   projectId;
   statusBars$: Observable<DocumentChangeAction<{}>[]>;
+  addTaskComponent = AddTaskComponent;
   constructor(
     private taskStatusesService: TaskStatusesService,
     private route: ActivatedRoute,

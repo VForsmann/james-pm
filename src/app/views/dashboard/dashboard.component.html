@@ -1,5 +1,5 @@
+<app-header [title]="(this.project | async)?.name"></app-header>
 <div class="container-fluid">
-  <h1>Project-Name: {{ (this.project | async)?.name }}</h1>
   <h5 class="text-muted">
     Project-Description: {{ (this.project | async)?.description }}
   </h5>

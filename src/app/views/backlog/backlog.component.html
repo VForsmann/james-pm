@@ -1,4 +1,4 @@
-<app-header [title]="'Product Backlog Items'"></app-header>
+<app-header [title]="'Product Backlog Items'" [add]="addBacklogComponent" [payload]="projectId"></app-header>
 <div class="list-group">
   <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
       <app-list-item
@@ -12,9 +12,4 @@
         [priority]="'Priorität: ' + backlog.priority"
       ></app-list-item>
 </div>
-  <div class="add-new-item">
-    <app-modal [component]="addBacklogComponent" [payload]="projectId">
-      +
-    </app-modal>
-  </div>
 </div>
