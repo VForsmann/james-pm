@@ -27,7 +27,6 @@ export class TaskService {
 
   updateTask(task) {
     const taskId = task['id'];
-    delete task['username'];
     this.db
       .collection('tasks')
       .doc(taskId)
@@ -42,6 +41,7 @@ export class TaskService {
         .snapshotChanges()
         .subscribe(tasks_data => {
           const tasks_list = [];
+
           tasks_data.map(actions => {
             const taskId = actions.payload.doc.id;
             const subs = this.getTaskWithId(taskId).subscribe(task_data => {
@@ -92,36 +92,6 @@ export class TaskService {
     });
   }
 
-  getAllTasksWithoutBacklog(projectId) {
-    const projectRef = this.referenceService.getProjectReference(projectId);
-    return Observable.create(observer => {
-      this.db
-        .collection('tasks', ref => ref.where('project', '==', projectRef))
-        .snapshotChanges()
-        .subscribe(tasks_data => {
-          const tasks_list = [];
-          tasks_data.map(actions => {
-            const taskId = actions.payload.doc.id;
-            const subs = this.getTaskWithId(taskId).subscribe(task_data => {
-              let update_task = tasks_list.map(t => t.id);
-              if (tasks_data) {
-                task_data['id'] = taskId;
-                if (update_task.indexOf(taskId) !== -1) {
-                  tasks_list[tasks_list.indexOf(taskId)] = task_data;
-                } else if (task_data['backlog'] === undefined) {
-                  tasks_list.push(task_data);
-                }
-              } else {
-                tasks_list.splice(update_task.indexOf(taskId), 1);
-              }
-              observer.next(tasks_list);
-              update_task = [];
-            });
-          });
-        });
-    });
-  }
-
   getTasksForBacklog(backlogId) {
     const backlogRef = this.referenceService.getBacklogReference(backlogId);
     return Observable.create(observer => {
@@ -148,6 +118,43 @@ export class TaskService {
               update_task = [];
             });
           });
+        });
+    });
+  }
+
+  // Die Methode wird vom Scrumboard benutzt !Nicht Löschen!
+  testGetTasks(projectId) {
+    let task_list = [];
+    const projectRef = this.referenceService.getProjectReference(projectId);
+    return Observable.create(observer => {
+      this.db
+        .collection('tasks', ref => ref.where('project', '==', projectRef))
+        .snapshotChanges()
+        .subscribe(task_data => {
+          task_data.map(actions => {
+            const taskId = actions.payload.doc.id;
+            const update_task = actions.payload.doc.data();
+            task_list.push(update_task);
+            if (update_task['user']) {
+              this.referenceService
+                .getUserReference(update_task['user'].id)
+                .get()
+                .then(user_data => {
+                  const username =
+                    user_data.data().firstname +
+                    ' ' +
+                    user_data.data().lastname;
+                  update_task['username'] = username;
+                  update_task['id'] = taskId;
+                  task_list.push(update_task);
+                });
+            } else {
+              update_task['id'] = taskId;
+              task_list.push(update_task);
+            }
+          });
+          observer.next(task_list);
+          task_list = [];
         });
     });
   }
@@ -184,18 +191,54 @@ export class TaskService {
     });
   }
 
-  // War noch von allgmeinen task erstellen
+  // Wird benutzt um Tasks zu erstellen
   addNewTask(task) {
     this.db
       .collection('task_statuses', ref => ref.where('order', '==', 1))
       .snapshotChanges()
       .subscribe(status_data => {
         status_data.map(actions => {
-          task['status'] = this.db
-            .collection('task_statuses')
-            .doc(actions.payload.doc.id).ref;
+          task['status'] = 'To Do';
         });
-        return this.db.collection('tasks').add(task);
+        return this.db
+          .collection('tasks')
+          .add(task)
+          .then(res => {
+            this.db
+              .collection('tasks')
+              .doc(res.id)
+              .update({ id: res.id });
+          });
       });
   }
 }
+
+// getAllTasksWithoutBacklog(projectId) {
+//   const projectRef = this.referenceService.getProjectReference(projectId);
+//   return Observable.create(observer => {
+//     this.db
+//       .collection('tasks', ref => ref.where('project', '==', projectRef))
+//       .snapshotChanges()
+//       .subscribe(tasks_data => {
+//         const tasks_list = [];
+//         tasks_data.map(actions => {
+//           const taskId = actions.payload.doc.id;
+//           const subs = this.getTaskWithId(taskId).subscribe(task_data => {
+//             let update_task = tasks_list.map(t => t.id);
+//             if (tasks_data) {
+//               task_data['id'] = taskId;
+//               if (update_task.indexOf(taskId) !== -1) {
+//                 tasks_list[tasks_list.indexOf(taskId)] = task_data;
+//               } else if (task_data['backlog'] === undefined) {
+//                 tasks_list.push(task_data);
+//               }
+//             } else {
+//               tasks_list.splice(update_task.indexOf(taskId), 1);
+//             }
+//             observer.next(tasks_list);
+//             update_task = [];
+//           });
+//         });
+//       });
+//   });
+// }

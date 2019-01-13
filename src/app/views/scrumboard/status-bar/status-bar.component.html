@@ -2,7 +2,7 @@
   <div class="status-bar-name">{{ count }} | {{ name }}</div>
   <div id="dragContainer" droppable (onDrop)="onDrop($event)">
     <div fxLayout="column" fxLayoutAlign="start center">
-      <ng-container *ngFor="let task of this.tasks | async">
+      <ng-container *ngFor="let task of this.tasks">
         <div *ngIf="task.status === this.name">
           <app-modal [component]="confirmTaskComponent" [payload]="this.task">
             <div *ngIf="task.user" draggable [dragData]="task">
