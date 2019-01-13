@@ -66,9 +66,14 @@ export class SprintPlanningComponent implements OnInit {
   }
 
   navigatePoker() {
-    this.project['id'] = this.projectId;
-    this.project['pokering'] = true;
-    this.projectService.updateProject(this.project);
+    if (
+      (this.scrummaster || this.product_owner) &&
+      !this.project['pokering']
+    ) {
+      this.project['id'] = this.projectId;
+      this.project['pokering'] = true;
+      this.projectService.updateProject(this.project);
+    }
     this.router.navigate([
       '/dashboard',
       this.projectId,

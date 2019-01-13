@@ -16,7 +16,7 @@
   <h1>Wait to get PBI's Selected</h1>
   <div *ngIf="this.project?.pokering">
     <h2>The Scrummaster started a Planning Poker.</h2>
-    <button>Join</button>
+    <button type="button" class="btn btn-secondary" (click)="this.navigatePoker()">Join</button>
   </div>
 </div>
 <br />
