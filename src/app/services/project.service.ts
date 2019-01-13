@@ -93,15 +93,25 @@ export class ProjectService {
   }
 
   /**
-   * Returns the role you got for the project
+   * Returns the role you got for the projectId
    */
   getRoleForProjectId(projectId) {
-    // Die rolle die in user_project den user von sich selbst hat, und dann das gewähle project
     const projectRef = this.referenceService.getProjectReference(projectId);
-    this.referenceService.getCreatorReference().subscribe(userRef => {
-      return this.db.collection('user_project', ref =>
-        ref.where('project', '==', projectRef).where('user', '==', userRef)
-      ).snapshotChanges();
+    return Observable.create(observer => {
+      this.referenceService.getCreatorReference().subscribe(userRef => {
+        this.db
+          .collection('user_projects', ref =>
+            ref.where('project', '==', projectRef).where('user', '==', userRef)
+          )
+          .snapshotChanges()
+          .subscribe(user_project_data => {
+            user_project_data.map(actions => {
+              const id = actions.payload.doc.data()['role'].id;
+              this.getRoleForId(id).subscribe(role => observer.next(role['role']));
+            });
+
+          });
+      });
     });
   }
 
