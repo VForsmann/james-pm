@@ -14,7 +14,7 @@
 </div>
 <div *ngIf="this.developer">
   <h1>Wait to get PBI's Selected</h1>
-  <div *ngIf="(this.project | async)?.pokering">
+  <div *ngIf="this.project?.pokering">
     <h2>The Scrummaster started a Planning Poker.</h2>
     <button>Join</button>
   </div>

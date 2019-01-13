@@ -51,7 +51,9 @@ export class SprintPlanningComponent implements OnInit {
       }
     });
     this.backlogs = this.backlogService.getBacklogs(this.projectId);
-    this.project = this.projectService.getProjectForId(this.projectId);
+    this.projectService.getProjectForId(this.projectId).subscribe(pro => {
+      this.project = pro;
+    });
   }
 
   select(backlog) {
@@ -64,12 +66,14 @@ export class SprintPlanningComponent implements OnInit {
   }
 
   navigatePoker() {
-    /* this.projectService.updateProject();
+    this.project['id'] = this.projectId;
+    this.project['pokering'] = true;
+    this.projectService.updateProject(this.project);
     this.router.navigate([
       '/dashboard',
       this.projectId,
       'sprint-planning',
       'planning-poker'
-    ]); */
+    ]);
   }
 }

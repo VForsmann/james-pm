@@ -12,11 +12,17 @@ export class UserProjectService {
 
   constructor(private db: AngularFirestore, private router: Router, private referenceService: ReferenceService) { }
 
-  async getUserProjects() {
+  /* async getUserProjects() {
+    let result: Observable<DocumentChangeAction<{}>[]>;
+    await this.referenceService.getCreatorReference().then((user) => {
+      result = this.db.collection('user_projects', ref => ref.where('edit', '==', user)).snapshotChanges();
+    });async getUserProjects() {
     let result: Observable<DocumentChangeAction<{}>[]>;
     await this.referenceService.getCreatorReference().then((user) => {
       result = this.db.collection('user_projects', ref => ref.where('edit', '==', user)).snapshotChanges();
     });
     return result;
   }
+    return result;
+  } */
 }
