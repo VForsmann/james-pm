@@ -31,7 +31,7 @@ export class EditBacklogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.backlogService.updateBacklog(this.backlog);
+    this.backlogService.editBacklog(this.backlog);
     this.activeModal.close();
   }
 }

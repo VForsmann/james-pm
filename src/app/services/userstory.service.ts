@@ -95,10 +95,8 @@ export class UserstoryService {
               )
               .snapshotChanges()
               .subscribe(us => {
-                let usData;
                 us.map(actions => {
                   const usId = actions.payload.doc.id;
-                  usData = actions.payload.doc.data() as Userstory;
                   this.db
                     .collection('userstorys')
                     .doc(usId)
