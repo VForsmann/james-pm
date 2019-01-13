@@ -5,6 +5,7 @@
     class="close"
     aria-label="Close"
     (click)="activeModal.dismiss()"
+    *ngIf="showButtons"
   >
     <span aria-hidden="true">&times;</span>
   </button>
@@ -70,7 +71,7 @@
     </form>
   </div>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" *ngIf="showButtons">
   <button
     form="myForm"
     [disabled]="!addUserstoryForm.valid"

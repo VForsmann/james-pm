@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserstoryService } from 'src/app/services/userstory.service';
 import { ReferenceService } from 'src/app/services/reference.service';
@@ -14,29 +14,32 @@ export class AddUserstoryComponent implements OnInit {
   modalInput;
   userstorys;
   selectedUserstorys: Userstory[] = [];
-  userstory = {
+  userstory: Partial<Userstory> = {
     name: '',
     description: '',
     epic: false,
     epicUserstory: null,
-    project: null
+    project: null,
+    backlog: null
   };
+  @Input() showButtons: boolean;
 
   constructor(
     private activeModal: NgbActiveModal,
     private userstoryService: UserstoryService,
     private referenceService: ReferenceService,
-    private stateService: StateService
+    private stateService: StateService,
   ) {}
 
   ngOnInit() {
-    this.userstory.project = this.referenceService.getProjectReference(this.modalInput);
     this.stateService.getProjectId().subscribe(id => {
+      this.userstory.project = this.referenceService.getProjectReference(id);
       this.userstorys = this.userstoryService.getUserstorysFromProjectId(id);
     });
   }
 
-  onSubmit() {
+  public onSubmit(backlogRef) {
+    this.userstory.backlog = backlogRef;
     this.userstoryService.addNewUSerstory(this.userstory).then(userstory => {
       const userstoryRef = this.referenceService.getUserstoryReference(userstory.id);
       if (this.selectedUserstorys.length > 0 && this.userstory.epic) {
