@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
     private projectService: ProjectService,
     private stateService: StateService,
     private router: Router
-    ) { }
+  ) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
@@ -44,5 +44,10 @@ export class DashboardComponent implements OnInit {
 
   navigateRoadmap() {
     this.router.navigate(['/dashboard', this.projectId, 'roadmap']);
+  }
+
+  navigateSprintplanning() {
+    console.log('ja');
+    this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
   }
 }

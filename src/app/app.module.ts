@@ -48,6 +48,7 @@ import { AddSprintComponent } from './views/sprint/add-sprint/add-sprint.compone
 import { AddMilestoneComponent } from './views/milestone/add-milestone/add-milestone.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
+import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-ta
     AddSprintComponent,
     AddMilestoneComponent,
     DatepickerComponent,
-    ConfirmTaskComponent
+    ConfirmTaskComponent,
+    SprintPlanningComponent
   ],
   imports: [
     BrowserModule,

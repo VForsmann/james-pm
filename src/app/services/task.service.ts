@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
-import { firestore } from 'firebase';
-import { map } from 'rxjs/operators';
 import { TaskStatusesService } from './task-statuses.service';
 @Injectable({
   providedIn: 'root'
