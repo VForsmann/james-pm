@@ -6,7 +6,7 @@
       <app-task-list
         [backlog]="backlog"
         [addTask]="this.addTaskComponent"
-        [payload]="this.projectId"
+        [payload]="{ projectId: this.projectId, backlogId: backlog.id }"
       ></app-task-list>
     </div>
   </div>
