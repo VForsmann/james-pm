@@ -11,7 +11,7 @@ export class ReferenceService {
 
   constructor(private db: AngularFirestore, private authService: AuthService) { }
 
-  getCreatorReference() {
+  getCreatorReference(): Observable<{}> {
     let result: firebase.firestore.DocumentReference;
     const obsResult = Observable.create(observer => {
       this.authService.getLoggedInUser().subscribe((res) => {

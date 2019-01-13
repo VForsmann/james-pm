@@ -38,6 +38,8 @@ export class AddBacklogComponent implements OnInit {
   onSubmit() {
     this.backlogService.addNewBacklog(this.backlog).then(res => {
       if (this.backlog.type === 'Feature') {
+        this.addUserstory.userstory.name = this.backlog.name;
+        this.addUserstory.userstory.description = this.backlog.description;
         this.addUserstory.onSubmit(res);
       }
       this.activeModal.close();

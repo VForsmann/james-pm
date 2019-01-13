@@ -1,5 +1,5 @@
+<app-header [title]="(this.project | async)?.name"></app-header>
 <div class="container-fluid">
-  <h1>Project-Name: {{ (this.project | async)?.name }}</h1>
   <h5 class="text-muted">
     Project-Description: {{ (this.project | async)?.description }}
   </h5>
@@ -32,5 +32,10 @@
   <app-card
     (click)="navigateRoadmap()"
     [title]="'Roadmap'"
+  ></app-card>
+  <app-card
+    (click)="navigateSprintplanning()"
+    [title]="'Sprint_Planning'"
+    [text]="'Planen Sie den Sprint gemeinsam mit ihrem Team'"
   ></app-card>
 </div>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DocumentChangeAction } from '@angular/fire/firestore';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute } from '@angular/router';
+import { StateService } from 'src/app/services/state.service';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
 
 @Component({
@@ -19,12 +20,14 @@ export class ScrumboardComponent implements OnInit {
   constructor(
     private taskStatusesService: TaskStatusesService,
     private taskService: TaskService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private stateService: StateService
   ) {}
 
   ngOnInit() {
     let not_exist = true;
     this.projectId = this.route.snapshot.paramMap.get('id');
+    this.stateService.setProjectId(this.projectId);
     this.statusBars$ = this.taskStatusesService.getTaskStatuses();
     this.taskService.testGetTasks(this.projectId).subscribe(res => {
       res.map(task_from_obs => {

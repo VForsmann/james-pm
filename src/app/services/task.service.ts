@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
-import { firestore } from 'firebase';
-import { map } from 'rxjs/operators';
 import { TaskStatusesService } from './task-statuses.service';
 @Injectable({
   providedIn: 'root'
@@ -124,6 +122,7 @@ export class TaskService {
     });
   }
 
+  // Die Methode wird vom Scrumboard benutzt !Nicht Löschen!
   testGetTasks(projectId) {
     let task_list = [];
     const projectRef = this.referenceService.getProjectReference(projectId);
@@ -192,7 +191,7 @@ export class TaskService {
     });
   }
 
-  // War noch von allgmeinen task erstellen
+  // Wird benutzt um Tasks zu erstellen
   addNewTask(task) {
     this.db
       .collection('task_statuses', ref => ref.where('order', '==', 1))
@@ -201,9 +200,15 @@ export class TaskService {
         status_data.map(actions => {
           task['status'] = 'To Do';
         });
-        return this.db.collection('tasks').add(task).then(res => {
-          this.db.collection('tasks').doc(res.id).update({id: res.id});
-        });
+        return this.db
+          .collection('tasks')
+          .add(task)
+          .then(res => {
+            this.db
+              .collection('tasks')
+              .doc(res.id)
+              .update({ id: res.id });
+          });
       });
   }
 }

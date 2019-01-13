@@ -17,6 +17,7 @@ import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { TaskComponent } from './views/task/task.component';
 import { AddTaskComponent } from './views/task/add-task/add-task.component';
 import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
+import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'dashboard/:id/userstorys', component: UserstoryComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/scrum', component: ScrumboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/sprint-planning', component: SprintPlanningComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/roadmap', component: RoadmapComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] },
   { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },

@@ -24,7 +24,7 @@ export class MilestoneService {
     .orderBy('done')).valueChanges() as Observable <MilestoneFirebase[]>;
   }
 
-  addMilestone(milestone: MilestoneFirebase){
+  addMilestone(milestone: MilestoneFirebase) {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('milestones').add({...milestone, project: project});

@@ -1,6 +1,9 @@
+@import '../../../styles.scss';
+
 .header-container {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px $primaryDark solid;
 }
 
 .buttons {

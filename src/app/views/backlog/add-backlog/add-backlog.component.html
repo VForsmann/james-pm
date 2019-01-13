@@ -37,6 +37,7 @@
         />
       </div>
       <div class="form-group">
+        <label for="type" class="control-label">Select type</label>
         <select
           class="form-control"
           required
@@ -49,15 +50,16 @@
         </select>
       </div>
       <div class="form-group">
+        <label for="priority" class="control-label">Select priority</label>
         <select
           class="form-control"
           required
           name="priority"
           [(ngModel)]="backlog.priority"
         >
-          <option [value]="Hoch">Hoch</option>
-          <option [value]="Mittel">Mittel</option>
-          <option [value]="Niedrig">Niedrig</option>
+          <option [value]="high">High priority</option>
+          <option [value]="medium">Medium priority</option>
+          <option [value]="low">Low priority</option>
         </select>
       </div>
     </form>

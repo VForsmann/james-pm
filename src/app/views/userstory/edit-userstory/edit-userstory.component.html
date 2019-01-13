@@ -37,26 +37,29 @@
         />
 
         <br />
-        <div *ngIf="(userstory.epic)">
+        <label for="userstorysList" *ngIf="userstory.epic && userstorys.length == 0"
+          >No user storys available</label
+        >
+        <div *ngIf="userstory.epic && userstorys.length > 0">
           <label for="userstorysList">Choose user storys</label>
           <ul name="userstorysList" class="list-group list-group-flush">
             <div *ngFor="let userstory of userstorys">
-                <li class="list-group-item">
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="{{ userstory.id }}"
-                      (click)="toggleUserstory(userstory)"
-                      [checked]="userstory.epicUserstory == null ? false : true"
-                    />
-                    <label
-                      for="{{ userstory.id }}"
-                      class="custom-control-label"
-                      >{{ userstory.name }}</label
-                    >
-                  </div>
-                </li>
+              <li class="list-group-item">
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="{{ userstory.id }}"
+                    (click)="toggleUserstory(userstory)"
+                    [checked]="userstory.epicUserstory == null ? false : true"
+                  />
+                  <label
+                    for="{{ userstory.id }}"
+                    class="custom-control-label"
+                    >{{ userstory.name }}</label
+                  >
+                </div>
+              </li>
             </div>
           </ul>
         </div>
