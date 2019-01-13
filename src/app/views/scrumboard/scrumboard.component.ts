@@ -29,6 +29,7 @@ export class ScrumboardComponent implements OnInit {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(this.projectId);
     this.statusBars$ = this.taskStatusesService.getTaskStatuses();
+    // this.tasks = this.taskService.getAllTasks(this.projectId);
     this.taskService.testGetTasks(this.projectId).subscribe(res => {
       res.map(task_from_obs => {
         this.tasks.map(task => {

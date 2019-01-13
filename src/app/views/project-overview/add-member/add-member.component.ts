@@ -26,7 +26,6 @@ export class AddMemberComponent implements OnInit {
   ngOnInit() {
     this.projectService.getRoleForProjectId(this.modalInput['id']).subscribe(role => {
       this.role = role;
-      console.log(this.role);
     });
 
     this.roles = this.projectService.getRoles();
@@ -39,7 +38,6 @@ export class AddMemberComponent implements OnInit {
       this.user.working_units,
       this.selectedRole
     );
-    console.log(this.selectedRole);
     this.activeModal.close();
   }
 }

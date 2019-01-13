@@ -144,7 +144,8 @@ export class BacklogService {
                 .update({
                   name: backlog.name,
                   description: backlog.description
-                }).then(re => {
+                })
+                .then(re => {
                   console.log(re);
                 });
             });

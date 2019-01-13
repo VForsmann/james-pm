@@ -66,7 +66,7 @@ export class TaskService {
                         tasks_list.push(task_data);
                       }
                     } else {
-                      tasks_list.splice(update_task.indexOf(taskId), 1);
+                      subs.unsubscribe();
                     }
                     update_task = [];
                     observer.next(tasks_list);
@@ -81,11 +81,12 @@ export class TaskService {
                     tasks_list.push(task_data);
                   }
                 } else {
-                  tasks_list.splice(update_task.indexOf(taskId), 1);
+                  subs.unsubscribe();
                 }
                 update_task = [];
                 observer.next(tasks_list);
               }
+
             });
           });
         });
