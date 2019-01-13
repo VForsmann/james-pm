@@ -49,6 +49,7 @@ import { AddMilestoneComponent } from './views/milestone/add-milestone/add-miles
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
 import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
+import { DeleteMilestoneComponent } from './views/milestone/delete-milestone/delete-milestone.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning
     AddMilestoneComponent,
     DatepickerComponent,
     ConfirmTaskComponent,
-    SprintPlanningComponent
+    SprintPlanningComponent,
+    DeleteMilestoneComponent
   ],
   imports: [
     BrowserModule,
@@ -110,7 +112,8 @@ import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning
     EditUserstoryComponent,
     AddSprintComponent,
     AddMilestoneComponent,
-    DeleteUserstoryComponent
+    DeleteUserstoryComponent,
+    DeleteMilestoneComponent
   ],
   providers: [AuthService, AngularFirestore, NgbActiveModal, CookieService],
   bootstrap: [AppComponent]

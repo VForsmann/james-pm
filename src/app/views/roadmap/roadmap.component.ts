@@ -6,8 +6,7 @@ import { AddMilestoneComponent } from '../milestone/add-milestone/add-milestone.
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { DocumentChangeAction } from '@angular/fire/firestore';
+import { DeleteMilestoneComponent } from '../milestone/delete-milestone/delete-milestone.component';
 
 @Component({
   selector: 'app-roadmap',
@@ -17,6 +16,7 @@ import { DocumentChangeAction } from '@angular/fire/firestore';
 export class RoadmapComponent implements OnInit {
   milestones: Observable<MilestoneFirebase[]>;
   addMilestoneComponent = AddMilestoneComponent;
+  deleteMilestoneComponent = DeleteMilestoneComponent;
 
   faEdit = faEdit;
   faTrash = faTrash;

@@ -38,4 +38,8 @@ export class MilestoneService {
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('milestones').add({...milestone, project: project});
   }
+
+  deleteMilestone(milestoneId: string){
+    this.db.collection('milestones').doc(milestoneId).delete();
+  }
 }
