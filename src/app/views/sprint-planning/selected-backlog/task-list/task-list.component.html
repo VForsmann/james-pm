@@ -1,0 +1,15 @@
+<div class="flex-row">
+  <div>
+    {{ this.backlog.name }}
+    <app-modal *ngIf="this.addTask" [component]="this.addTask" [payload]="this.pay">
+        <button class="btn btn-secondary">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+    </app-modal>
+  </div>
+  <div *ngFor="let task of (tasks | async)">
+    <div class="task-card">
+      <app-card [title]="task.name"></app-card>
+    </div>
+  </div>
+</div>

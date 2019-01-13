@@ -42,5 +42,4 @@ export class BacklogComponent implements OnInit {
   navigate = (backlog) => {
     this.router.navigate(['/dashboard', this.projectId, 'backlog', backlog.id]);
   }
-
 }

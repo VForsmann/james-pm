@@ -10,7 +10,8 @@
     </div>
     <p class="mb-1">{{ this.description }}</p>
     <small>{{ this.expenditure }}</small>
-    <small>{{ this.sprint }}</small> <small>{{ backlogType }}</small> <small class="right">{{ priority }}</small>
+    <span>{{ this.sprint }}</span>
+    <span>{{ backlogType }} <span class="right">{{ priority }}</span></span>
     <small *ngIf="this.sprint">Ist einem Sprint zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">

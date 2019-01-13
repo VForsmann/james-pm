@@ -32,6 +32,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   onSubmit() {
+    this.task.backlog = this.referenceService.getBacklogReference(this.task.backlog);
     this.taskService.addNewTask(this.task);
     this.activeModal.close();
   }

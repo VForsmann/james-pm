@@ -81,4 +81,13 @@ export class SprintPlanningComponent implements OnInit {
       'planning-poker'
     ]);
   }
+
+  navigateSelectedBacklogs() {
+    this.router.navigate([
+      '/dashboard',
+      this.projectId,
+      'sprint-planning',
+      'selected-backlogitems'
+    ]);
+  }
 }

@@ -1,24 +1,37 @@
-<div
-  *ngIf="this.product_owner || this.scrummaster"
-  class="space-between d-flex flex-row"
+<app-header
+  [title]="'Select Backlogitems for next Sprint'"
+  [showContent]="true"
 >
-  <h1>Select PBI's for next Sprint</h1>
-  <button
-    (click)="this.navigatePoker()"
-    type="button"
-    class="btn btn-secondary"
-  >
-    Poker
-  </button>
-  <button type="button" class="btn btn-success">Next</button>
-</div>
-<div *ngIf="this.developer">
-  <h1>Wait to get PBI's Selected</h1>
-  <div *ngIf="this.project?.pokering">
-    <h2>The Scrummaster started a Planning Poker.</h2>
-    <button type="button" class="btn btn-secondary" (click)="this.navigatePoker()">Join</button>
+  <div *ngIf="this.product_owner || this.scrummaster">
+    <button
+      (click)="this.navigatePoker()"
+      type="button"
+      class="btn btn-secondary"
+    >
+      Poker
+    </button>
+    <button
+      (click)="this.navigateSelectedBacklogs()"
+      type="button"
+      class="btn btn-success"
+    >
+      Create Tasks for selected Backlogitems
+    </button>
   </div>
-</div>
+  <div *ngIf="this.developer">
+    <strong>Wait to get PBI's Selected</strong>
+    <div *ngIf="this.project?.pokering">
+      <p>The Scrummaster started a Planning Poker.</p>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="this.navigatePoker()"
+      >
+        Join
+      </button>
+    </div>
+  </div>
+</app-header>
 <br />
 <div class="list-group">
   <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">

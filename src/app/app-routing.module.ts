@@ -13,6 +13,7 @@ import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { TaskComponent } from './views/task/task.component';
 import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
 import { PlanningPokerComponent } from './views/planning-poker/planning-poker.component';
+import { SelectedBacklogComponent } from './views/sprint-planning/selected-backlog/selected-backlog.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprint-planning', component: SprintPlanningComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprint-planning/planning-poker', component: PlanningPokerComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/sprint-planning/selected-backlogitems', component: SelectedBacklogComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/roadmap', component: RoadmapComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] }
 ];

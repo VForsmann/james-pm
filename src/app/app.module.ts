@@ -51,6 +51,8 @@ import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-ta
 import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
 import { DeleteMilestoneComponent } from './views/milestone/delete-milestone/delete-milestone.component';
 import { DeleteBacklogComponent } from './views/backlog/delete-backlog/delete-backlog.component';
+import { SelectedBacklogComponent } from './views/sprint-planning/selected-backlog/selected-backlog.component';
+import { TaskListComponent } from './views/sprint-planning/selected-backlog/task-list/task-list.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,8 @@ import { DeleteBacklogComponent } from './views/backlog/delete-backlog/delete-ba
     ConfirmTaskComponent,
     SprintPlanningComponent,
     DeleteMilestoneComponent,
+    SelectedBacklogComponent,
+    TaskListComponent,
     DeleteBacklogComponent
   ],
   imports: [

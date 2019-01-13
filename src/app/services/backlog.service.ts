@@ -166,7 +166,7 @@ export class BacklogService {
       });
   }
 
-  getSelectedBacklogs(projectId) {
+  getSelectedBacklogs(projectId): Observable<Backlog[]> {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {
       const backlogs = this.db
@@ -192,6 +192,8 @@ export class BacklogService {
                       backlog_data['userName'] =
                         res['firstname'] + ' ' + res['lastname'];
                     });
+                } else {
+                  backlog.unsubscribe();
                 }
                 backlog_data['id'] = backlogId;
                 if (update_backlog.indexOf(backlogId) !== -1) {
