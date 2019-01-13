@@ -14,7 +14,7 @@ export class StatusBarComponent implements OnInit {
   confirmTaskComponent = ConfirmTaskComponent;
   @Input() name;
   @Input() id;
-  tasks;
+  @Input() tasks = [];
   projectId;
   nameRef;
   count = 0;
@@ -28,8 +28,6 @@ export class StatusBarComponent implements OnInit {
   ngOnInit() {
     this.nameRef = this.referenceService.taskStatusReference(this.id);
     this.projectId = this.route.snapshot.paramMap.get('id');
-    this.tasks = this.taskService.getAllTasks(this.projectId);
-    // this.tasks = this.taskService.getAllTasks(this.projectId);
   }
 
   onDrop(e: any) {

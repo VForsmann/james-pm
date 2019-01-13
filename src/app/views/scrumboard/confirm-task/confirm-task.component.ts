@@ -11,7 +11,7 @@ export class ConfirmTaskComponent implements OnInit {
   modalInput;
   constructor(
     private taskService: TaskService,
-    private activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal
   ) {}
 
   ngOnInit() {}
@@ -19,7 +19,7 @@ export class ConfirmTaskComponent implements OnInit {
   onConfirm() {
     const task = this.modalInput;
     if (!task['user']) {
-      task['status'] = 'To Do';
+      task['status'] = 'Doing';
       this.taskService.addUserToTask(task).then(res => {
         console.log('Developer wurde dem Projekt hinzugefügt');
       });

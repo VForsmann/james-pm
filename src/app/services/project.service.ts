@@ -5,17 +5,17 @@ import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { StateService } from './state.service';
 import * as ms from 'ms';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService,
     private stateService: StateService
-  ) { }
+  ) {}
 
   /**
    * returns Observable with containing project-Observable.
@@ -28,7 +28,9 @@ export class ProjectService {
       user.subscribe(user_data => {
         let user_project;
         user_project = this.db
-          .collection('user_projects', ref => ref.where('user', '==', user_data))
+          .collection('user_projects', ref =>
+            ref.where('user', '==', user_data)
+          )
           .snapshotChanges();
 
         // get data from project
@@ -40,12 +42,14 @@ export class ProjectService {
             /* const roleId = actions.payload.doc.data()['role'].id; */
             // change project observable
             const project = this.getProjectForId(projectId);
-            const subs = project.subscribe((project_data) => {
+            const subs = project.subscribe(project_data => {
               const update_project = projects_list.map(pro => pro.id);
               if (project_data) {
                 project_data['id'] = projectId;
                 if (update_project.indexOf(projectId) !== -1) {
-                  projects_list[update_project.indexOf(projectId)] = project_data;
+                  projects_list[
+                    update_project.indexOf(projectId)
+                  ] = project_data;
                 } else {
                   projects_list.push(project_data);
                 }
@@ -79,12 +83,36 @@ export class ProjectService {
   }
 
   getRole(role_name: String) {
-    return this.db.collection('roles', ref => ref.where('role', '==', role_name)).snapshotChanges();
+    return this.db
+      .collection('roles', ref => ref.where('role', '==', role_name))
+      .snapshotChanges();
   }
 
   getProjectForReference(ref: string) {
     const user = this.referenceService.getCreatorReference();
     return this.db.collection('projects').doc(ref);
+  }
+
+  /**
+   * Returns the role you got for the projectId
+   */
+  getRoleForProjectId(projectId) {
+    const projectRef = this.referenceService.getProjectReference(projectId);
+    return Observable.create(observer => {
+      this.referenceService.getCreatorReference().subscribe(userRef => {
+        this.db
+          .collection('user_projects', ref =>
+            ref.where('project', '==', projectRef).where('user', '==', userRef)
+          )
+          .snapshotChanges()
+          .subscribe(user_project_data => {
+            user_project_data.map(actions => {
+              const id = actions.payload.doc.data()['role'].id;
+              this.getRoleForId(id).subscribe(role => observer.next(role['role']));
+            });
+          });
+      });
+    });
   }
 
   addNewProject(project, working_units) {
@@ -93,8 +121,8 @@ export class ProjectService {
       .collection('projects')
       .add(project)
       .then(res => {
-        this.referenceService.getCreatorReference().subscribe((user_data) => {
-          this.getRole('scrum master').subscribe((innerRes) => {
+        this.referenceService.getCreatorReference().subscribe(user_data => {
+          this.getRole('product owner').subscribe(innerRes => {
             let role;
             innerRes.map(actions => {
               role = actions.payload.doc.ref;
@@ -105,55 +133,75 @@ export class ProjectService {
               role: role,
               working_units: working_units
             };
-            this.db.collection('user_projects').add(user_project).then(re => {
-              console.log('created Project');
-            });
+            this.db
+              .collection('user_projects')
+              .add(user_project)
+              .then(re => {
+                console.log('created Project');
+              });
           });
         });
       });
   }
 
-  addMemberToProject(projectId, userEmail, working_units, roleName = 'developer') {
-    this.db.collection('users', ref => ref.where('email', '==', userEmail)).snapshotChanges().subscribe(res => {
-      this.getRole(roleName).subscribe(innerRes => {
-        let user;
-        let role;
-        res.map(actions => {
-          user = this.db.collection('user').doc(actions.payload.doc.id).ref;
+  addMemberToProject(
+    projectId,
+    userEmail,
+    working_units,
+    roleName = 'developer'
+  ) {
+    this.db
+      .collection('users', ref => ref.where('email', '==', userEmail))
+      .snapshotChanges()
+      .subscribe(res => {
+        this.getRole(roleName).subscribe(innerRes => {
+          let user;
+          let role;
+          res.map(actions => {
+            user = this.db.collection('user').doc(actions.payload.doc.id).ref;
+          });
+          innerRes.map(actions => {
+            role = actions.payload.doc.ref;
+          });
+          const userProject = {
+            user: user,
+            project: this.referenceService.getProjectReference(projectId),
+            role: role,
+            working_units: working_units
+          };
+          this.db.collection('user_projects').add(userProject);
         });
-        innerRes.map(actions => {
-          role = actions.payload.doc.ref;
-        });
-        const userProject = {
-          user: user,
-          project: this.referenceService.getProjectReference(projectId),
-          role: role,
-          working_units: working_units
-        };
-        this.db.collection('user_projects').add(userProject);
       });
-    });
   }
 
   deleteProject(projectId: string) {
     const project = this.referenceService.getProjectReference(projectId);
-    return this.db.collection('user_projects', ref => ref.where('project', '==', project))
+    return this.db
+      .collection('user_projects', ref => ref.where('project', '==', project))
       .snapshotChanges()
       .subscribe(res => {
         res.map(actions => {
-          this.db.collection('user_projects')
+          this.db
+            .collection('user_projects')
             .doc(actions.payload.doc.id)
             .delete();
         });
-        return this.db.collection('projects').doc(projectId).delete();
+        return this.db
+          .collection('projects')
+          .doc(projectId)
+          .delete();
       });
   }
 
-  updateProject(project: Project) {
-    return this.db.collection('projects').doc(project.id)
-    .update({
-      name: project.name,
-      description: project.description
-    } as Project);
+  updateProject(project) {
+    console.log(project);
+    return this.db
+      .collection('projects')
+      .doc(project.id)
+      .update({
+        name: project.name,
+        description: project.description,
+        pokering: project.pokering ? project.pokering : firestore.FieldValue.delete()
+      } as Project);
   }
 }

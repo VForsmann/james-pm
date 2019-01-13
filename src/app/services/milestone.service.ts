@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
 import { StateService } from './state.service';
 import { ReferenceService } from './reference.service';
 import { MilestoneFirebase } from '../model/milestone';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +17,29 @@ export class MilestoneService {
     private stateService: StateService,
     private referenceService: ReferenceService) { }
 
-  getMilestones(): Observable <MilestoneFirebase[]> {
+  getMilestones() {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
 
     return this.db.collection('milestones', ref => ref.where('project', '==', project)
-    .orderBy('done')).valueChanges() as Observable <MilestoneFirebase[]>;
+    .orderBy('done')).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as MilestoneFirebase;
+          const id = a.payload.doc.id;
+          return {id, ...data} as MilestoneFirebase
+        })
+      })
+    );
   }
 
   addMilestone(milestone: MilestoneFirebase) {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
     this.db.collection('milestones').add({...milestone, project: project});
+  }
+
+  deleteMilestone(milestoneId: string){
+    this.db.collection('milestones').doc(milestoneId).delete();
   }
 }

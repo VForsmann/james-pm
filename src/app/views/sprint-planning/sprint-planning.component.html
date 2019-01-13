@@ -1,0 +1,37 @@
+<div
+  *ngIf="this.product_owner || this.scrummaster"
+  class="space-between d-flex flex-row"
+>
+  <h1>Select PBI's for next Sprint</h1>
+  <button
+    (click)="this.navigatePoker()"
+    type="button"
+    class="btn btn-secondary"
+  >
+    Poker
+  </button>
+  <button type="button" class="btn btn-success">Next</button>
+</div>
+<div *ngIf="this.developer">
+  <h1>Wait to get PBI's Selected</h1>
+  <div *ngIf="this.project?.pokering">
+    <h2>The Scrummaster started a Planning Poker.</h2>
+    <button>Join</button>
+  </div>
+</div>
+<br />
+<div class="list-group">
+  <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
+    <app-list-item
+      [myStyle]="backlog.selected && { 'background-color': 'grey' }"
+      [click]="this.select.bind(this)"
+      [clickPayload]="backlog"
+      [editPayload]="backlog"
+      [title]="backlog.name"
+      [edit]="this.editBacklogComponent"
+      [description]="backlog.description"
+      [backlogType]="'PBI Art: ' + backlog.type"
+      [priority]="'Priorität: ' + backlog.priority"
+    ></app-list-item>
+  </div>
+</div>

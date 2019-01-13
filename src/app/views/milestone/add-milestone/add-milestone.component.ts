@@ -17,23 +17,29 @@ export class AddMilestoneComponent implements OnInit {
     name: '',
     description: '',
     done: new Date()
-  }
+  };
 
-  constructor(public activeModal: NgbActiveModal, private milestoneService: MilestoneService) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private milestoneService: MilestoneService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  onSubmit(){
+  onSubmit() {
     this.milestoneService.addMilestone({
       name: this.milestone.name,
       description: this.milestone.description,
       done: firestore.Timestamp.fromDate(this.milestone.done)
-    })
+    });
     this.activeModal.close();
   }
 
-  datepicked(datepickerDate: NgbDateStruct){
-    this.milestone.done = new Date(datepickerDate.year, datepickerDate.month - 1, datepickerDate.day);
+  datepicked(datepickerDate: NgbDateStruct) {
+    this.milestone.done = new Date(
+      datepickerDate.year,
+      datepickerDate.month - 1,
+      datepickerDate.day
+    );
   }
 }

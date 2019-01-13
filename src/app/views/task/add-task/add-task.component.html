@@ -25,16 +25,28 @@
         />
       </div>
       <div class="form-group">
-          <label for="name" class="control-label">Description</label>
-          <input
-            type="name"
-            class="form-control"
-            id="description"
-            name="description"
-            [(ngModel)]="task.description"
-            #description="ngModel"
-          />
-        </div>
+        <label for="name" class="control-label">Description</label>
+        <input
+          type="name"
+          class="form-control"
+          id="description"
+          name="description"
+          [(ngModel)]="task.description"
+          #description="ngModel"
+        />
+      </div>
+      <div class="form-group">
+        <select
+          class="form-control"
+          required
+          name="backlog"
+          [(ngModel)]="task.backlog"
+        >
+          <option [value]="backlog.id" *ngFor="let backlog of (backlogs | async)">{{
+            backlog.name
+          }}</option>
+        </select>
+      </div>
     </form>
   </div>
 </div>

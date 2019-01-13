@@ -31,7 +31,7 @@ export class BacklogTasksComponent implements OnInit {
     });
     this.tasks = this.taskService.getTasksForBacklog(this.backlogId);
     this.projectId = this.route.snapshot.paramMap.get('id');
-    this.allTasks = this.taskService.getAllTasksWithoutBacklog(this.projectId);
+    // this.allTasks = this.taskService.getAllTasksWithoutBacklog(this.projectId);
   }
 
   onDropAdd(e: any) {

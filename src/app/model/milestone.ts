@@ -1,6 +1,7 @@
 import { firestore } from 'firebase';
 
 interface Milestone {
+    id?: string;
     name: string;
     description: string;
 }

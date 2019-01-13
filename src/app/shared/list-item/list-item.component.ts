@@ -30,6 +30,7 @@ export class ListItemComponent implements OnInit {
   @Input() backlog: string;
   @Input() backlogType: string;
   @Input() priority: string;
+  @Input() myStyle: string;
 
   faTrash = faTrash;
   faEdit = faEdit;

@@ -12,7 +12,7 @@ export class DeleteUserstoryComponent implements OnInit {
   modalInput;
   userstory: Userstory;
 
-  constructor(private activeModal: NgbActiveModal, private userstoryService: UserstoryService) { }
+  constructor(public activeModal: NgbActiveModal, private userstoryService: UserstoryService) { }
 
   ngOnInit() {
     this.userstory = this.modalInput;
