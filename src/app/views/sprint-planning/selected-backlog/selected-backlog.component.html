@@ -3,10 +3,10 @@
 ></app-header>
   <div class="task-container">
     <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
-      <app-task-list
+        <app-task-list
         [backlog]="backlog"
         [addTask]="this.addTaskComponent"
         [payload]="{ projectId: this.projectId, backlogId: backlog.id }"
-      ></app-task-list>
-    </div>
+        ></app-task-list>
+      </div>
   </div>

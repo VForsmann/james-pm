@@ -1,12 +1,12 @@
 .row-container {
     display: flex;
+    height: 120px;
 }
 
 .backlog-container {
     display: inline-block;
     border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
-    border-radius: 5px;
+    padding: 5px;
     width: 20vw;
 }
 

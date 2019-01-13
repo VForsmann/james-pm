@@ -32,7 +32,6 @@
     </div>
   </div>
 </app-header>
-<br />
 <div class="list-group">
   <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
     <app-list-item

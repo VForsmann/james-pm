@@ -58,6 +58,11 @@ export class UserstoryService {
     return this.getUserstorysFromProject(projectRef);
   }
 
+  getUserStoryFromBacklogId(backlogId: string): Observable<Partial<Userstory>[]> {
+    const backlogRef = this.referenceService.getBacklogReference(backlogId);
+    return this.db.collection('userstorys', ref => ref.where('backlog', '==', backlogRef)).valueChanges();
+  }
+
   addNewUSerstory(userstory) {
     return this.db.collection('userstorys').add(userstory);
   }
