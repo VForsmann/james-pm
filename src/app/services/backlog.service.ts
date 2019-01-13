@@ -63,6 +63,13 @@ export class BacklogService {
     return result;
   }
 
+  getBacklog(backlogRef) {
+    const result = this.db
+      .doc(backlogRef)
+      .valueChanges();
+    return result;
+  }
+
   addNewBacklog(backlog) {
     return this.db.collection('backlogs').add(backlog);
   }
