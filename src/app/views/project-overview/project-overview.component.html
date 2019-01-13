@@ -1,3 +1,4 @@
+<app-header [title]="'Your Projects'" [add]="addProjectComponent"></app-header>
 <div class="list-group">
   <app-list-item
     *ngFor="let project of (projects | async)"
@@ -12,7 +13,4 @@
     [edit]="this.editProjectComponent"
     [delete]="deleteProjectComponent"
   ></app-list-item>
-  <div class="add-new-project">
-    <app-modal [component]="addProjectComponent"> + </app-modal>
-  </div>
 </div>
