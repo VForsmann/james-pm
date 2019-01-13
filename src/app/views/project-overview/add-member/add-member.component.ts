@@ -8,21 +8,38 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./add-member.component.scss']
 })
 export class AddMemberComponent implements OnInit {
-
   @Input() modalInput;
 
   user = {
     email: '',
+    role: '',
     working_units: 0
   };
-
-  constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
+  role;
+  roles;
+  selectedRole;
+  constructor(
+    public activeModal: NgbActiveModal,
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit() {
+    this.projectService.getRoleForProjectId(this.modalInput['id']).subscribe(role => {
+      this.role = role;
+      console.log(this.role);
+    });
+
+    this.roles = this.projectService.getRoles();
   }
 
   onSubmit() {
-    this.projectService.addMemberToProject(this.modalInput['id'], this.user.email, this.user.working_units);
+    this.projectService.addMemberToProject(
+      this.modalInput['id'],
+      this.user.email,
+      this.user.working_units,
+      this.selectedRole
+    );
+    console.log(this.selectedRole);
     this.activeModal.close();
   }
 }

@@ -1,15 +1,36 @@
-<app-header [title]="'Product Backlog Items'" [add]="addBacklogComponent" [payload]="projectId"></app-header>
+<div *ngIf="this.role === 'product owner'">
+    <app-header
+    [title]="'Product Backlog Items'"
+    [add]="addBacklogComponent"
+    [payload]="projectId"
+  ></app-header>
+</div>
+<div *ngIf="this.role !== 'product owner'">
+    <app-header
+    [title]="'Product Backlog Items'"
+  ></app-header>
+</div>
 <div class="list-group">
   <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
+    <div *ngIf="this.role === 'product owner'">
       <app-list-item
-        [click]="this.navigate"
-        [clickPayload]="backlog"
         [editPayload]="backlog"
+        [deletePayload]="backlog"
         [title]="backlog.name"
+        [delete]="this.deleteBacklogComponent"
         [edit]="this.editBacklogComponent"
         [description]="backlog.description"
         [backlogType]="'PBI Art: ' + backlog.type"
         [priority]="'Priorität: ' + backlog.priority"
       ></app-list-item>
-</div>
+    </div>
+    <div *ngIf="this.role !== 'product owner'">
+      <app-list-item
+        [title]="backlog.name"
+        [description]="backlog.description"
+        [backlogType]="'PBI Art: ' + backlog.type"
+        [priority]="'Priorität: ' + backlog.priority"
+      ></app-list-item>
+    </div>
+  </div>
 </div>

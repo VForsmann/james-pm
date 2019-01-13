@@ -1,6 +1,12 @@
-<div class="modal-header">
+<div *ngIf="role === 'scrum master' || role === 'product owner'">
+  <div class="modal-header">
     <h4 class="modal-title">Delete Project</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss()"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -8,13 +14,50 @@
     <div class="container">
       <form id="myForm" (ngSubmit)="onSubmit()" #deleteProjectForm="ngForm">
         <div class="form-group">
-          <p>Type <span class="project-name"> {{this.modalInput.name}} </span>to delete the project permanently.</p>
-          <input type="text" class="form-control" id="name" name="name" [(ngModel)]="projectName">
+          <p>
+            Type
+            <span class="project-name"> {{ this.modalInput.name }} </span>to
+            delete the project permanently.
+          </p>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            [(ngModel)]="projectName"
+          />
         </div>
       </form>
     </div>
   </div>
   <div class="modal-footer">
-    <button form="myForm" [disabled]="this.modalInput.name != projectName" type="submit" class="btn btn-danger">Delete</button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+    <button
+      form="myForm"
+      [disabled]="this.modalInput.name != projectName"
+      type="submit"
+      class="btn btn-danger"
+    >
+      Delete
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.dismiss()"
+    >
+      Cancel
+    </button>
+  </div>
+</div>
+<div *ngIf="role === 'developer'">
+  <div class="modal-header">
+    <h4 class="modal-title">Not allowed</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 </div>

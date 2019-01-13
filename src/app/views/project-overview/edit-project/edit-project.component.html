@@ -1,24 +1,73 @@
-<div class="modal-header">
-  <h4 class="modal-title">Edit Project</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <div class="container">
-    <form id="myForm" (ngSubmit)="onSubmit()" #editProjectForm="ngForm">
-      <div class="form-group">
-        <label for="name" class="control-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="this.project.name" required #email="ngModel">
-      </div>
-      <div class="form-group">
-        <label for="description" class="control-label">Description</label>
-        <input type="text" class="form-control" id="description" name="description" [(ngModel)]="this.project.description" required #email="ngModel">
-      </div>
-    </form>
+<div *ngIf="role === 'scrum master' || role === 'product owner'">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Project</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form id="myForm" (ngSubmit)="onSubmit()" #editProjectForm="ngForm">
+        <div class="form-group">
+          <label for="name" class="control-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            [(ngModel)]="this.project.name"
+            required
+            #email="ngModel"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description" class="control-label">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            name="description"
+            [(ngModel)]="this.project.description"
+            required
+            #email="ngModel"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      form="myForm"
+      [disabled]="!editProjectForm.valid"
+      type="submit"
+      class="btn btn-success"
+    >
+      Save
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.dismiss()"
+    >
+      Cancel
+    </button>
   </div>
 </div>
-<div class="modal-footer">
-  <button form="myForm" [disabled]="!editProjectForm.valid" type="submit" class="btn btn-success">Save</button>
-  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+<div *ngIf="role === 'developer'">
+  <div class="modal-header">
+    <h4 class="modal-title">Not allowed</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 </div>

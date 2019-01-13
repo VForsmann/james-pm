@@ -9,17 +9,17 @@ import { MilestoneFirebase } from 'src/app/model/milestone';
   styleUrls: ['./delete-milestone.component.scss']
 })
 export class DeleteMilestoneComponent implements OnInit {
-
   @Input() modalInput: MilestoneFirebase;
 
-  constructor(public activeModal: NgbActiveModal, private milestoneService: MilestoneService) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private milestoneService: MilestoneService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  onSubmit(){
+  onSubmit() {
     this.milestoneService.deleteMilestone(this.modalInput.id);
     this.activeModal.close();
   }
-
 }

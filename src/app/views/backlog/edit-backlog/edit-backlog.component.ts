@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BacklogService } from 'src/app/services/backlog.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from 'src/app/services/user.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,21 +11,27 @@ import { Observable } from 'rxjs';
 export class EditBacklogComponent implements OnInit {
   modalInput;
   backlogId;
-  selectedUserId = '';
-  users: Observable<{}>;
+  types;
   constructor(
     private backlogService: BacklogService,
     public activeModal: NgbActiveModal
   ) { }
+
   backlog = {
     name: '',
-    project: undefined
+    description: '',
+    priority: ''
   };
   ngOnInit() {
     this.backlogId = this.modalInput['id'];
+    this.backlog['id'] = this.backlogId;
+    this.backlog.name = this.modalInput['name'];
+    this.backlog.description = this.modalInput['description'];
+    this.backlog.priority = this.modalInput['priority'];
   }
 
   onSubmit() {
+    this.backlogService.updateBacklog(this.backlog);
     this.activeModal.close();
   }
 }

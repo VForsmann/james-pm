@@ -115,6 +115,10 @@ export class ProjectService {
     });
   }
 
+  getRoles() {
+    return this.db.collection('roles').snapshotChanges();
+  }
+
   addNewProject(project, working_units) {
     project.default_sprint_time_ms = ms(project.default_sprint_time);
     return this.db

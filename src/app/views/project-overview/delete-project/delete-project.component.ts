@@ -12,10 +12,14 @@ export class DeleteProjectComponent implements OnInit {
   @Input() modalInput;
 
   projectName = '';
-
+  role;
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
 
   ngOnInit() {
+    this.projectService.getRoleForProjectId(this.modalInput['id']).subscribe(role => {
+      this.role = role;
+      console.log(this.role);
+    });
   }
 
   onSubmit() {
