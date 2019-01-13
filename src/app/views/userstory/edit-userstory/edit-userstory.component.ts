@@ -26,7 +26,7 @@ export class EditUserstoryComponent implements OnInit {
   };
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private userstoryService: UserstoryService,
     private referenceService: ReferenceService
   ) {}

@@ -21,7 +21,7 @@ export class AddTaskComponent implements OnInit {
   backlogs;
   constructor(
     private taskService: TaskService,
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private referenceService: ReferenceService,
     private backlogService: BacklogService
     ) { }

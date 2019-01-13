@@ -16,7 +16,7 @@ export class EditBacklogComponent implements OnInit {
   users: Observable<{}>;
   constructor(
     private backlogService: BacklogService,
-    private activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal
   ) { }
   backlog = {
     name: '',

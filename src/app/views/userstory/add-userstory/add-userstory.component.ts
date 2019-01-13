@@ -25,7 +25,7 @@ export class AddUserstoryComponent implements OnInit {
   @Input() backlogmode: boolean;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private userstoryService: UserstoryService,
     private referenceService: ReferenceService,
     private stateService: StateService,

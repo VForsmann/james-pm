@@ -9,9 +9,9 @@
       <small></small>
     </div>
     <p class="mb-1">{{ this.description }}</p>
-    <small>{{ this.expanditure }}</small>
+    <small>{{ this.expenditure }}</small>
     <small>{{ this.sprint }}</small> <small>{{ backlogType }}</small> <small class="right">{{ priority }}</small>
-    <small *ngIf="this.hasSprint">Ist einem Sprint zugewiesen</small>
+    <small *ngIf="this.sprint">Ist einem Sprint zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">
     <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.addPayload">

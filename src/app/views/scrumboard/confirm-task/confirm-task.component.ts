@@ -11,7 +11,7 @@ export class ConfirmTaskComponent implements OnInit {
   modalInput;
   constructor(
     private taskService: TaskService,
-    private activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal
   ) {}
 
   ngOnInit() {}
