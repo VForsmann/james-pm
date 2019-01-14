@@ -32,8 +32,11 @@ export class SelectedBacklogComponent implements OnInit {
   }
 
   saveNextSprint() {
-    this.sprintService.getNextSprint(this.projectId).then(
-      sprint => console.log('next Sprint:', sprint)
-    );
+    // this.sprintService.getNextSprint(this.projectId).then(
+    //   sprint => console.log('next Sprint:', sprint)
+    // );
+    this.sprintService.testGetNextSprintOrCreate(this.projectId).then(res => {
+      console.log(res);
+    });
   }
 }

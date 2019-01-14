@@ -5,7 +5,7 @@ import { ProjectService } from './project.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Sprint } from '../model/sprint';
-
+import * as firestore from 'firebase';
 @Injectable({
   providedIn: 'root'
 })
@@ -67,72 +67,90 @@ export class SprintService {
     return this.getSprintsForProject(projectRef);
   }
 
-  getCurrentSprint(projectId: string) {
+  testGetNextSprint(projectId: string) {
     const projectRef = this.referenceService.getProjectReference(projectId);
     return new Promise(resolve => {
       this.db
         .collection('sprints', ref =>
-          ref.where('project', '==', projectRef).where('state', '==', 'current')
+          ref
+            .where('project', '==', projectRef)
+            .orderBy('start_date', 'desc')
+            .limit(2)
         )
         .snapshotChanges()
-        .subscribe(metaSprint => {
-          if (metaSprint[0]) {
-            const sprintId = metaSprint[0].payload.doc.id;
-            this.getSprintWithId(sprintId).subscribe(sprintData => {
-              this.projectService
-                .getProjectForId(projectId)
-                .subscribe(project => {
-                  if (
-                    sprintData.start_date.seconds +
-                      project.default_sprint_time_ms / 1000 <
-                    Date.now() / 1000
-                  ) {
-                    sprintData.state = '';
-                    this.updateSprint(sprintData as Sprint);
-                    this.getNextSprint(projectId).then(sprint => {
-                      resolve(sprint);
-                    });
-                  } else {
-                    sprintData.id = sprintId;
-                    resolve(sprintData);
-                  }
-                });
-            });
-          }
+        .subscribe(sprints => {
+          sprints.map(actions => {
+            if (
+              actions.payload.doc.data()['start_date'] >
+              Date.now() / 1000
+            ) {
+              resolve(actions.payload.doc.data());
+            }
+          });
         });
     });
   }
 
-  getNextSprint(projectId: string) {
+  testGetNextSprintOrCreate(projectId: string) {
     const projectRef = this.referenceService.getProjectReference(projectId);
-    return new Promise<Sprint>(resolve => {
+    let sprint;
+    let nextRef;
+    return new Promise(resolve => {
       this.db
-        .collection('sprints', ref =>
-          ref.where('project', '==', projectRef).where('state', '==', 'next')
-        )
-        .snapshotChanges()
-        .subscribe(metaSprint => {
-          if (metaSprint[0]) {
-            const sprintId = metaSprint[0].payload.doc.id;
-            this.getSprintWithId(sprintId).subscribe(sprintData => {
-              sprintData.id = sprintId;
-              if (sprintData.start_date.seconds < Date.now() / 1000) {
-                sprintData.state = 'current';
-                this.updateSprint(sprintData as Sprint);
-                console.log('this is the next current sprint:', sprintData);
-                resolve(sprintData as Sprint);
-              } else if (sprintData.start_date.seconds < Date.now() / 1000) {
-                console.log('this is the next sprint:', sprintData);
-                resolve(sprintData as Sprint);
-              } else {
-                console.log('there is no next sprint, i create a new one');
-                // this.addNextSprint(projectId).then(
-                //   nextSprint => resolve(nextSprint),
-                //   error => reject(error)
-                // );
-              }
+        .collection('projects')
+        .doc(projectId)
+        .valueChanges()
+        .subscribe(project_val => {
+          const subs = this.db
+            .collection('sprints', ref =>
+              ref
+                .where('project', '==', projectRef)
+                .orderBy('start_date', 'desc')
+                .limit(1)
+            )
+            .snapshotChanges()
+            .subscribe(sprints => {
+              sprints.map(actions => {
+                sprint = actions.payload.doc.data();
+                nextRef = actions.payload.doc.ref;
+                subs.unsubscribe();
+              });
+              console.log(sprint);
+                if (
+                  sprint['start_date'] >
+                  Date.now() / 1000
+                ) {
+                  console.log('Nothing');
+                  resolve(nextRef);
+                } else if (
+                  sprint['start_date'] >
+                  (Date.now() - project_val['default_sprint_time_ms']) / 1000
+                ) {
+                  this.db
+                    .collection('sprints')
+                    .add({
+                      project: projectRef,
+                      start_date:
+                        sprint['start_date'] +
+                        project_val['default_sprint_time_ms'] / 1000
+                    })
+                    .then(res => {
+                      console.log('Create next one');
+                      resolve(res);
+                    });
+                } else {
+                  this.db
+                    .collection('sprints')
+                    .add({
+                      project: projectRef,
+                      start_date: Date.now() / 1000
+                    })
+                    .then(res => {
+                      console.log('Instant new');
+                      resolve(res);
+                    });
+                }
             });
-          }
         });
     });
   }
@@ -152,14 +170,5 @@ export class SprintService {
     //       .then(() => console.log('add new sprint'));
     //   });
     // });
-  }
-
-  updateSprint(sprint: Sprint) {
-    return this.db
-      .collection('sprints')
-      .doc(sprint.id)
-      .update({
-        state: sprint.state
-      });
   }
 }
