@@ -39,6 +39,8 @@ export class BacklogService {
                       backlog_data['userName'] =
                         res['firstname'] + ' ' + res['lastname'];
                     });
+                } else {
+                  backlog.unsubscribe();
                 }
                 backlog_data['id'] = backlogId;
                 if (update_backlog.indexOf(backlogId) !== -1) {
@@ -94,7 +96,9 @@ export class BacklogService {
       .update({
         name: backlog.name,
         description: backlog.description,
-        selected: backlog.selected ? backlog.selected : firestore.FieldValue.delete()
+        selected: backlog.selected
+          ? backlog.selected
+          : firestore.FieldValue.delete()
       });
   }
 
@@ -102,7 +106,9 @@ export class BacklogService {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {
       const backlogs = this.db
-        .collection('backlogs', ref => ref.where('project', '==', projRef).where('selected', '==', true))
+        .collection('backlogs', ref =>
+          ref.where('project', '==', projRef).where('selected', '==', true)
+        )
         .snapshotChanges();
       backlogs.subscribe(backlogs_data => {
         const backlog_list = [];
@@ -122,6 +128,8 @@ export class BacklogService {
                       backlog_data['userName'] =
                         res['firstname'] + ' ' + res['lastname'];
                     });
+                } else {
+                  backlog.unsubscribe();
                 }
                 backlog_data['id'] = backlogId;
                 if (update_backlog.indexOf(backlogId) !== -1) {
@@ -134,6 +142,7 @@ export class BacklogService {
             }
           );
         });
+        observer.next(backlog_list);
       });
     });
   }

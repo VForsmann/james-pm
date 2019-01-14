@@ -194,7 +194,6 @@ export class ProjectService {
   }
 
   updateProject(project) {
-    console.log(project);
     return this.db
       .collection('projects')
       .doc(project.id)

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { BacklogService } from 'src/app/services/backlog.service';
+import { ReferenceService } from 'src/app/services/reference.service';
+import { PlanningPokerService } from 'src/app/services/planning-poker.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-planning-poker',
@@ -13,7 +16,9 @@ export class PlanningPokerComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private backlogService: BacklogService
+    private backlogService: BacklogService,
+    private referenceService: ReferenceService,
+    private planningPokerService: PlanningPokerService
   ) {}
   projectId: string;
   scrummaster = false;
@@ -23,10 +28,16 @@ export class PlanningPokerComponent implements OnInit {
   backlogs;
   storyPoints = 0;
   spCounter = 0;
+  planning_poker;
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
-    this.backlogs = this.backlogService.getSelectedBacklogs(this.projectId);
+    /* this.backlogs = this.backlogService.getSelectedBacklogs(this.projectId); */
+    this.projectService.getProjectForId(this.projectId).subscribe(pro => {
+      if (!pro['pokering']) {
+        this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
+      }
+    });
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
       switch (role) {
         case 'scrum master': {
@@ -48,6 +59,109 @@ export class PlanningPokerComponent implements OnInit {
         }
       }
     });
+    this.checkAndCreateBacklogs();
+    this.prepareDataForScrummaster();
+  }
+
+  prepareDataForScrummaster() {
+    let planning_pokers_data = [];
+    this.planning_poker = Observable.create(observer => {
+      this.backlogService
+      .getSelectedBacklogs(this.projectId)
+      .subscribe(backlogs => {
+        planning_pokers_data = [];
+        backlogs.map(backlog_data => {
+          const backlogRef = this.referenceService.getBacklogReference(
+            backlog_data.id
+          );
+          const planning_poker_data = this.planningPokerService.getPlanningPokerForBacklogRef(
+            backlogRef
+          );
+          planning_poker_data.subscribe(p => console.log(p));
+          const index = planning_pokers_data.indexOf(planning_poker_data);
+          if (index !== -1) {
+            planning_pokers_data.splice(index, 1);
+            planning_pokers_data.push(planning_poker_data);
+          } else {
+            planning_pokers_data.push(planning_poker_data);
+          }
+          observer.next(planning_pokers_data);
+        });
+      });
+    });
+  }
+
+  /**
+   * Raketenscheisse, ohne Vitus am besten nicht anpacken.
+   */
+  checkAndCreateBacklogs() {
+    let backlogs_data = [];
+    this.backlogs = Observable.create(observer => {
+      this.backlogService
+        .getSelectedBacklogs(this.projectId)
+        .subscribe(backlogs => {
+          backlogs_data = [];
+          backlogs.map(backlog_data => {
+            const index = backlogs_data.findIndex(
+              innerback => innerback.id === backlog_data.id
+            );
+
+            if (index !== -1) {
+              backlogs_data.splice(index, 1);
+              backlogs_data.push(backlog_data);
+              const sub = this.referenceService
+                .getCreatorReference()
+                .subscribe(user => {
+                  const backlogRef = this.referenceService.getBacklogReference(
+                    backlog_data.id
+                  );
+                  this.planningPokerService
+                    .checkPlanningPoker(backlogRef, user)
+                    .subscribe(res => {
+                      res.map(innerres => {
+                        backlog_data['storyPoints'] = innerres['storyPoints'];
+                      });
+                      if (res.length === 0) {
+                        this.addPlanningPokerEntity(user, backlogRef);
+                      }
+                      observer.next(backlogs_data);
+                    });
+                });
+            } else {
+              backlogs_data.push(backlog_data);
+              const sub = this.referenceService
+                .getCreatorReference()
+                .subscribe(user => {
+                  const backlogRef = this.referenceService.getBacklogReference(
+                    backlog_data.id
+                  );
+                  this.planningPokerService
+                    .checkPlanningPoker(backlogRef, user)
+                    .subscribe(res => {
+                      res.map(innerres => {
+                        backlog_data['storyPoints'] = innerres['storyPoints'];
+                      });
+                      if (res.length === 0) {
+                        this.addPlanningPokerEntity(user, backlogRef);
+                      }
+                      observer.next(backlogs_data);
+                    });
+                });
+            }
+          });
+          observer.next(backlogs_data);
+        });
+    });
+  }
+
+  addPlanningPokerEntity(user, backlog) {
+    const pp = {
+      user: user,
+      backlog: backlog,
+      storyPoints: 0,
+      spCounter: 0
+    };
+    this.planningPokerService.addPlanningPoker(pp);
   }
 
   endPoker() {
@@ -65,24 +179,64 @@ export class PlanningPokerComponent implements OnInit {
   }
 
   increase(backlog) {
-    this.spCounter = this.spCounter + 1;
-    this.storyPoints = this.fibonacci(this.spCounter);
-    this.update(backlog);
+    this.referenceService.getCreatorReference().subscribe(user => {
+      const backlogRef = this.referenceService.getBacklogReference(backlog.id);
+      const subOne = this.planningPokerService
+        .getPlanningPoker(backlogRef, user)
+        .subscribe(pp => {
+          subOne.unsubscribe();
+          pp.map(actions => {
+            const ppId = actions.payload.doc.id;
+            const subTwo = this.planningPokerService
+              .getPlanningPokerForId(ppId)
+              .subscribe(rpp => {
+                subTwo.unsubscribe();
+                rpp['spCounter'] = rpp['spCounter'] + 1;
+                rpp['storyPoints'] = this.fibonacci(rpp['spCounter']);
+                rpp['id'] = ppId;
+                this.update(rpp);
+              });
+          });
+        });
+    });
   }
 
   decrease(backlog) {
-    if (this.spCounter >= 1) {
-      this.spCounter = this.spCounter - 1;
-      this.storyPoints = this.fibonacci(this.spCounter);
-    }
-    if (this.spCounter === 0) {
-      this.storyPoints = 0;
-    }
-    this.update(backlog);
+    this.referenceService.getCreatorReference().subscribe(user => {
+      const backlogRef = this.referenceService.getBacklogReference(backlog.id);
+      const subOne = this.planningPokerService
+        .getPlanningPoker(backlogRef, user)
+        .subscribe(pp => {
+          subOne.unsubscribe();
+          pp.map(actions => {
+            const ppId = actions.payload.doc.id;
+            const subTwo = this.planningPokerService
+              .getPlanningPokerForId(ppId)
+              .subscribe(rpp => {
+                subTwo.unsubscribe();
+                if (rpp['spCounter'] >= 1) {
+                  rpp['spCounter'] = rpp['spCounter'] - 1;
+                  rpp['storyPoints'] = this.fibonacci(rpp['spCounter']);
+                }
+                if (rpp['spCounter'] === 0) {
+                  rpp['storyPoints'] = 0;
+                }
+                rpp['id'] = ppId;
+                this.update(rpp);
+              });
+          });
+        });
+    });
   }
 
-  update(backlog) {
-    
+  navigateBack() {
+    this.router.navigate(['dashboard', this.projectId, 'sprint-planning']);
+  }
+
+  getStoryPoints(backlog) {}
+
+  update(pp_data) {
+    this.planningPokerService.updatePlanningPoker(pp_data);
   }
 
   fibonacci(num) {

@@ -20,9 +20,9 @@
   </div>
 </div>
 <br />
-<div class="list-group">
-  <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
-    <app-list-item
+<div class="list-group ng-cloak" ng-cloak>
+  <div *ngFor="let backlog of (this.backlogs | sort: 'priority')">
+    <app-list-item class="ng-cloak"
       [myStyle]="backlog.selected && { 'background-color': 'grey' }"
       [click]="this.select.bind(this)"
       [clickPayload]="backlog"

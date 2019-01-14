@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { ProjectService } from 'src/app/services/project.service';
 import { StateService } from 'src/app/services/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Project } from 'src/app/model/project';
   templateUrl: './sprint-planning.component.html',
   styleUrls: ['./sprint-planning.component.scss']
 })
-export class SprintPlanningComponent implements OnInit {
+export class SprintPlanningComponent implements OnInit, AfterViewChecked {
   constructor(
     private projectService: ProjectService,
     private stateService: StateService,
@@ -26,6 +26,7 @@ export class SprintPlanningComponent implements OnInit {
   developer = false;
   projectId: string;
   project;
+  
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
@@ -50,7 +51,11 @@ export class SprintPlanningComponent implements OnInit {
         }
       }
     });
-    this.backlogs = this.backlogService.getBacklogs(this.projectId);
+    this.backlogs = this.backlogService
+      .getBacklogs(this.projectId)
+      .subscribe(backlogs => {
+        this.backlogs = backlogs;
+      });
     this.projectService.getProjectForId(this.projectId).subscribe(pro => {
       this.project = pro;
     });
@@ -66,10 +71,7 @@ export class SprintPlanningComponent implements OnInit {
   }
 
   navigatePoker() {
-    if (
-      (this.scrummaster || this.product_owner) &&
-      !this.project['pokering']
-    ) {
+    if ((this.scrummaster || this.product_owner) && !this.project['pokering']) {
       this.project['id'] = this.projectId;
       this.project['pokering'] = true;
       this.projectService.updateProject(this.project);
