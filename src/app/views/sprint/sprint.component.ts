@@ -17,7 +17,7 @@ export class SprintComponent implements OnInit {
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(projectId);
-    this.sprints = this.sprintService.getSprintsForProjectId(projectId);
+    // this.sprints = this.sprintService.getSprintsForProjectId(projectId);
     this.sprints.subscribe((sprint) => {
       console.log(sprint);
     });

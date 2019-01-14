@@ -12,7 +12,7 @@ export class EditProjectComponent implements OnInit {
   @Input() modalInput;
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService) { }
 
-  project: Project = {
+  project: Partial<Project> = {
     id: '',
     name: '',
     description: ''

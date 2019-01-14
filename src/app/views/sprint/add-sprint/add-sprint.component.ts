@@ -18,7 +18,6 @@ export class AddSprintComponent implements OnInit {
   }
 
   onSubmit() {
-    this.sprintService.addNewSprint(this.sprint);
     this.activeModal.close();
   }
 

@@ -65,7 +65,7 @@ export class ProjectService {
     });
   }
 
-  getProjectForId(projId: string): Observable<{}> {
+  getProjectForId(projId: string): Observable<Partial<Project>> {
     this.stateService.setLoading(true);
     const result = this.db
       .collection('projects')

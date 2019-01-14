@@ -6,6 +6,7 @@ import { BacklogService } from 'src/app/services/backlog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateService } from 'src/app/services/state.service';
 import { TaskService } from 'src/app/services/task.service';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-selected-backlog',
@@ -20,12 +21,19 @@ export class SelectedBacklogComponent implements OnInit {
   constructor(
     private backlogService: BacklogService,
     private route: ActivatedRoute,
-    private stateService: StateService
+    private stateService: StateService,
+    private sprintService: SprintService
   ) { }
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(this.projectId);
     this.backlogs = this.backlogService.getSelectedBacklogs(this.projectId);
+  }
+
+  saveNextSprint() {
+    this.sprintService.getNextSprint(this.projectId).then(
+      sprint => console.log('next Sprint:', sprint)
+    );
   }
 }

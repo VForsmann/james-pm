@@ -1,6 +1,9 @@
 <app-header
   [title]="'Your selected Backlogitems for the next sprint'"
-></app-header>
+  [showContent]="true"
+>
+<button class="btn btn-success" (click)="this.saveNextSprint()">Done</button>
+</app-header>
   <div class="task-container">
     <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
         <app-task-list
