@@ -41,14 +41,18 @@ export class SelectedBacklogComponent implements OnInit {
             backlogsSub.unsubscribe();
             backlog.sprint = sprintRef;
             this.backlogService.updateBacklog(backlog);
-          })
+          },
+          error => console.warn('could not get next Sprint!' + error)
+          )
           .then(() => {
             this.router.navigate([
               '/dashboard',
               this.projectId,
               'scrum'
             ]);
-          });
+          },
+          error => console.warn('could not set sprint reference in selected backlogs!' + error)
+          );
       });
     });
   }

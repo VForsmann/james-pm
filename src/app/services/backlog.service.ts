@@ -156,16 +156,19 @@ export class BacklogService {
   }
 
   updateBacklog(backlog) {
+    if (!backlog.sprint) {
+      backlog.sprint = null;
+    }
     return this.db
       .collection('backlogs')
       .doc(backlog.id)
       .update({
         name: backlog.name,
+        sprint: backlog.sprint,
         description: backlog.description,
         selected: backlog.selected
           ? backlog.selected
-          : firestore.FieldValue.delete(),
-        sprint: backlog.sprint
+          : firestore.FieldValue.delete()
       });
   }
 
