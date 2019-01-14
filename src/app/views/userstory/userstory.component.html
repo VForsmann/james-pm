@@ -1,7 +1,7 @@
 <app-header
   [title]="'User-Storys'"
 ></app-header>
-<div class="list" *ngFor="let userstory of (userstorys | async)">
+<div *ngFor="let userstory of (userstorys | async)">
   <app-list-item
     [title]="userstory.name"
     [description]="userstory.description"

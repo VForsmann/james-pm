@@ -4,6 +4,45 @@
   <button type="button" class="btn btn-danger" (click)="this.endPoker()">
     Poker Beenden
   </button>
+  <br />
+  <div class="container-fluid">
+    <div *ngFor="let pp of (this.planning_poker | async)">
+      <p>{{pp.storyPoints}}</p>
+    </div>
+    <div class="table-responsive-md">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="this.developer">
@@ -11,10 +50,13 @@
     Make a decision. How many days you would need for each PBI? A Day equals 8
     Working-Hours
   </h3>
+  <button (click)="this.navigateBack()" type="button" class="btn btn-success">
+    Accept
+  </button>
   <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
     <div class="d-flex flex-row">
       <div class="w-75">
-          <app-list-item
+        <app-list-item
           [editPayload]="backlog"
           [title]="backlog.name"
           [edit]="this.editBacklogComponent"
@@ -24,11 +66,27 @@
         ></app-list-item>
       </div>
       <div class="w-25">
-          <input class="form-control" type="text" placeholder="I would need {{this.storyPoints}} Story-Points." readonly>
-          <button (click)="this.increase(backlog)" type="button" class="btn btn-success">Increse</button>
-          <button (click)="this.decrease(backlog)" type="button" class="btn btn-danger">Decrease</button>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="I would need {{ backlog.storyPoints }} Story-Points."
+          readonly
+        />
+        <button
+          (click)="this.increase(backlog)"
+          type="button"
+          class="btn btn-success"
+        >
+          Increse
+        </button>
+        <button
+          (click)="this.decrease(backlog)"
+          type="button"
+          class="btn btn-danger"
+        >
+          Decrease
+        </button>
       </div>
-
     </div>
   </div>
 </div>

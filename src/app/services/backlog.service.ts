@@ -42,6 +42,8 @@ export class BacklogService {
                       backlog_data['userName'] =
                         res['firstname'] + ' ' + res['lastname'];
                     });
+                } else {
+                  backlog.unsubscribe();
                 }
                 backlog_data['id'] = backlogId;
                 if (update_backlog.indexOf(backlogId) !== -1) {
@@ -206,6 +208,7 @@ export class BacklogService {
             }
           );
         });
+        observer.next(backlog_list);
       });
     });
   }
