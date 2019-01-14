@@ -4,21 +4,16 @@ import { HomeComponent } from './views/home/home.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ProjectOverviewComponent } from './views/project-overview/project-overview.component';
 import { AuthGuard } from './auth.guard';
-import { AddProjectComponent } from './views/project-overview/add-project/add-project.component';
-import { EditProjectComponent } from './views/project-overview/edit-project/edit-project.component';
 import { BacklogComponent } from './views/backlog/backlog.component';
 import { SprintComponent } from './views/sprint/sprint.component';
 import { ScrumboardComponent } from './views/scrumboard/scrumboard.component';
 import { UserstoryComponent } from './views/userstory/userstory.component';
-import { AddBacklogComponent } from './views/backlog/add-backlog/add-backlog.component';
-import { EditBacklogComponent } from './views/backlog/edit-backlog/edit-backlog.component';
 import { BacklogTasksComponent } from './views/backlog/backlog-tasks/backlog-tasks.component';
 import { RoadmapComponent } from './views/roadmap/roadmap.component';
 import { TaskComponent } from './views/task/task.component';
-import { AddTaskComponent } from './views/task/add-task/add-task.component';
-import { ConfirmTaskComponent } from './views/scrumboard/confirm-task/confirm-task.component';
 import { SprintPlanningComponent } from './views/sprint-planning/sprint-planning.component';
 import { PlanningPokerComponent } from './views/planning-poker/planning-poker.component';
+import { SelectedBacklogComponent } from './views/sprint-planning/selected-backlog/selected-backlog.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,14 +26,9 @@ const routes: Routes = [
   { path: 'dashboard/:id/sprints', component: SprintComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprint-planning', component: SprintPlanningComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/sprint-planning/planning-poker', component: PlanningPokerComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/:id/sprint-planning/selected-backlogitems', component: SelectedBacklogComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/:id/roadmap', component: RoadmapComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] },
-  { path: 'addProject', component: AddProjectComponent, canActivate: [AuthGuard] },
-  { path: 'addTask', component: AddTaskComponent, canActivate: [AuthGuard] },
-  { path: 'editProject', component: EditProjectComponent, canActivate: [AuthGuard] },
-  { path: 'addBacklog', component: AddBacklogComponent, canActivate: [AuthGuard] },
-  { path: 'editBacklog', component: EditBacklogComponent, canActivate: [AuthGuard] },
-  { path: 'confirm', component: ConfirmTaskComponent, canActivate: [AuthGuard] }
+  { path: 'dashboard/:id/tasks', component: TaskComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

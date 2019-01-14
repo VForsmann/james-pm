@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { TaskStatusesService } from './task-statuses.service';
+import { Task } from '../model/task';
 @Injectable({
   providedIn: 'root'
 })
@@ -66,7 +67,7 @@ export class TaskService {
                         tasks_list.push(task_data);
                       }
                     } else {
-                      tasks_list.splice(update_task.indexOf(taskId), 1);
+                      subs.unsubscribe();
                     }
                     update_task = [];
                     observer.next(tasks_list);
@@ -81,28 +82,29 @@ export class TaskService {
                     tasks_list.push(task_data);
                   }
                 } else {
-                  tasks_list.splice(update_task.indexOf(taskId), 1);
+                  subs.unsubscribe();
                 }
                 update_task = [];
                 observer.next(tasks_list);
               }
+
             });
           });
         });
     });
   }
 
-  getTasksForBacklog(backlogId) {
+  getTasksForBacklog(backlogId): Observable<Task[]> {
     const backlogRef = this.referenceService.getBacklogReference(backlogId);
     return Observable.create(observer => {
-      const tasks = this.db
+      this.db
         .collection('tasks', ref => ref.where('backlog', '==', backlogRef))
         .snapshotChanges()
         .subscribe(tasks_data => {
           const tasks_list = [];
           tasks_data.map(actions => {
             const taskId = actions.payload.doc.id;
-            const task = this.getTaskWithId(taskId).subscribe(task_data => {
+            this.getTaskWithId(taskId).subscribe(task_data => {
               let update_task = tasks_list.map(t => t.id);
               if (tasks_data) {
                 task_data['id'] = taskId;

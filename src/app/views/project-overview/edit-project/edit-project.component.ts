@@ -17,11 +17,15 @@ export class EditProjectComponent implements OnInit {
     name: '',
     description: ''
   };
-
+  role;
   ngOnInit() {
     this.project.id = this.modalInput.id;
     this.project.name = this.modalInput.name;
     this.project.description = this.modalInput.description;
+    this.projectService.getRoleForProjectId(this.modalInput['id']).subscribe(role => {
+      this.role = role;
+      console.log(this.role);
+    });
   }
 
   onSubmit() {

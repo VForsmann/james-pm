@@ -27,8 +27,8 @@ export class MilestoneService {
         return actions.map(a => {
           const data = a.payload.doc.data() as MilestoneFirebase;
           const id = a.payload.doc.id;
-          return {id, ...data} as MilestoneFirebase
-        })
+          return {id, ...data} as MilestoneFirebase;
+        });
       })
     );
   }
@@ -39,7 +39,7 @@ export class MilestoneService {
     this.db.collection('milestones').add({...milestone, project: project});
   }
 
-  deleteMilestone(milestoneId: string){
+  deleteMilestone(milestoneId: string) {
     this.db.collection('milestones').doc(milestoneId).delete();
   }
 }

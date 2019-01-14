@@ -61,33 +61,38 @@ export class PlanningPokerComponent implements OnInit {
     });
     this.checkAndCreateBacklogs();
     this.prepareDataForScrummaster();
+    this.planning_poker.subscribe(p => p.forEach(inner => console.log(inner)));
   }
 
   prepareDataForScrummaster() {
     let planning_pokers_data = [];
     this.planning_poker = Observable.create(observer => {
       this.backlogService
-      .getSelectedBacklogs(this.projectId)
-      .subscribe(backlogs => {
-        planning_pokers_data = [];
-        backlogs.map(backlog_data => {
-          const backlogRef = this.referenceService.getBacklogReference(
-            backlog_data.id
-          );
-          const planning_poker_data = this.planningPokerService.getPlanningPokerForBacklogRef(
-            backlogRef
-          );
-          planning_poker_data.subscribe(p => console.log(p));
-          const index = planning_pokers_data.indexOf(planning_poker_data);
-          if (index !== -1) {
-            planning_pokers_data.splice(index, 1);
-            planning_pokers_data.push(planning_poker_data);
-          } else {
-            planning_pokers_data.push(planning_poker_data);
-          }
-          observer.next(planning_pokers_data);
+        .getSelectedBacklogs(this.projectId)
+        .subscribe(backlogs => {
+          planning_pokers_data = [];
+          backlogs.map(backlog_data => {
+            const backlogRef = this.referenceService.getBacklogReference(
+              backlog_data.id
+            );
+            const planning_poker_datas = this.planningPokerService.getPlanningPokerForBacklogRef(
+              backlogRef
+            );
+            planning_poker_datas.subscribe(planning_poker_data_sets => {
+              planning_poker_data_sets.map(planning_poker_data => {
+                /* planning_poker_data.subscribe(p => console.log(p)); */
+                const index = planning_pokers_data.indexOf(planning_poker_data);
+                if (index !== -1) {
+                  planning_pokers_data.splice(index, 1);
+                  planning_pokers_data.push(planning_poker_data);
+                } else {
+                  planning_pokers_data.push(planning_poker_data);
+                }
+                observer.next(planning_pokers_data);
+              });
+            });
+          });
         });
-      });
     });
   }
 

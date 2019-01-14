@@ -6,9 +6,9 @@
   </button>
   <br />
   <div class="container-fluid">
-    <p *ngFor="let pp of (this.planning_poker | async)">
-      {{pp}}
-    </p>
+    <div *ngFor="let pp of (this.planning_poker | async)">
+      <p>{{pp.storyPoints}}</p>
+    </div>
     <div class="table-responsive-md">
       <table class="table">
         <thead>

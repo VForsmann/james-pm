@@ -11,7 +11,7 @@ import { BacklogService } from 'src/app/services/backlog.service';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-  modalInput;
+  modalInput: { projectId: string, backlogId: string };
   task = {
     name: '',
     description: '',
@@ -27,11 +27,15 @@ export class AddTaskComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.task.project = this.referenceService.getProjectReference(this.modalInput);
-    this.backlogs = this.backlogService.getBacklogs(this.modalInput);
+    if (this.modalInput.backlogId) {
+      this.task.backlog = this.modalInput.backlogId;
+    }
+    this.task.project = this.referenceService.getProjectReference(this.modalInput.projectId);
+    this.backlogs = this.backlogService.getBacklogs(this.modalInput.projectId);
   }
 
   onSubmit() {
+    this.task.backlog = this.referenceService.getBacklogReference(this.task.backlog);
     this.taskService.addNewTask(this.task);
     this.activeModal.close();
   }

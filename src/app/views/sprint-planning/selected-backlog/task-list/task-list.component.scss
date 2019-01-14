@@ -1,0 +1,23 @@
+.row-container {
+    display: flex;
+    height: 120px;
+}
+
+.backlog-container {
+    display: inline-block;
+    border-right: 1px solid gray;
+    padding: 5px;
+    width: 20vw;
+}
+
+.tasks-row {
+    display: inline-block;
+    width: 80vw;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.task-card {
+    display: inline-block;
+    width: 300px;
+}

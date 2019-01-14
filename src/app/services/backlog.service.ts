@@ -4,6 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { firestore } from 'firebase';
+import { UserstoryService } from './userstory.service';
+import { Backlog } from '../model/backlog';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ export class BacklogService {
   constructor(
     private referenceServices: ReferenceService,
     private db: AngularFirestore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userstoryService: UserstoryService
   ) {}
 
   getBacklogs(projectId) {
@@ -57,8 +60,8 @@ export class BacklogService {
     });
   }
 
-  getBacklogWithIdValue(backlogId) {
-    const result = this.db
+  getBacklogWithIdValue(backlogId): Observable<Partial<Backlog>> {
+    const result: Observable<Partial<Backlog>> = this.db
       .collection('backlogs')
       .doc(backlogId)
       .valueChanges();
@@ -67,6 +70,36 @@ export class BacklogService {
 
   addNewBacklog(backlog) {
     return this.db.collection('backlogs').add(backlog);
+  }
+
+  deleteBacklogAndUserstory(backlogId) {
+    const backlogRef = this.db.collection('backlogs').doc(backlogId).ref;
+    this.db
+      .collection('backlogs')
+      .doc(backlogId)
+      .valueChanges()
+      .subscribe(backlog_data => {
+        if (backlog_data && backlog_data['type'] === 'Feature') {
+          let story;
+          this.db
+            .collection('userstorys', ref =>
+              ref.where('backlog', '==', backlogRef)
+            )
+            .snapshotChanges()
+            .subscribe(userstory => {
+              userstory.map(actions => {
+                story = actions.payload.doc.data();
+                story['id'] = actions.payload.doc.id;
+                this.userstoryService.deleteUserstory(story);
+              });
+            });
+        } else {
+          this.db
+            .collection('backlogs')
+            .doc(backlogId)
+            .delete();
+        }
+      });
   }
 
   addUserToBacklog(userId, backlogId) {
@@ -89,6 +122,39 @@ export class BacklogService {
     return this.db.collection('types').valueChanges();
   }
 
+  editBacklog(backlog) {
+    const backlogRef = this.db.collection('backlogs').doc(backlog.id).ref;
+    this.db
+      .collection('backlogs')
+      .doc(backlog.id)
+      .update({
+        name: backlog.name,
+        description: backlog.description,
+        priority: backlog.priority
+      })
+      .then(res => {
+        this.db
+          .collection('userstorys', ref =>
+            ref.where('backlog', '==', backlogRef)
+          )
+          .snapshotChanges()
+          .subscribe(story => {
+            story.map(actions => {
+              this.db
+                .collection('userstorys')
+                .doc(actions.payload.doc.id)
+                .update({
+                  name: backlog.name,
+                  description: backlog.description
+                })
+                .then(re => {
+                  console.log(re);
+                });
+            });
+          });
+      });
+  }
+
   updateBacklog(backlog) {
     return this.db
       .collection('backlogs')
@@ -102,7 +168,7 @@ export class BacklogService {
       });
   }
 
-  getSelectedBacklogs(projectId) {
+  getSelectedBacklogs(projectId): Observable<Backlog[]> {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {
       const backlogs = this.db

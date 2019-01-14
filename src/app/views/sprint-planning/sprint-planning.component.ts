@@ -11,7 +11,7 @@ import { Project } from 'src/app/model/project';
   templateUrl: './sprint-planning.component.html',
   styleUrls: ['./sprint-planning.component.scss']
 })
-export class SprintPlanningComponent implements OnInit, AfterViewChecked {
+export class SprintPlanningComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private stateService: StateService,
@@ -81,6 +81,15 @@ export class SprintPlanningComponent implements OnInit, AfterViewChecked {
       this.projectId,
       'sprint-planning',
       'planning-poker'
+    ]);
+  }
+
+  navigateSelectedBacklogs() {
+    this.router.navigate([
+      '/dashboard',
+      this.projectId,
+      'sprint-planning',
+      'selected-backlogitems'
     ]);
   }
 }

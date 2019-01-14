@@ -9,6 +9,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 export class HeaderComponent implements OnInit {
   @Input() title: string;
   @Input() add: Component;
+  @Input() showContent: boolean;
   @Input() payload;
 
   plus = faPlus;
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit {
 
   hasButton(): boolean {
     let result = false;
-    if (this.add) {
+    if (this.add || this.showContent) {
       result = true;
     }
     return result;

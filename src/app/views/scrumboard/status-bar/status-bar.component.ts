@@ -14,7 +14,7 @@ export class StatusBarComponent implements OnInit {
   confirmTaskComponent = ConfirmTaskComponent;
   @Input() name;
   @Input() id;
-  @Input() tasks = [];
+  @Input() tasks;
   projectId;
   nameRef;
   count = 0;

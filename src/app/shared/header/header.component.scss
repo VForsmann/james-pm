@@ -4,10 +4,15 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px $primaryDark solid;
+    border-radius: 0.25rem;
 }
 
 .buttons {
     margin: 10px;
+}
+
+.buttons > button {
+    margin-left: 5px;
 }
 
 h1 {
