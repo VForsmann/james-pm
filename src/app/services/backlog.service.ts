@@ -164,7 +164,8 @@ export class BacklogService {
         description: backlog.description,
         selected: backlog.selected
           ? backlog.selected
-          : firestore.FieldValue.delete()
+          : firestore.FieldValue.delete(),
+        sprint: backlog.sprint
       });
   }
 

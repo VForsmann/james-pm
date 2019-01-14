@@ -67,31 +67,7 @@ export class SprintService {
     return this.getSprintsForProject(projectRef);
   }
 
-  testGetNextSprint(projectId: string) {
-    const projectRef = this.referenceService.getProjectReference(projectId);
-    return new Promise(resolve => {
-      this.db
-        .collection('sprints', ref =>
-          ref
-            .where('project', '==', projectRef)
-            .orderBy('start_date', 'desc')
-            .limit(2)
-        )
-        .snapshotChanges()
-        .subscribe(sprints => {
-          sprints.map(actions => {
-            if (
-              actions.payload.doc.data()['start_date'] >
-              Date.now() / 1000
-            ) {
-              resolve(actions.payload.doc.data());
-            }
-          });
-        });
-    });
-  }
-
-  testGetNextSprintOrCreate(projectId: string) {
+  getNextSprintOrCreate(projectId: string) {
     const projectRef = this.referenceService.getProjectReference(projectId);
     let sprint;
     let nextRef;
@@ -115,60 +91,36 @@ export class SprintService {
                 nextRef = actions.payload.doc.ref;
                 subs.unsubscribe();
               });
-              console.log(sprint);
-                if (
-                  sprint['start_date'] >
-                  Date.now() / 1000
-                ) {
-                  console.log('Nothing');
-                  resolve(nextRef);
-                } else if (
-                  sprint['start_date'] >
-                  (Date.now() - project_val['default_sprint_time_ms']) / 1000
-                ) {
-                  this.db
-                    .collection('sprints')
-                    .add({
-                      project: projectRef,
-                      start_date:
-                        sprint['start_date'] +
-                        project_val['default_sprint_time_ms'] / 1000
-                    })
-                    .then(res => {
-                      console.log('Create next one');
-                      resolve(res);
-                    });
-                } else {
-                  this.db
-                    .collection('sprints')
-                    .add({
-                      project: projectRef,
-                      start_date: Date.now() / 1000
-                    })
-                    .then(res => {
-                      console.log('Instant new');
-                      resolve(res);
-                    });
-                }
+              if (sprint['start_date'] > Date.now() / 1000) {
+                resolve(nextRef);
+              } else if (
+                sprint['start_date'] >
+                (Date.now() - project_val['default_sprint_time_ms']) / 1000
+              ) {
+                this.db
+                  .collection('sprints')
+                  .add({
+                    project: projectRef,
+                    start_date:
+                      sprint['start_date'] +
+                      project_val['default_sprint_time_ms'] / 1000
+                  })
+                  .then(res => {
+                    resolve(res);
+                  });
+              } else {
+                this.db
+                  .collection('sprints')
+                  .add({
+                    project: projectRef,
+                    start_date: Date.now() / 1000
+                  })
+                  .then(res => {
+                    resolve(res);
+                  });
+              }
             });
         });
     });
-  }
-
-  addNextSprint(projectId: string) {
-    // const projectRef = this.referenceService.getProjectReference(projectId);
-    // return new Promise<Sprint>((resolve, reject) => {
-    //   let endTimestamp = Date.now() / 1000;
-    //   this.projectService.getProjectForId(projectId).subscribe(project => {
-    //     this.getCurrentSprint(projectId)
-    //       .then(
-    //         currentSprint =>
-    //           (endTimestamp =
-    //             currentSprint.start_date +
-    //             project.default_sprint_time_ms / 1000)
-    //       )
-    //       .then(() => console.log('add new sprint'));
-    //   });
-    // });
   }
 }

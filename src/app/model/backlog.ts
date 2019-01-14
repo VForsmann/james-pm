@@ -5,4 +5,5 @@ export interface Backlog {
     type: any;
     priority: string;
     project: any;
+    sprint: any;
 }

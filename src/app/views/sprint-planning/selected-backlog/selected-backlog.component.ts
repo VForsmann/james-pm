@@ -21,9 +21,10 @@ export class SelectedBacklogComponent implements OnInit {
   constructor(
     private backlogService: BacklogService,
     private route: ActivatedRoute,
+    private router: Router,
     private stateService: StateService,
     private sprintService: SprintService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
@@ -32,11 +33,23 @@ export class SelectedBacklogComponent implements OnInit {
   }
 
   saveNextSprint() {
-    // this.sprintService.getNextSprint(this.projectId).then(
-    //   sprint => console.log('next Sprint:', sprint)
-    // );
-    this.sprintService.testGetNextSprintOrCreate(this.projectId).then(res => {
-      console.log(res);
+    const backlogsSub = this.backlogs.subscribe(backlogs => {
+      backlogs.forEach(backlog => {
+        this.sprintService
+          .getNextSprintOrCreate(this.projectId)
+          .then(sprintRef => {
+            backlogsSub.unsubscribe();
+            backlog.sprint = sprintRef;
+            this.backlogService.updateBacklog(backlog);
+          })
+          .then(() => {
+            this.router.navigate([
+              '/dashboard',
+              this.projectId,
+              'scrum'
+            ]);
+          });
+      });
     });
   }
 }
