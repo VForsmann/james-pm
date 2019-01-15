@@ -11,7 +11,7 @@ export class DeleteBacklogComponent implements OnInit {
   modalInput;
   constructor(
     private backlogService: BacklogService,
-    private activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal
   ) {}
 
   ngOnInit() {}
