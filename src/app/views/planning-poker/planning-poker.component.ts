@@ -7,6 +7,7 @@ import { PlanningPokerService } from 'src/app/services/planning-poker.service';
 import { Observable } from 'rxjs';
 import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { UserService } from 'src/app/services/user.service';
+import { summaryFileName } from '@angular/compiler/src/aot/util';
 
 @Component({
   selector: 'app-planning-poker',
@@ -39,9 +40,10 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     /* this.backlogs = this.backlogService.getSelectedBacklogs(this.projectId); */
-    this.projectService.getProjectForId(this.projectId).subscribe(pro => {
+    const pokersub = this.projectService.getProjectForId(this.projectId).subscribe(pro => {
       if (!pro['pokering']) {
         this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
+        pokersub.unsubscribe();
       }
     });
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
@@ -65,13 +67,13 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
         }
       }
     });
-    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
     this.projectService.getProjectWorkingUnits(this.referenceService.getProjectReference(this.projectId)).subscribe(er => {
       const array = [];
       er.forEach(inner => {
-        array.push(inner['working_units']);
+        array.push(Number(inner['working_units']));
       });
-      this.projectSum = array.reduce(reducer);
+      this.projectSum = array.reduce((accumulator, currentValue) => accumulator + currentValue);
     });
     this.checkAndCreateBacklogs();
 
