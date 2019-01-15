@@ -87,7 +87,6 @@ export class TaskService {
                 update_task = [];
                 observer.next(tasks_list);
               }
-
             });
           });
         });
@@ -106,7 +105,7 @@ export class TaskService {
             const taskId = actions.payload.doc.id;
             this.getTaskWithId(taskId).subscribe(task_data => {
               let update_task = tasks_list.map(t => t.id);
-              if (tasks_data) {
+              if (tasks_data && task_data) {
                 task_data['id'] = taskId;
                 if (update_task.indexOf(taskId) !== -1) {
                   tasks_list[tasks_list.indexOf(taskId)] = task_data;
@@ -212,6 +211,13 @@ export class TaskService {
               .update({ id: res.id });
           });
       });
+  }
+
+  deleteTask(task) {
+    return this.db
+      .collection('tasks')
+      .doc(task.id)
+      .delete();
   }
 }
 

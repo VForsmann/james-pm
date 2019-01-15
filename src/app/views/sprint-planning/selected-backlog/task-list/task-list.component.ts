@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Backlog } from 'src/app/model/backlog';
 import { Observable } from 'rxjs';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Task } from 'src/app/model/task';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,23 +21,32 @@ export class TaskListComponent implements OnInit {
   epic: boolean;
   tasks: Observable<Task[]>;
   faPlus = faPlus;
+  faTrash = faTrash;
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
     private stateService: StateService,
     private userstoryService: UserstoryService
-    ) { }
+  ) {}
 
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(projectId);
     this.tasks = this.taskService.getTasksForBacklog(this.backlog.id);
-    this.userstoryService.getUserStoryFromBacklogId(this.backlog.id).subscribe(userstorys => {
-      userstorys.forEach(userstory => {
-        if (userstory && userstory.epic) {
-          this.epic = true;
-        }
+    this.userstoryService
+      .getUserStoryFromBacklogId(this.backlog.id)
+      .subscribe(userstorys => {
+        userstorys.forEach(userstory => {
+          if (userstory && userstory.epic) {
+            this.epic = true;
+          }
+        });
       });
-    });
+  }
+
+  deleteTask(task) {
+    this.taskService
+      .deleteTask(task)
+      .catch(() => console.warn('Something wrong with deleting Task!'));
   }
 }

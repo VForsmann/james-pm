@@ -19,7 +19,11 @@
   </span>
   <span class="tasks-row">
     <span *ngFor="let task of (tasks | async)">
-      <span class="task-card"><app-card [title]="task.name"></app-card></span>
+      <span class="task-card"><app-card [title]="task.name">
+        <button class="btn btn-danger" (click)="this.deleteTask(task)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </app-card></span>
     </span>
   </span>
 </div>  

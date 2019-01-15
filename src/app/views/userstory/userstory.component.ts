@@ -8,6 +8,7 @@ import { AddBacklogComponent } from '../backlog/add-backlog/add-backlog.componen
 import { EditUserstoryComponent } from './edit-userstory/edit-userstory.component';
 import { DeleteUserstoryComponent } from './delete-userstory/delete-userstory.component';
 import { ReferenceService } from 'src/app/services/reference.service';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-userstory',
@@ -25,7 +26,8 @@ export class UserstoryComponent implements OnInit {
   constructor(
     private userstoryService: UserstoryService,
     private stateService: StateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sprintService: SprintService
   ) {}
 
   ngOnInit() {

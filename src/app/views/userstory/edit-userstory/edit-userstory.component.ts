@@ -71,6 +71,7 @@ export class EditUserstoryComponent implements OnInit {
 
   onSubmit() {
     this.userstoryService.updateUserstory(this.userstory).then(userstory => {
+      console.log(userstory);
       if (this.userstory.epic) {
         const userstoryRef = this.referenceService.getUserstoryReference(
           this.userstory.id

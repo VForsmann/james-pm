@@ -6,6 +6,7 @@ import { BacklogService } from 'src/app/services/backlog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateService } from 'src/app/services/state.service';
 import { TaskService } from 'src/app/services/task.service';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-selected-backlog',
@@ -20,12 +21,39 @@ export class SelectedBacklogComponent implements OnInit {
   constructor(
     private backlogService: BacklogService,
     private route: ActivatedRoute,
-    private stateService: StateService
-  ) { }
+    private router: Router,
+    private stateService: StateService,
+    private sprintService: SprintService
+  ) {}
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(this.projectId);
     this.backlogs = this.backlogService.getSelectedBacklogs(this.projectId);
+  }
+
+  saveNextSprint() {
+    const backlogsSub = this.backlogs.subscribe(backlogs => {
+      backlogs.forEach(backlog => {
+        this.sprintService
+          .getNextSprintOrCreate(this.projectId)
+          .then(sprintRef => {
+            backlogsSub.unsubscribe();
+            backlog.sprint = sprintRef;
+            this.backlogService.updateBacklog(backlog);
+          },
+          error => console.warn('could not get next Sprint!' + error)
+          )
+          .then(() => {
+            this.router.navigate([
+              '/dashboard',
+              this.projectId,
+              'scrum'
+            ]);
+          },
+          error => console.warn('could not set sprint reference in selected backlogs!' + error)
+          );
+      });
+    });
   }
 }

@@ -26,7 +26,7 @@ export class SprintPlanningComponent implements OnInit {
   developer = false;
   projectId: string;
   project;
-  
+
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
@@ -53,9 +53,6 @@ export class SprintPlanningComponent implements OnInit {
     });
     this.backlogs = this.backlogService
       .getBacklogs(this.projectId);
-     /*  .subscribe(backlogs => {
-        this.backlogs = backlogs;
-      }); */
     this.projectService.getProjectForId(this.projectId).subscribe(pro => {
       this.project = pro;
     });
