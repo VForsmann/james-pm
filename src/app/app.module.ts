@@ -53,6 +53,11 @@ import { DeleteMilestoneComponent } from './views/milestone/delete-milestone/del
 import { DeleteBacklogComponent } from './views/backlog/delete-backlog/delete-backlog.component';
 import { SelectedBacklogComponent } from './views/sprint-planning/selected-backlog/selected-backlog.component';
 import { TaskListComponent } from './views/sprint-planning/selected-backlog/task-list/task-list.component';
+import { DemoNumberPipe } from './shared/pipes/demo-number.pipe';
+import { UniquePipe } from './shared/pipes/unique.pipe';
+import { RowedPipe } from './shared/pipes/rowed.pipe';
+import { SumedPipe } from './shared/pipes/sumed.pipe';
+import { FullSumPipe } from './shared/pipes/full-sum.pipe';
 
 @NgModule({
   declarations: [
@@ -97,7 +102,12 @@ import { TaskListComponent } from './views/sprint-planning/selected-backlog/task
     DeleteMilestoneComponent,
     SelectedBacklogComponent,
     TaskListComponent,
-    DeleteBacklogComponent
+    DeleteBacklogComponent,
+    DemoNumberPipe,
+    UniquePipe,
+    RowedPipe,
+    SumedPipe,
+    FullSumPipe
   ],
   imports: [
     BrowserModule,

@@ -52,10 +52,10 @@ export class SprintPlanningComponent implements OnInit {
       }
     });
     this.backlogs = this.backlogService
-      .getBacklogs(this.projectId)
-      .subscribe(backlogs => {
+      .getBacklogs(this.projectId);
+     /*  .subscribe(backlogs => {
         this.backlogs = backlogs;
-      });
+      }); */
     this.projectService.getProjectForId(this.projectId).subscribe(pro => {
       this.project = pro;
     });

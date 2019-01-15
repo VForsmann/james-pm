@@ -207,4 +207,8 @@ export class ProjectService {
         pokering: project.pokering ? project.pokering : firestore.FieldValue.delete()
       } as Project);
   }
+
+  getProjectWorkingUnits(projectRef) {
+    return this.db.collection('user_projects', ref => ref.where('project', '==', projectRef)).valueChanges();
+  }
 }

@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 import { BacklogService } from 'src/app/services/backlog.service';
 import { ReferenceService } from 'src/app/services/reference.service';
 import { PlanningPokerService } from 'src/app/services/planning-poker.service';
 import { Observable } from 'rxjs';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-planning-poker',
   templateUrl: './planning-poker.component.html',
   styleUrls: ['./planning-poker.component.scss']
 })
-export class PlanningPokerComponent implements OnInit {
+export class PlanningPokerComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private backlogService: BacklogService,
     private referenceService: ReferenceService,
-    private planningPokerService: PlanningPokerService
+    private planningPokerService: PlanningPokerService,
+    private userService: UserService
   ) {}
   projectId: string;
   scrummaster = false;
@@ -29,6 +32,9 @@ export class PlanningPokerComponent implements OnInit {
   storyPoints = 0;
   spCounter = 0;
   planning_poker;
+  headers;
+  observer = [];
+  projectSum;
 
   ngOnInit() {
     this.projectId = this.route.snapshot.paramMap.get('id');
@@ -59,38 +65,50 @@ export class PlanningPokerComponent implements OnInit {
         }
       }
     });
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    this.projectService.getProjectWorkingUnits(this.referenceService.getProjectReference(this.projectId)).subscribe(er => {
+      const array = [];
+      er.forEach(inner => {
+        array.push(inner['working_units']);
+      });
+      this.projectSum = array.reduce(reducer);
+    });
     this.checkAndCreateBacklogs();
+
     this.prepareDataForScrummaster();
-    this.planning_poker.subscribe(p => p.forEach(inner => console.log(inner)));
   }
 
   prepareDataForScrummaster() {
-    let planning_pokers_data = [];
+    const pp_list = [];
+    // selected Backlogs holen, wird mehrmals aufgerufen
     this.planning_poker = Observable.create(observer => {
       this.backlogService
         .getSelectedBacklogs(this.projectId)
-        .subscribe(backlogs => {
-          planning_pokers_data = [];
-          backlogs.map(backlog_data => {
-            const backlogRef = this.referenceService.getBacklogReference(
-              backlog_data.id
+        .subscribe(selected_backlogs_data => {
+          selected_backlogs_data.map(selected_backlog_data => {
+            const selected_backlog_ref = this.referenceService.getBacklogReference(
+              selected_backlog_data.id
             );
-            const planning_poker_datas = this.planningPokerService.getPlanningPokerForBacklogRef(
-              backlogRef
-            );
-            planning_poker_datas.subscribe(planning_poker_data_sets => {
-              planning_poker_data_sets.map(planning_poker_data => {
-                /* planning_poker_data.subscribe(p => console.log(p)); */
-                const index = planning_pokers_data.indexOf(planning_poker_data);
-                if (index !== -1) {
-                  planning_pokers_data.splice(index, 1);
-                  planning_pokers_data.push(planning_poker_data);
-                } else {
-                  planning_pokers_data.push(planning_poker_data);
-                }
-                observer.next(planning_pokers_data);
+            this.planningPokerService
+              .getPlanningPokerForBacklogRef(selected_backlog_ref)
+              .subscribe(planning_poker => {
+                planning_poker.map(planning_poker_data => {
+                  planning_poker_data['pbiName'] = selected_backlog_data.name;
+                  const index = pp_list.findIndex(innerpp => {
+                    return (
+                      innerpp.backlog.id ===
+                        planning_poker_data['backlog']['id'] &&
+                      innerpp.user.id === planning_poker_data['user']['id']
+                    );
+                  });
+                  if (index === -1) {
+                    pp_list.push(planning_poker_data);
+                  } else {
+                    pp_list[index] = planning_poker_data;
+                  }
+                  observer.next(pp_list);
+                });
               });
-            });
           });
         });
     });
@@ -100,57 +118,80 @@ export class PlanningPokerComponent implements OnInit {
    * Raketenscheisse, ohne Vitus am besten nicht anpacken.
    */
   checkAndCreateBacklogs() {
-    let backlogs_data = [];
+    // take araay - necessary to create right structure of this.backlogs
+    const backlogs_data = [];
+    // this.backlogs is a Observable which is observing backlogs_data
     this.backlogs = Observable.create(observer => {
+      // get all selected Backlogs
       this.backlogService
         .getSelectedBacklogs(this.projectId)
         .subscribe(backlogs => {
-          backlogs_data = [];
+          // sets backlog_data empty, because every backlog is coming here and the lust observe.next is the right list
+          /* backlogs_data = []; */
+          // map each incomming backlog
           backlogs.map(backlog_data => {
+            // already Part of the list?
             const index = backlogs_data.findIndex(
               innerback => innerback.id === backlog_data.id
             );
-
+            // Is in the list
             if (index !== -1) {
+              // Kicks out old element of local list
               backlogs_data.splice(index, 1);
+              // Puts it in local list
               backlogs_data.push(backlog_data);
+              // subscribes user
               const sub = this.referenceService
                 .getCreatorReference()
                 .subscribe(user => {
+                  // get backlogRef
                   const backlogRef = this.referenceService.getBacklogReference(
                     backlog_data.id
                   );
-                  this.planningPokerService
+                  // "check" ==> gets planningPoker for user and backlog and if empty create new entry
+                  const subTwo = this.planningPokerService
                     .checkPlanningPoker(backlogRef, user)
                     .subscribe(res => {
+                      // adds propery to local elements, because needed in HTML
                       res.map(innerres => {
                         backlog_data['storyPoints'] = innerres['storyPoints'];
                       });
-                      if (res.length === 0) {
-                        this.addPlanningPokerEntity(user, backlogRef);
-                      }
+                      // observes local array
                       observer.next(backlogs_data);
                     });
+                  this.observer.push(subTwo);
+                  sub.unsubscribe();
                 });
             } else {
+              // General: Is NOT in the local-list
+              // push local
               backlogs_data.push(backlog_data);
+              // subscribes user
               const sub = this.referenceService
                 .getCreatorReference()
                 .subscribe(user => {
+                  // gets backlogRef
                   const backlogRef = this.referenceService.getBacklogReference(
                     backlog_data.id
                   );
-                  this.planningPokerService
+                  // "check" ==> gets planningPoker for user and backlog and if empty create new entry
+                  const subTwo = this.planningPokerService
                     .checkPlanningPoker(backlogRef, user)
                     .subscribe(res => {
+                      // adds propery to local elements, because needed in HTML
                       res.map(innerres => {
                         backlog_data['storyPoints'] = innerres['storyPoints'];
                       });
+                      // if empty create new entry
                       if (res.length === 0) {
-                        this.addPlanningPokerEntity(user, backlogRef);
+                        if (this.developer) {
+                          this.addPlanningPokerEntity(user, backlogRef);
+                        }
                       }
                       observer.next(backlogs_data);
                     });
+                  this.observer.push(subTwo);
+                  sub.unsubscribe();
                 });
             }
           });
@@ -257,5 +298,9 @@ export class PlanningPokerComponent implements OnInit {
     }
 
     return b;
+  }
+
+  ngOnDestroy(): void {
+    this.observer.forEach(o => o.unsubscribe());
   }
 }
