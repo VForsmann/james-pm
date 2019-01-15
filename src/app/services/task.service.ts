@@ -4,6 +4,7 @@ import { ReferenceService } from './reference.service';
 import { Observable } from 'rxjs';
 import { TaskStatusesService } from './task-statuses.service';
 import { Task } from '../model/task';
+import { SprintService } from './sprint.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +14,8 @@ export class TaskService {
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService,
-    private taskStatusService: TaskStatusesService
+    private taskStatusService: TaskStatusesService,
+    private sprintService: SprintService
   ) {}
 
   getTasksForStatus(statusId) {
@@ -36,60 +38,42 @@ export class TaskService {
 
   getAllTasks(projectId) {
     const projectRef = this.referenceService.getProjectReference(projectId);
+    let backlog;
+    let tasks_list = [];
     return Observable.create(observer => {
-      this.db
-        .collection('tasks', ref => ref.where('project', '==', projectRef))
-        .snapshotChanges()
-        .subscribe(tasks_data => {
-          const tasks_list = [];
-
-          tasks_data.map(actions => {
-            const taskId = actions.payload.doc.id;
-            const subs = this.getTaskWithId(taskId).subscribe(task_data => {
-              let update_task = tasks_list.map(t => t.id);
-              // Prüft ob ein User existiert, falls ja muss dieser erstmal geholt werden
-              if (task_data['user']) {
-                this.referenceService
-                  .getUserReference(task_data['user'].id)
-                  .get()
-                  .then(user_data => {
-                    const username =
-                      user_data.data().firstname +
-                      ' ' +
-                      user_data.data().lastname;
-                    if (tasks_data) {
-                      task_data['id'] = taskId;
-                      task_data['username'] = username;
-                      // task_data['status'] = status.data().status;
-                      if (update_task.indexOf(taskId) !== -1) {
-                        tasks_list[tasks_list.indexOf(taskId)] = task_data;
-                      } else {
-                        tasks_list.push(task_data);
-                      }
-                    } else {
-                      subs.unsubscribe();
+      this.sprintService.getActualSprintFromProject(projectId).then(res => {
+        this.db
+          .collection('backlogs', ref => ref.where('sprint', '==', res))
+          .snapshotChanges()
+          .subscribe(backlogs => {
+            backlogs.map(actions => {
+              backlog = actions.payload.doc.ref;
+              const subs = this.db
+                .collection('tasks', ref => ref.where('backlog', '==', backlog))
+                .snapshotChanges()
+                .subscribe(tasks_data => {
+                  tasks_data.map(act => {
+                    const update_task = act.payload.doc.data();
+                    if (update_task['user']) {
+                      this.referenceService
+                        .getUserReference(update_task['user'].id)
+                        .get()
+                        .then(user_data => {
+                          const username =
+                            user_data.data().firstname +
+                            ' ' +
+                            user_data.data().lastname;
+                          update_task['username'] = username;
+                          // observer.next(update_task);
+                        });
                     }
-                    update_task = [];
-                    observer.next(tasks_list);
+                    observer.next(update_task);
                   });
-                // wenn kein User da ist, wird es somit unterbunden das exceptions fliegen
-              } else {
-                if (tasks_data) {
-                  task_data['id'] = taskId;
-                  if (update_task.indexOf(taskId) !== -1) {
-                    tasks_list[tasks_list.indexOf(taskId)] = task_data;
-                  } else {
-                    tasks_list.push(task_data);
-                  }
-                } else {
-                  subs.unsubscribe();
-                }
-                update_task = [];
-                observer.next(tasks_list);
-              }
+                });
             });
+            tasks_list = [];
           });
-        });
+      });
     });
   }
 

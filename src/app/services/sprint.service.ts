@@ -62,6 +62,40 @@ export class SprintService {
     return sprint;
   }
 
+  getActualSprintFromProject(projectId: string) {
+    const projectRef = this.referenceService.getProjectReference(projectId);
+    let sprintRef;
+    return new Promise(resolve => {
+      this.db
+        .collection('projects')
+        .doc(projectId)
+        .valueChanges()
+        .subscribe(project_val => {
+          const subs = this.db
+            .collection('sprints', ref =>
+              ref
+                .where('project', '==', projectRef)
+                .where('start_date', '<', Date.now() / 1000)
+                .where(
+                  'start_date',
+                  '>',
+                  (Date.now() - project_val['default_sprint_time_ms']) / 1000
+                )
+                .orderBy('start_date', 'desc')
+                .limit(1)
+            )
+            .snapshotChanges()
+            .subscribe(sprints => {
+              sprints.map(actions => {
+                sprintRef = actions.payload.doc.ref;
+                subs.unsubscribe();
+              });
+              resolve(sprintRef);
+            });
+        });
+    });
+  }
+
   getSprintsFromProjectId(projectId: string): Observable<Sprint[]> {
     const projectRef = this.referenceService.getProjectReference(projectId);
     return this.getSprintsForProject(projectRef);

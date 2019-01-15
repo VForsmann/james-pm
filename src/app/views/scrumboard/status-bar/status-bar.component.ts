@@ -35,6 +35,7 @@ export class StatusBarComponent implements OnInit {
     // e => Task den man bewegt
     if (e.dragData.status !== this.name) {
       e.dragData.status = this.name;
+      console.log(e.dragData);
       this.taskService.updateTask(e.dragData);
     }
   }

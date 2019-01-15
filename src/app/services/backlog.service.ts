@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { firestore } from 'firebase';
 import { UserstoryService } from './userstory.service';
 import { Backlog } from '../model/backlog';
+import { SprintService } from './sprint.service';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,31 @@ export class BacklogService {
     private referenceServices: ReferenceService,
     private db: AngularFirestore,
     private route: ActivatedRoute,
-    private userstoryService: UserstoryService
+    private userstoryService: UserstoryService,
+    private sprintService: SprintService
   ) {}
 
+  getBacklogsForSprint(projectId) {
+    let backlog_list = [];
+    let backlog;
+    return Observable.create(observer => {
+      this.sprintService.getActualSprintFromProject(projectId).then(res => {
+        const sub = this.db
+          .collection('backlogs', ref => ref.where('sprint', '==', res))
+          .snapshotChanges()
+          .subscribe(backlogs => {
+            backlogs.map(actions => {
+              backlog = actions.payload.doc.data();
+              backlog['id'] = actions.payload.doc.id;
+              backlog_list.push(backlog);
+            });
+            sub.unsubscribe();
+            observer.next(backlog_list);
+            backlog_list = [];
+          });
+      });
+    });
+  }
   getBacklogs(projectId) {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {

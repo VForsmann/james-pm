@@ -27,11 +27,12 @@ export class AddTaskComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log(this.modalInput);
     if (this.modalInput.backlogId) {
       this.task.backlog = this.modalInput.backlogId;
     }
     this.task.project = this.referenceService.getProjectReference(this.modalInput.projectId);
-    this.backlogs = this.backlogService.getBacklogs(this.modalInput.projectId);
+    this.backlogs = this.backlogService.getBacklogsForSprint(this.modalInput.projectId);
   }
 
   onSubmit() {

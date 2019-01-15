@@ -30,34 +30,34 @@ export class ScrumboardComponent implements OnInit {
     this.stateService.setProjectId(this.projectId);
     this.statusBars$ = this.taskStatusesService.getTaskStatuses();
     // this.tasks = this.taskService.getAllTasks(this.projectId);
-    this.taskService.testGetTasks(this.projectId).subscribe(res => {
-      res.map(task_from_obs => {
-        this.tasks.map(task => {
-          if (task['id'] === task_from_obs['id']) {
-            not_exist = false;
-            if (!task['user']) {
-              if (task_from_obs['user']) {
-                this.tasks.splice(this.tasks.indexOf(task), 1);
-                this.tasks.push(task_from_obs);
-              }
-            } else if (!task_from_obs['user']) {
+    this.taskService.getAllTasks(this.projectId).subscribe(res => {
+      this.tasks.map(task => {
+        if (task['id'] === res['id']) {
+          not_exist = false;
+          if (!task['user']) {
+            if (res['user']) {
               this.tasks.splice(this.tasks.indexOf(task), 1);
-              this.tasks.push(task_from_obs);
-            } else if (
-              task !== undefined &&
-              task['id'] === task_from_obs['id'] &&
-              task['user'].id !== task_from_obs['user'].id
-            ) {
-              this.tasks.splice(this.tasks.indexOf(task), 1);
-              this.tasks.push(task_from_obs);
+              this.tasks.push(res);
             }
+          } else if (!res['user']) {
+            this.tasks.splice(this.tasks.indexOf(task), 1);
+            this.tasks.push(res);
+          } else if (
+            task !== undefined &&
+            task['id'] === res['id'] &&
+            task['user'].id !== res['user'].id
+          ) {
+            this.tasks.splice(this.tasks.indexOf(task), 1);
+            this.tasks.push(res);
           }
-        });
-        if (not_exist) {
-          this.tasks.push(task_from_obs);
         }
-        not_exist = true;
       });
+      if (not_exist && res['id']) {
+        console.log('hello');
+        console.log(res);
+        this.tasks.push(res);
+      }
+      not_exist = true;
     });
   }
 }

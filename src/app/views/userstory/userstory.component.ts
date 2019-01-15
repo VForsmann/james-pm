@@ -36,5 +36,8 @@ export class UserstoryComponent implements OnInit {
     this.userstorys = this.userstoryService.getUserstorysFromProjectId(
       this.projectId
     );
+    this.sprintService.getActualSprintFromProject(this.projectId).then(res => {
+      console.log(res);
+    });
   }
 }
