@@ -17,8 +17,7 @@ export class MilestoneService {
     private stateService: StateService,
     private referenceService: ReferenceService) { }
 
-  getMilestones() {
-    const projectId = this.stateService.getProjectId().value;
+  getMilestones(projectId: string) {
     const project = this.referenceService.getProjectReference(projectId);
 
     return this.db.collection('milestones', ref => ref.where('project', '==', project)

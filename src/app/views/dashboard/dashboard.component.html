@@ -33,6 +33,11 @@
   </h5>
   <h5 class="text-muted">
     Projekt-Default Sprint time: {{(this.project | async)?.default_sprint_time}}
-    + in ms: {{ (this.project | async)?.default_sprint_time_ms}}
+  </h5>
+  <h5>Current sprint:</h5>
+  <h5>
+      {{ this.sprintStartDate }}
+       - 
+      {{ this.sprintEndDate }}
   </h5>
 </div>

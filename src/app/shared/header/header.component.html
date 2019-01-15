@@ -1,6 +1,6 @@
 <div class="header-container">
   <h1>{{ this.title }}</h1>
-  <span *ngIf="this.hasButton()" class="buttons">
+  <span *ngIf="this.hasButton()  || this.showContent" class="buttons">
     <ng-content></ng-content>
     <app-modal *ngIf="this.add" [component]="this.add" [payload]="this.payload">
       <button class="btn btn-secondary">

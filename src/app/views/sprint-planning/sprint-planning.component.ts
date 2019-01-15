@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BacklogService } from 'src/app/services/backlog.service';
 import { Observable } from 'rxjs';
 import { Project } from 'src/app/model/project';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-sprint-planning',

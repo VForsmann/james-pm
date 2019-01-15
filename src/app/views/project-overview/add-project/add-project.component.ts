@@ -4,6 +4,7 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ReferenceService } from 'src/app/services/reference.service';
 import { TimeService } from 'src/app/services/time.service';
 import { Observable } from 'rxjs';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-add-project',
@@ -12,7 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class AddProjectComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private projectService: ProjectService,
-    private referenceService: ReferenceService, private ts: TimeService) { }
+    private referenceService: ReferenceService, private ts: TimeService, private sprintService: SprintService) { }
   project = {
     name: 'Name',
     description: 'Beschreibung',
@@ -27,7 +28,12 @@ export class AddProjectComponent implements OnInit {
   }
 
   onSubmit() {
-    this.projectService.addNewProject(this.project, this.user.working_units);
+    this.projectService.addNewProject(this.project, this.user.working_units).then(
+      ref => {
+        console.log('addSprint');
+        this.sprintService.addFirstSprint(ref);
+      }
+    );
     this.activeModal.close();
   }
 

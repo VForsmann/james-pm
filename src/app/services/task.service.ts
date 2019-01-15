@@ -231,6 +231,13 @@ export class TaskService {
       .doc(task.id)
       .delete();
   }
+
+  deleteWithTaskId(taskId) {
+    return this.db
+      .collection('tasks')
+      .doc(taskId)
+      .delete();
+  }
 }
 
 // getAllTasksWithoutBacklog(projectId) {
