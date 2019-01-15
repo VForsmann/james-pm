@@ -23,7 +23,7 @@ export class RoadmapComponent implements OnInit, OnDestroy {
   faTrash = faTrash;
 
   canDeleteSubscription: Subscription;
-  canDelete: boolean = false;
+  canDelete = false;
 
   constructor(
     private milestoneService: MilestoneService,
@@ -35,11 +35,13 @@ export class RoadmapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(projectId);
-    this.milestones = this.milestoneService.getMilestones();
+    this.milestones = this.milestoneService.getMilestones(projectId);
     this.canDeleteSubscription = this.projectService.getRoleForProjectId(projectId)
     .subscribe(role => {
-      if(role !== 'developer'){this.canDelete = true;}
-    })
+      if (role !== 'developer') {
+        this.canDelete = true;
+      }
+    });
   }
 
   ngOnDestroy() {

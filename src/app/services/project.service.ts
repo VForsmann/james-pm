@@ -6,6 +6,11 @@ import { Observable } from 'rxjs';
 import { StateService } from './state.service';
 import * as ms from 'ms';
 import { firestore } from 'firebase';
+import { Backlog } from '../model/backlog';
+import { BacklogService } from './backlog.service';
+import { TaskService } from './task.service';
+import { SprintService } from './sprint.service';
+import { MilestoneService } from './milestone.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +19,11 @@ export class ProjectService {
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService,
-    private stateService: StateService
+    private stateService: StateService,
+    private backlogService: BacklogService,
+    private taskService: TaskService,
+    private sprintService: SprintService,
+    private milestoneService: MilestoneService
   ) {}
 
   /**
@@ -108,7 +117,9 @@ export class ProjectService {
           .subscribe(user_project_data => {
             user_project_data.map(actions => {
               const id = actions.payload.doc.data()['role'].id;
-              this.getRoleForId(id).subscribe(role => observer.next(role['role']));
+              this.getRoleForId(id).subscribe(role =>
+                observer.next(role['role'])
+              );
             });
           });
       });
@@ -121,31 +132,34 @@ export class ProjectService {
 
   addNewProject(project, working_units) {
     project.default_sprint_time_ms = ms(project.default_sprint_time);
-    return this.db
-      .collection('projects')
-      .add(project)
-      .then(res => {
-        this.referenceService.getCreatorReference().subscribe(user_data => {
-          this.getRole('product owner').subscribe(innerRes => {
-            let role;
-            innerRes.map(actions => {
-              role = actions.payload.doc.ref;
-            });
-            const user_project = {
-              project: res,
-              user: user_data,
-              role: role,
-              working_units: working_units
-            };
-            this.db
-              .collection('user_projects')
-              .add(user_project)
-              .then(re => {
-                console.log('created Project');
+    return new Promise(resolve => {
+      this.db
+        .collection('projects')
+        .add(project)
+        .then(res => {
+          this.referenceService.getCreatorReference().subscribe(user_data => {
+            this.getRole('product owner').subscribe(innerRes => {
+              let role;
+              innerRes.map(actions => {
+                role = actions.payload.doc.ref;
               });
+              const user_project = {
+                project: res,
+                user: user_data,
+                role: role,
+                working_units: working_units
+              };
+              this.db
+                .collection('user_projects')
+                .add(user_project)
+                .then(re => {
+                  console.log('created Project');
+                  resolve(res);
+                });
+            });
           });
         });
-      });
+    });
   }
 
   addMemberToProject(
@@ -179,21 +193,69 @@ export class ProjectService {
   }
 
   deleteProject(projectId: string) {
-    const project = this.referenceService.getProjectReference(projectId);
+    const projectRef = this.referenceService.getProjectReference(projectId);
     return this.db
-      .collection('user_projects', ref => ref.where('project', '==', project))
+      .collection('user_projects', ref =>
+        ref.where('project', '==', projectRef)
+      )
       .snapshotChanges()
       .subscribe(res => {
         res.map(actions => {
-          this.db
-            .collection('user_projects')
-            .doc(actions.payload.doc.id)
-            .delete();
+          if (actions) {
+            this.db
+              .collection('user_projects')
+              .doc(actions.payload.doc.id)
+              .delete();
+          }
         });
         return this.db
-          .collection('projects')
-          .doc(projectId)
-          .delete();
+          .collection('backlogs', ref => ref.where('project', '==', projectRef))
+          .snapshotChanges()
+          .subscribe(bls => {
+            bls.map(actions => {
+              if (actions.payload.doc.id) {
+                this.backlogService.deleteBacklogAndUserstory(actions.payload.doc.id);
+              }
+            });
+            return this.db
+              .collection('tasks', ref =>
+                ref.where('project', '==', projectRef)
+              )
+              .snapshotChanges()
+              .subscribe(tasks => {
+                tasks.map(actions => {
+                  if (actions.payload.doc.id) {
+                    const tId = actions.payload.doc.id;
+                    this.taskService.deleteWithTaskId(tId);
+                  }
+                });
+                return this.sprintService
+                  .getSprintsForProject(projectRef)
+                  .subscribe(sprints => {
+                    sprints.map(sprint => {
+                      if (sprint) {
+                        this.db
+                          .collection('sprints')
+                          .doc(sprint.id)
+                          .delete();
+                      }
+                    });
+                    return this.milestoneService
+                      .getMilestones(projectId)
+                      .subscribe(mss => {
+                        mss.map(miles => {
+                          if (miles.id) {
+                            this.milestoneService.deleteMilestone(miles.id);
+                          }
+                        });
+                        return this.db
+                          .collection('projects')
+                          .doc(projectId)
+                          .delete();
+                      });
+                  });
+              });
+          });
       });
   }
 
@@ -204,11 +266,17 @@ export class ProjectService {
       .update({
         name: project.name,
         description: project.description,
-        pokering: project.pokering ? project.pokering : firestore.FieldValue.delete()
+        pokering: project.pokering
+          ? project.pokering
+          : firestore.FieldValue.delete()
       } as Project);
   }
 
   getProjectWorkingUnits(projectRef) {
-    return this.db.collection('user_projects', ref => ref.where('project', '==', projectRef)).valueChanges();
+    return this.db
+      .collection('user_projects', ref =>
+        ref.where('project', '==', projectRef)
+      )
+      .valueChanges();
   }
 }

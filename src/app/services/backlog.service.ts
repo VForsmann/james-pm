@@ -42,7 +42,8 @@ export class BacklogService {
       });
     });
   }
-  getBacklogs(projectId) {
+
+  getBacklogs(projectId): Observable<Backlog[]> {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {
       const backlogs = this.db
