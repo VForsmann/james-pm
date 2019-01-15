@@ -36,3 +36,9 @@
     + in ms: {{ (this.project | async)?.default_sprint_time_ms}}
   </h5>
 </div>
+<button (click)="this.getCurrentSprint()" class="btn btn-info">
+  get current Sprint
+</button>
+<p>
+  {{ this.sprintStartDate }}
+</p>

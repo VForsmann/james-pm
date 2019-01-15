@@ -53,8 +53,6 @@ export class ScrumboardComponent implements OnInit {
         }
       });
       if (not_exist && res['id']) {
-        console.log('hello');
-        console.log(res);
         this.tasks.push(res);
       }
       not_exist = true;

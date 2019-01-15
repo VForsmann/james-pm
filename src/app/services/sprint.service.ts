@@ -3,9 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ReferenceService } from './reference.service';
 import { ProjectService } from './project.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Sprint } from '../model/sprint';
-import * as firestore from 'firebase';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +12,6 @@ export class SprintService {
   constructor(
     private db: AngularFirestore,
     private referenceService: ReferenceService,
-    private projectService: ProjectService
   ) {}
 
   getSprintsForProject(projectRef): Observable<Sprint[]> {
@@ -106,7 +104,7 @@ export class SprintService {
     let sprint;
     let nextRef;
     return new Promise(resolve => {
-      this.db
+      const porjSub = this.db
         .collection('projects')
         .doc(projectId)
         .valueChanges()
@@ -120,41 +118,56 @@ export class SprintService {
             )
             .snapshotChanges()
             .subscribe(sprints => {
-              sprints.map(actions => {
-                sprint = actions.payload.doc.data();
-                nextRef = actions.payload.doc.ref;
+              if (sprints.length > 0) {
+                porjSub.unsubscribe();
                 subs.unsubscribe();
-              });
-              if (sprint['start_date'] > Date.now() / 1000) {
+                sprints.map(actions => {
+                  sprint = actions.payload.doc.data();
+                  nextRef = actions.payload.doc.ref;
+                });
+                console.log(sprints);
+              if (sprint && sprint['start_date'] > Date.now() / 1000) {
+                console.log('got next sprint');
                 resolve(nextRef);
               } else if (
+                sprint &&
                 sprint['start_date'] >
                 (Date.now() - project_val['default_sprint_time_ms']) / 1000
-              ) {
+                ) {
                 this.db
-                  .collection('sprints')
+                .collection('sprints')
                   .add({
                     project: projectRef,
                     start_date:
-                      sprint['start_date'] +
+                    sprint['start_date'] +
                       project_val['default_sprint_time_ms'] / 1000
-                  })
+                    })
                   .then(res => {
+                    console.log('add next sprint after current');
                     resolve(res);
                   });
               } else {
+                console.log('add completly new sprint');
                 this.db
-                  .collection('sprints')
-                  .add({
-                    project: projectRef,
-                    start_date: Date.now() / 1000
-                  })
-                  .then(res => {
-                    resolve(res);
-                  });
+                .collection('sprints')
+                .add({
+                  project: projectRef,
+                  start_date: Date.now() / 1000
+                })
+                .then(res => {
+                  resolve(res);
+                });
               }
+            }
             });
         });
+    });
+  }
+
+  addFirstSprint(projectRef) {
+    return this.db.collection('sprints').add({
+      project: projectRef,
+      start_date: 969660000
     });
   }
 }

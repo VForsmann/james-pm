@@ -3,6 +3,8 @@ import { ProjectService } from 'src/app/services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { StateService } from 'src/app/services/state.service';
+import { SprintService } from 'src/app/services/sprint.service';
+import { Sprint } from 'src/app/model/sprint';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,12 +14,14 @@ import { StateService } from 'src/app/services/state.service';
 export class DashboardComponent implements OnInit {
   project: Observable<{}>;
   projectId: string;
+  sprintStartDate = null;
 
   constructor(
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private stateService: StateService,
-    private router: Router
+    private router: Router,
+    private sprintService: SprintService
   ) {}
 
   ngOnInit() {
@@ -49,5 +53,15 @@ export class DashboardComponent implements OnInit {
   navigateSprintplanning() {
     console.log('ja');
     this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
+  }
+
+  getCurrentSprint() {
+    this.sprintService.getActualSprintFromProject(this.projectId).then(sprint => {
+      if (sprint) {
+        this.sprintService.getSprintWithId((sprint as Sprint).id).subscribe(sprintData => {
+          this.sprintStartDate = new Date(sprintData.start_date * 1000);
+        });
+      }
+    });
   }
 }
