@@ -5,7 +5,6 @@ import { BacklogService } from 'src/app/services/backlog.service';
 import { ReferenceService } from 'src/app/services/reference.service';
 import { PlanningPokerService } from 'src/app/services/planning-poker.service';
 import { Observable } from 'rxjs';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -66,13 +65,17 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
       }
     });
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    this.projectService.getProjectWorkingUnits(this.referenceService.getProjectReference(this.projectId)).subscribe(er => {
-      const array = [];
-      er.forEach(inner => {
-        array.push(inner['working_units']);
+    this.projectService
+      .getProjectWorkingUnits(
+        this.referenceService.getProjectReference(this.projectId)
+      )
+      .subscribe(er => {
+        const array = [];
+        er.forEach(inner => {
+          array.push(inner['working_units']);
+        });
+        this.projectSum = array.reduce(reducer);
       });
-      this.projectSum = array.reduce(reducer);
-    });
     this.checkAndCreateBacklogs();
 
     this.prepareDataForScrummaster();
@@ -210,7 +213,8 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
     this.planningPokerService.addPlanningPoker(pp);
   }
 
-  endPoker() {
+  endPokerBack() {
+    console.log('back');
     this.projectId = this.route.snapshot.paramMap.get('id');
     const sub = this.projectService
       .getProjectForId(this.projectId)
@@ -222,6 +226,26 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
         sub.unsubscribe();
       });
     this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
+  }
+
+  endPokerNext() {
+    console.log('next');
+    this.projectId = this.route.snapshot.paramMap.get('id');
+    const sub = this.projectService
+      .getProjectForId(this.projectId)
+      .subscribe(pro => {
+        this.project = pro;
+        this.project['id'] = this.projectId;
+        this.project['pokering'] = false;
+        this.projectService.updateProject(this.project);
+        sub.unsubscribe();
+      });
+    this.router.navigate([
+      '/dashboard',
+      this.projectId,
+      'sprint-planning',
+      'selected-backlogitems'
+    ]);
   }
 
   increase(backlog) {
