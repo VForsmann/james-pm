@@ -38,7 +38,6 @@ export class SelectedBacklogComponent implements OnInit {
         this.sprintService
           .getNextSprintOrCreate(this.projectId)
           .then(sprintRef => {
-            backlogsSub.unsubscribe();
             backlog.sprint = sprintRef;
             this.backlogService.updateBacklog(backlog);
           },

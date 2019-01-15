@@ -66,6 +66,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/dashboard', this.projectId, 'scrum']);
   }
 
+  navigateBurndown() {
+    this.router.navigate(['/dashboard', this.projectId, 'burndown']);
+  }
+
   navigateProjects() {
     if (this.authService.getAuthState()) {
       this.router.navigate(['/projects']);

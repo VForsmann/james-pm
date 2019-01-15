@@ -125,10 +125,10 @@ export class SprintService {
                 nextRef = actions.payload.doc.ref;
                 subs.unsubscribe();
               });
-              if (sprint['start_date'] > Date.now() / 1000) {
+              if (sprint && sprint['start_date'] > Date.now() / 1000) {
                 resolve(nextRef);
               } else if (
-                sprint['start_date'] >
+                sprint && sprint['start_date'] >
                 (Date.now() - project_val['default_sprint_time_ms']) / 1000
               ) {
                 this.db

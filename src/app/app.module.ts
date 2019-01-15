@@ -58,6 +58,8 @@ import { UniquePipe } from './shared/pipes/unique.pipe';
 import { RowedPipe } from './shared/pipes/rowed.pipe';
 import { SumedPipe } from './shared/pipes/sumed.pipe';
 import { FullSumPipe } from './shared/pipes/full-sum.pipe';
+import { BurndownComponent } from './views/scrumboard/burndown/burndown.component';
+import { MapPriorityPipe } from './shared/pipes/map-priority.pipe';
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import { FullSumPipe } from './shared/pipes/full-sum.pipe';
     UniquePipe,
     RowedPipe,
     SumedPipe,
-    FullSumPipe
+    FullSumPipe,
+    BurndownComponent,
+    MapPriorityPipe
   ],
   imports: [
     BrowserModule,

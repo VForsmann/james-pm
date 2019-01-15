@@ -42,6 +42,46 @@ export class BacklogService {
       });
     });
   }
+
+  getFinishedBacklogs(projectId) {
+    let finished = true;
+    let backlog;
+    let backlogs_list = [];
+    return Observable.create(observer => {
+      this.sprintService.getActualSprintFromProject(projectId).then(res => {
+        if (!res) {} else {
+        this.db
+          .collection('backlogs', ref => ref.where('sprint', '==', res))
+          .snapshotChanges()
+          .subscribe(backlogs => {
+            backlogs.map(actions => {
+              const sub = this.db
+                .collection('tasks', ref =>
+                  ref.where('backlog', '==', actions.payload.doc.ref)
+                )
+                .valueChanges()
+                .subscribe(tasks => {
+                  tasks.map(task => {
+                    if (task['status'] !== 'Done') {
+                      finished = false;
+                    }
+                  });
+                  if (finished) {
+                    backlog = actions.payload.doc.data();
+                    backlogs_list.push(backlog);
+                    sub.unsubscribe();
+                  }
+                  finished = true;
+                  observer.next(backlogs_list);
+                  backlogs_list = [];
+                });
+            });
+          });
+        }
+      });
+    });
+  }
+
   getBacklogs(projectId) {
     const projRef = this.referenceServices.getProjectReference(projectId);
     return Observable.create(observer => {

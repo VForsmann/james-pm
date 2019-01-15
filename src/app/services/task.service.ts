@@ -28,12 +28,35 @@ export class TaskService {
       .snapshotChanges();
   }
 
-  updateTask(task) {
-    const taskId = task['id'];
+  updateTask(uptask) {
+    const taskId = uptask['id'];
+    let finished = true;
     this.db
       .collection('tasks')
       .doc(taskId)
-      .update(task);
+      .update(uptask)
+      .then(updated_task => {
+        const sub = this.db
+          .collection('tasks', ref =>
+            ref.where('backlog', '==', uptask['backlog'])
+          )
+          .valueChanges()
+          .subscribe(tasks => {
+            tasks.map(task => {
+              if (task['status'] !== 'Done') {
+                finished = false;
+              }
+            });
+            if (finished) {
+              this.db.collection('backlogs').doc(uptask['backlog'].id).update({finished: Date.now() / 1000});
+              sub.unsubscribe();
+            } else {
+              this.db.collection('backlogs').doc(uptask['backlog'].id).update({finished: null});
+              sub.unsubscribe();
+            }
+            finished = true;
+          });
+      });
   }
 
   getAllTasks(projectId) {
@@ -42,37 +65,42 @@ export class TaskService {
     let tasks_list = [];
     return Observable.create(observer => {
       this.sprintService.getActualSprintFromProject(projectId).then(res => {
-        this.db
-          .collection('backlogs', ref => ref.where('sprint', '==', res))
-          .snapshotChanges()
-          .subscribe(backlogs => {
-            backlogs.map(actions => {
-              backlog = actions.payload.doc.ref;
-              const subs = this.db
-                .collection('tasks', ref => ref.where('backlog', '==', backlog))
-                .snapshotChanges()
-                .subscribe(tasks_data => {
-                  tasks_data.map(act => {
-                    const update_task = act.payload.doc.data();
-                    if (update_task['user']) {
-                      this.referenceService
-                        .getUserReference(update_task['user'].id)
-                        .get()
-                        .then(user_data => {
-                          const username =
-                            user_data.data().firstname +
-                            ' ' +
-                            user_data.data().lastname;
-                          update_task['username'] = username;
-                          // observer.next(update_task);
-                        });
-                    }
-                    observer.next(update_task);
+        if (!res) {
+        } else {
+          this.db
+            .collection('backlogs', ref => ref.where('sprint', '==', res))
+            .snapshotChanges()
+            .subscribe(backlogs => {
+              backlogs.map(actions => {
+                backlog = actions.payload.doc.ref;
+                const subs = this.db
+                  .collection('tasks', ref =>
+                    ref.where('backlog', '==', backlog)
+                  )
+                  .snapshotChanges()
+                  .subscribe(tasks_data => {
+                    tasks_data.map(act => {
+                      const update_task = act.payload.doc.data();
+                      if (update_task['user']) {
+                        this.referenceService
+                          .getUserReference(update_task['user'].id)
+                          .get()
+                          .then(user_data => {
+                            const username =
+                              user_data.data().firstname +
+                              ' ' +
+                              user_data.data().lastname;
+                            update_task['username'] = username;
+                            // observer.next(update_task);
+                          });
+                      }
+                      observer.next(update_task);
+                    });
                   });
-                });
+              });
+              tasks_list = [];
             });
-            tasks_list = [];
-          });
+        }
       });
     });
   }
