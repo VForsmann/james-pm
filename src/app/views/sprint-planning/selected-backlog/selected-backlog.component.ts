@@ -41,6 +41,7 @@ export class SelectedBacklogComponent implements OnInit {
         if (backlogs) {
           backlogs.forEach(backlog => {
             backlog.sprint = sprintRef;
+            backlog.selected = false;
             this.backlogService.updateBacklog(backlog);
           });
         }

@@ -34,7 +34,8 @@
 </app-header>
 <div class="list-group">
   <div *ngFor="let backlog of this.backlogs | async">
-    <app-list-item
+    <div *ngIf="!backlog.sprint">
+      <app-list-item
       [myStyle]="backlog.selected && { 'background-color': '#bcbcbc' }"
       [click]="this.select.bind(this)"
       [clickPayload]="backlog"
@@ -44,6 +45,7 @@
       [description]="backlog.description"
       [backlogType]="'PBI Art: ' + backlog.type"
       [priority]="'Priorität: ' + backlog.priority"
-    ></app-list-item>
+      ></app-list-item>
+    </div>
   </div>
 </div>
