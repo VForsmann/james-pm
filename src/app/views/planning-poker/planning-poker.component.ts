@@ -42,9 +42,9 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
     const pokersub = this.projectService.getProjectForId(this.projectId).subscribe(pro => {
       if (!pro['pokering']) {
         this.router.navigate(['/dashboard', this.projectId, 'sprint-planning']);
-        pokersub.unsubscribe();
       }
     });
+    this.observer.push(pokersub);
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
       switch (role) {
         case 'scrum master': {
