@@ -33,7 +33,7 @@ export class SelectedBacklogComponent implements OnInit {
   }
 
   saveNextSprint() {
-    const backlogsSub = this.backlogs.subscribe(backlogs => {
+    this.backlogs.subscribe(backlogs => {
       backlogs.forEach(backlog => {
         this.sprintService
           .getNextSprintOrCreate(this.projectId)
