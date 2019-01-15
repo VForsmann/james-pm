@@ -6,40 +6,83 @@
   </button>
   <br />
   <div class="container-fluid">
-    <div *ngFor="let pp of (this.planning_poker | async)">
-      <p>{{pp.storyPoints}}</p>
-    </div>
-    <div class="table-responsive-md">
+    <!-- <div *ngFor="let pp of (this.planning_poker | async)">
+      <p>{{ pp.pbiName }}</p>
+      <p>{{ pp.storyPoints }}</p>
+    </div> -->
+    <div
+      *ngIf="(this.planning_poker | async)?.length > 0"
+      class="table-responsive-md"
+    >
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th
+              *ngFor="
+                let b of (this.backlogs | async | unique: 'name' | sort: 'id')
+              "
+              scope="col"
+            >
+              {{ b.name }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+          <tr
+            *ngFor="
+              let i of ((this.planning_poker | async)?.length /
+                (this.backlogs | async)?.length | demoNumber)
+            "
+          >
+            <th scope="row">{{ i + 1 }}</th>
+            <td
+              *ngFor="
+                let pp of (this.planning_poker
+                  | async
+                  | sort: 'backlog':'id'
+                  | sort: 'user':'id'
+                  | rowed: i:(this.backlogs | async)?.length)
+              "
+            >
+              {{ pp ? pp.storyPoints : 0 }}
+            </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">SUM</th>
+            <td
+              *ngFor="
+                let pp of (this.planning_poker
+                  | async
+                  | sort: 'backlog':'id'
+                  | sumed: (this.backlogs | async)?.length)
+              "
+            >
+              {{ pp }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">FULLSUM</th>
+            <td
+              *ngFor="
+                let fullSum of (this.planning_poker
+                  | async
+                  | sort: 'backlog':'id'
+                  | fullSum: (this.backlogs | async)?.length)
+              "
+            >
+              {{ fullSum }}
+            </td>
+            <th scope="row">PROJECTSUM</th>
+            <td>{{ this.projectSum }}</td>
+          </tr>
+        </tfoot>
       </table>
+    </div>
+    <div *ngIf="(this.planning_poker | async)?.length == 0">
+      <h2>No Developer voted yet</h2>
     </div>
   </div>
 </div>
