@@ -32,6 +32,17 @@ export class MilestoneService {
     );
   }
 
+  hasMilestones(projectId: string){
+    const project = this.referenceService.getProjectReference(projectId);
+    return this.db.collection('milestones', ref => ref.where('project', '==', project)
+    .orderBy('done')).valueChanges().pipe(
+      map(actions => {
+        if(actions.length === 0){return false;}
+        else{return true;}
+      })
+    );
+  }
+
   addMilestone(milestone: MilestoneFirebase) {
     const projectId = this.stateService.getProjectId().value;
     const project = this.referenceService.getProjectReference(projectId);
