@@ -15,7 +15,8 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./roadmap.component.scss']
 })
 export class RoadmapComponent implements OnInit, OnDestroy {
-  milestones: Observable<MilestoneFirebase[]>;
+  milestones$: Observable<MilestoneFirebase[]>;
+  hasMilestones$: Observable<boolean>;
   addMilestoneComponent = AddMilestoneComponent;
   deleteMilestoneComponent = DeleteMilestoneComponent;
 
@@ -35,7 +36,8 @@ export class RoadmapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const projectId = this.route.snapshot.paramMap.get('id');
     this.stateService.setProjectId(projectId);
-    this.milestones = this.milestoneService.getMilestones(projectId);
+    this.milestones$ = this.milestoneService.getMilestones(projectId);
+    this.hasMilestones$ = this.milestoneService.hasMilestones(projectId);
     this.canDeleteSubscription = this.projectService.getRoleForProjectId(projectId)
     .subscribe(role => {
       if (role !== 'developer') {
