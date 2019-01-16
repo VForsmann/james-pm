@@ -43,40 +43,60 @@ export class BacklogService {
     });
   }
 
+  getSumStoryPoints(projectId) {
+    let sum_points = 0;
+    return new Promise((resolve, reject) => {
+      this.sprintService.getActualSprintFromProject(projectId).then(res => {
+        if (!res) {
+        } else {
+          this.db
+            .collection('backlogs', ref => ref.where('sprint', '==', res))
+            .snapshotChanges()
+            .subscribe(backlogs => {
+              backlogs.map(backlog => {
+                sum_points += +backlog.payload.doc.data()['storypoints'];
+              });
+              resolve(sum_points);
+            });
+        }
+      });
+    });
+  }
   getFinishedBacklogs(projectId) {
     let finished = true;
     let backlog;
     let backlogs_list = [];
     return Observable.create(observer => {
       this.sprintService.getActualSprintFromProject(projectId).then(res => {
-        if (!res) {} else {
-        this.db
-          .collection('backlogs', ref => ref.where('sprint', '==', res))
-          .snapshotChanges()
-          .subscribe(backlogs => {
-            backlogs.map(actions => {
-              const sub = this.db
-                .collection('tasks', ref =>
-                  ref.where('backlog', '==', actions.payload.doc.ref)
-                )
-                .valueChanges()
-                .subscribe(tasks => {
-                  tasks.map(task => {
-                    if (task['status'] !== 'Done') {
-                      finished = false;
+        if (!res) {
+        } else {
+          this.db
+            .collection('backlogs', ref => ref.where('sprint', '==', res))
+            .snapshotChanges()
+            .subscribe(backlogs => {
+              backlogs.map(actions => {
+                const sub = this.db
+                  .collection('tasks', ref =>
+                    ref.where('backlog', '==', actions.payload.doc.ref)
+                  )
+                  .valueChanges()
+                  .subscribe(tasks => {
+                    tasks.map(task => {
+                      if (task['status'] !== 'Done') {
+                        finished = false;
+                      }
+                    });
+                    if (finished) {
+                      backlog = actions.payload.doc.data();
+                      backlogs_list.push(backlog);
+                      sub.unsubscribe();
                     }
+                    finished = true;
+                    observer.next(backlogs_list);
+                    backlogs_list = [];
                   });
-                  if (finished) {
-                    backlog = actions.payload.doc.data();
-                    backlogs_list.push(backlog);
-                    sub.unsubscribe();
-                  }
-                  finished = true;
-                  observer.next(backlogs_list);
-                  backlogs_list = [];
-                });
+              });
             });
-          });
         }
       });
     });
@@ -222,6 +242,20 @@ export class BacklogService {
   updateBacklog(backlog) {
     if (!backlog.sprint) {
       backlog.sprint = null;
+    }
+    if (backlog.storypoints) {
+      return this.db
+        .collection('backlogs')
+        .doc(backlog.id)
+        .update({
+          name: backlog.name,
+          sprint: backlog.sprint,
+          description: backlog.description,
+          storypoints: backlog.storypoints,
+          selected: backlog.selected
+            ? backlog.selected
+            : firestore.FieldValue.delete()
+        });
     }
     return this.db
       .collection('backlogs')

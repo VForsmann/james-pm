@@ -7,4 +7,5 @@ export interface Backlog {
     project: any;
     sprint: any;
     selected: boolean;
+    storypoints?: any;
 }

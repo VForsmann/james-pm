@@ -42,6 +42,7 @@ export class SelectedBacklogComponent implements OnInit {
           backlogs.forEach(backlog => {
             backlog.sprint = sprintRef;
             backlog.selected = false;
+            backlog.storypoints = (<HTMLInputElement>document.getElementById(backlog.id)).value;
             this.backlogService.updateBacklog(backlog);
           });
         }

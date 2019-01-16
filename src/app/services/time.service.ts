@@ -13,4 +13,12 @@ export class TimeService {
     .collection('sprint_default_times')
     .valueChanges();
   }
+
+  getDefaultSprintForProject(projectId) {
+    return new Promise(resolve => {
+      this.db.collection('projects').doc(projectId).valueChanges().subscribe(res => {
+        resolve(res);
+      });
+    });
+  }
 }

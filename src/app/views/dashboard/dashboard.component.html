@@ -1,9 +1,9 @@
 <app-header [title]="(this.project | async)?.name"></app-header>
 <div class="d-flex align-content-lg-center flex-wrap justify-content-center">
   <app-card
-  (click)="navigateBacklogs()"
-  [title]="'Backlogs'"
-  [text]="'Verwalten Sie alle Backlogs!'"
+    (click)="navigateBacklogs()"
+    [title]="'Backlogs'"
+    [text]="'Verwalten Sie alle Backlogs!'"
   ></app-card>
   <!-- <app-card
   (click)="navigateSprints()"
@@ -11,20 +11,20 @@
   [text]="'Managen Sie die Sprint-Phasen mit verschiedenen Mitarbeitern'"
   ></app-card> -->
   <app-card
-  (click)="navigateUserStorys()"
-  [title]="'User-Storys'"
+    (click)="navigateUserStorys()"
+    [title]="'User-Storys'"
     [text]="'Erfassen Sie Kundenwünsche'"
-    ></app-card>
-    <app-card
+  ></app-card>
+  <app-card
     (click)="navigateRoadmap()"
     [title]="'Roadmap'"
     [text]="'Verfolgen sie die Meilensteine in ihrem Projekt'"
-    ></app-card>
-    <app-card
+  ></app-card>
+  <app-card
     (click)="navigateSprintplanning()"
     [title]="'Sprint_Planning'"
     [text]="'Planen Sie den Sprint gemeinsam mit ihrem Team'"
-    ></app-card>
+  ></app-card>
 </div>
 <hr />
 <div class="container-fluid">
@@ -32,12 +32,14 @@
     Project-Description: {{ (this.project | async)?.description }}
   </h5>
   <h5 class="text-muted">
-    Projekt-Default Sprint time: {{(this.project | async)?.default_sprint_time}}
+    Projekt-Default Sprint time:
+    {{ (this.project | async)?.default_sprint_time }}
   </h5>
   <h5>Current sprint:</h5>
-  <h5>
-      {{ this.sprintStartDate }}
-       - 
-      {{ this.sprintEndDate }}
-  </h5>
+  <h5>{{ this.sprintStartDate }} - {{ this.sprintEndDate }}</h5>
 </div>
+
+<div>
+  <canvas id="canvas">{{ chart }}</canvas>
+</div>
+

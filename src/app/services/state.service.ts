@@ -10,6 +10,8 @@ export class StateService {
   // used for LoadingScreen
   loading = false;
   loadingTimestamp: number;
+  sprintTime;
+  days;
   constructor() { }
 
   // call this method only in the dashboard component and project-overview component

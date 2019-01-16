@@ -2,14 +2,22 @@
   [title]="'Your selected Backlogitems for the next sprint'"
   [showContent]="true"
 >
-<button class="btn btn-success" (click)="this.saveNextSprint()">Done</button>
+  <button class="btn btn-success" (click)="this.saveNextSprint()">Done</button>
 </app-header>
-  <div class="task-container">
-    <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
-        <app-task-list
-        [backlog]="backlog"
-        [addTask]="this.addTaskComponent"
-        [payload]="{ projectId: this.projectId, backlogId: backlog.id }"
-        ></app-task-list>
-      </div>
+<div class="task-container">
+  <div *ngFor="let backlog of (this.backlogs | async | sort: 'priority')">
+    <app-task-list
+      [backlog]="backlog"
+      [addTask]="this.addTaskComponent"
+      [payload]="{ projectId: this.projectId, backlogId: backlog.id }"
+    ></app-task-list>
+    <div class="form-group">
+      <label>StoryPoints:</label>
+      <input
+        type="number"
+        class="form-control"
+        id="{{backlog.id}}"
+      />
+    </div>
   </div>
+</div>

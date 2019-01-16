@@ -60,7 +60,7 @@ import { SumedPipe } from './shared/pipes/sumed.pipe';
 import { FullSumPipe } from './shared/pipes/full-sum.pipe';
 import { BurndownComponent } from './views/scrumboard/burndown/burndown.component';
 import { MapPriorityPipe } from './shared/pipes/map-priority.pipe';
-
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -122,7 +122,8 @@ import { MapPriorityPipe } from './shared/pipes/map-priority.pipe';
     NgbModule,
     FontAwesomeModule,
     VerticalTimelineModule,
-    NgDragDropModule.forRoot()
+    NgDragDropModule.forRoot(),
+    ChartsModule
   ],
   entryComponents: [
     SignUpComponent,

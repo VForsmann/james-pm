@@ -43,6 +43,7 @@ export class AddMemberComponent implements OnInit {
       this.user.working_units,
       this.selectedRole
     );
+    console.log(this.selectedRole);
     this.activeModal.close();
   }
 }

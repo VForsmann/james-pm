@@ -108,7 +108,7 @@
           [edit]="this.editBacklogComponent"
           [description]="backlog.description"
           [backlogType]="'PBI Art: ' + backlog.type"
-          [priority]="'Priorität: ' + backlog.priority"
+          [priority]="'Priorität: ' + (backlog.priority | mapPriority)"
         ></app-list-item>
       </div>
       <div class="w-25">
