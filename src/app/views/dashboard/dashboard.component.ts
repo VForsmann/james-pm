@@ -84,7 +84,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           const fixed = st;
           for (let i = 1; days + 1 >= i; i++) {
             this.real.push(fixed);
+            if (st <= 0) {
+              this.opti.push(0);
+            } else {
             this.opti.push(st);
+            }
             st = <number>st - calc;
             this.x_values.push(i);
           }
