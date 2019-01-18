@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmTaskComponent } from '../confirm-task/confirm-task.component';
-import { Observable } from 'rxjs';
 import { ReferenceService } from 'src/app/services/reference.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class StatusBarComponent implements OnInit {
   @Input() tasks;
   projectId;
   nameRef;
-  count = 0;
 
   constructor(
     private taskService: TaskService,
