@@ -155,11 +155,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         labels: this.x_values,
         datasets: [
           {
+            label: 'Optimal',
             data: this.opti,
             borderColor: '#3cba9f',
             fill: false
           },
           {
+            label: 'Reality',
             data: this.real,
             borderColor: '#ffcc00',
             fill: false
@@ -168,7 +170,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
       options: {
         legend: {
-          display: false
+          display: true
         },
         elements: {
           line: {
