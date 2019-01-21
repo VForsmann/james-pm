@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Backlog } from 'src/app/model/backlog';
 import { AddTaskComponent } from '../../task/add-task/add-task.component';
@@ -17,6 +17,7 @@ export class SelectedBacklogComponent implements OnInit {
   backlogs: Observable<Backlog[]>;
   addTaskComponent = AddTaskComponent;
   projectId: string;
+  backlogStoryPoints = {};
 
   constructor(
     private backlogService: BacklogService,
@@ -42,7 +43,10 @@ export class SelectedBacklogComponent implements OnInit {
           backlogs.forEach(backlog => {
             backlog.sprint = sprintRef;
             backlog.selected = false;
-            backlog.storypoints = (<HTMLInputElement>document.getElementById(backlog.id)).value;
+            if (this.backlogStoryPoints[backlog.id]) {
+              backlog.storypoints = this.backlogStoryPoints[backlog.id];
+            }
+            console.log('backlog:', backlog);
             this.backlogService.updateBacklog(backlog);
           });
         }
@@ -59,5 +63,9 @@ export class SelectedBacklogComponent implements OnInit {
             }
           );
     });
+  }
+
+  saveStoryPoints(backlog, storypoints: number) {
+    this.backlogStoryPoints[backlog.id] = storypoints;
   }
 }

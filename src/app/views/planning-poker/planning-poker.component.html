@@ -1,12 +1,12 @@
 <app-header [title]="'Planning-Poker'" [showContent]="true">
-  <div *ngIf="this.scrummaster || this.product_owner">
+  <span *ngIf="this.scrummaster || this.product_owner">
     <button type="button" class="btn btn-danger" (click)="this.endPokerBack()">
       Back
     </button>
-    <button type="button" class="btn btn-success" (click)="this.endPokerNext()">
-        Next
-    </button>
-  </div>
+  </span>
+  <button type="button" class="btn btn-success" (click)="this.endPokerNext()">
+    Next
+  </button>
 </app-header>
 <div *ngIf="this.scrummaster || this.product_owner">
   <div class="container-fluid">

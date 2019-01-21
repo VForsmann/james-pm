@@ -10,14 +10,7 @@
       [backlog]="backlog"
       [addTask]="this.addTaskComponent"
       [payload]="{ projectId: this.projectId, backlogId: backlog.id }"
+      (storyPoints)="saveStoryPoints(backlog, $event)"
     ></app-task-list>
-    <div class="form-group">
-      <label>StoryPoints:</label>
-      <input
-        type="number"
-        class="form-control"
-        id="{{backlog.id}}"
-      />
-    </div>
   </div>
 </div>

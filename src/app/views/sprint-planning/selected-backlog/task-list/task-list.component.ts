@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Backlog } from 'src/app/model/backlog';
 import { Observable } from 'rxjs';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,8 @@ export class TaskListComponent implements OnInit {
   @Input() addTask: Component;
   @Input() payload: any;
 
+  @Output() storyPoints = new EventEmitter<number>();
+  internStoryPoints: number;
   epic: boolean;
   tasks: Observable<Task[]>;
   faPlus = faPlus;
@@ -48,5 +50,9 @@ export class TaskListComponent implements OnInit {
     this.taskService
       .deleteTask(task)
       .catch(() => console.warn('Something wrong with deleting Task!'));
+  }
+
+  onChange() {
+    this.storyPoints.emit(this.internStoryPoints);
   }
 }

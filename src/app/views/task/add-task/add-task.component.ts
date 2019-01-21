@@ -27,7 +27,6 @@ export class AddTaskComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log(this.modalInput);
     if (this.modalInput.backlogId) {
       this.task.backlog = this.modalInput.backlogId;
     }

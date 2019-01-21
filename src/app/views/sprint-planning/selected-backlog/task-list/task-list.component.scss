@@ -1,3 +1,6 @@
+@import '../../../../../styles.scss';
+
+
 .row-container {
     display: flex;
     height: 150px;
@@ -21,4 +24,16 @@
     display: inline-block;
     width: 300px;
     white-space: pre-wrap;
+    height: 115px;
+}
+
+app-modal {
+    display: inline-flex;
+    float: right;
+}
+
+input.form-control {
+    display: inline-block;
+    width: 70px;
+    margin-left: 5px;
 }

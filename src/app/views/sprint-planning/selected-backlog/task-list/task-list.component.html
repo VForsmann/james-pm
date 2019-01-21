@@ -1,16 +1,25 @@
 <div class="row-container">
   <span class="backlog-container">
-    <h4>
-      {{ this.backlog.name }}
-    </h4>
+    <h4>{{ this.backlog.name }}</h4>
     <span class="button-box" *ngIf="!this.epic">
+      <span class="form-group">
+        <label>StoryPoints:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="storyPoints"
+          [(ngModel)]="internStoryPoints"
+          (ngModelChange)="onChange()"
+          min="0"
+        />
+      </span>
       <app-modal
-      *ngIf="this.addTask"
-      [component]="this.addTask"
-      [payload]="this.payload"
+        *ngIf="this.addTask"
+        [component]="this.addTask"
+        [payload]="this.payload"
       >
-      <button class="btn btn-secondary">
-        <fa-icon [icon]="faPlus"></fa-icon>
+        <button class="btn btn-secondary">
+          <fa-icon [icon]="faPlus"></fa-icon>
         </button>
       </app-modal>
     </span>
@@ -19,11 +28,12 @@
   </span>
   <span class="tasks-row">
     <span *ngFor="let task of (tasks | async)">
-      <span class="task-card"><app-card [title]="task.name">
-        <button class="btn btn-danger" (click)="this.deleteTask(task)">
-          <fa-icon [icon]="faTrash"></fa-icon>
-        </button>
-      </app-card></span>
+      <span class="task-card"
+        ><app-card [title]="task.name">
+          <button class="btn btn-danger" (click)="this.deleteTask(task)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button> </app-card
+      ></span>
     </span>
   </span>
-</div>  
+</div>
