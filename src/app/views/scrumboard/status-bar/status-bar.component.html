@@ -1,5 +1,5 @@
 <div>
-  <div class="status-bar-name">{{ count }} | {{ name }}</div>
+  <div class="status-bar-name">{{ name }}</div>
   <div id="dragContainer" droppable (onDrop)="onDrop($event)">
     <div fxLayout="column" fxLayoutAlign="start center">
       <ng-container *ngFor="let task of this.tasks">
