@@ -1,5 +1,5 @@
 <a
-  (click)="this.click(this.clickPayload)"
+  (click)="this.click ? this.click(this.clickPayload) : null"
   class="list-group-item list-group-item-action d-flex flex-row ng-cloak"
   [ngStyle]="myStyle"
 >
@@ -11,7 +11,8 @@
     <p class="mb-1">{{ this.description }}</p>
     <small>{{ this.expenditure }}</small>
     <span>{{ this.sprint }}</span>
-    <span>{{ backlogType }} <span class="right">{{ priority }}</span></span>
+    <span>{{ backlogType }}</span>
+    <span>{{ priority }}</span>
     <small *ngIf="this.sprint">Ist einem Sprint zugewiesen</small>
   </div>
   <div *ngIf="this.hasButton()" class="d-flex flex-row w20 buttons">

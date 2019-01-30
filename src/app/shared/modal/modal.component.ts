@@ -11,21 +11,24 @@ export class ModalComponent implements OnInit {
   @Input() payload: any;
   @Output() modalResult = new EventEmitter<any>();
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async open(event) {
     event.preventDefault();
     event.stopPropagation();
     try {
       const modalRef = await this.modalService.open(this.component);
-      if (this.payload) { modalRef.componentInstance.modalInput = this.payload; }
+      if (this.payload) {
+        modalRef.componentInstance.modalInput = this.payload;
+      }
       const result = await modalRef.result;
       this.modalResult.emit(result);
     } catch (err) {
-      console.warn(err);
+      if (err) {
+        console.warn(err);
+      }
     }
   }
 }

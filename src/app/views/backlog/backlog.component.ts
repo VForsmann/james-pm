@@ -34,7 +34,6 @@ export class BacklogComponent implements OnInit {
     this.stateService.setProjectId(this.projectId);
     this.projectService.getRoleForProjectId(this.projectId).subscribe(role => {
       this.role = role;
-      console.log(role);
     });
     this.backlogs = this.backlogService.getBacklogs(this.projectId);
   }

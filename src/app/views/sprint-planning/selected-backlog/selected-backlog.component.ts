@@ -46,7 +46,6 @@ export class SelectedBacklogComponent implements OnInit {
             if (this.backlogStoryPoints[backlog.id]) {
               backlog.storypoints = this.backlogStoryPoints[backlog.id];
             }
-            console.log('backlog:', backlog);
             this.backlogService.updateBacklog(backlog);
           });
         }

@@ -212,7 +212,6 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
   }
 
   endPokerBack() {
-    console.log('back');
     this.projectId = this.route.snapshot.paramMap.get('id');
     const sub = this.projectService
       .getProjectForId(this.projectId)

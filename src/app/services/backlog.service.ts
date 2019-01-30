@@ -54,7 +54,9 @@ export class BacklogService {
             .snapshotChanges()
             .subscribe(backlogs => {
               backlogs.map(backlog => {
-                sum_points += +backlog.payload.doc.data()['storypoints'];
+                if (backlog.payload.doc.data()['storypoints'] !== undefined) {
+                  sum_points += +backlog.payload.doc.data()['storypoints'];
+                }
               });
               resolve(sum_points);
             });
